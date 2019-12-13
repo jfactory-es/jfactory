@@ -118,5 +118,9 @@ jFactory is entirely designed from importable ES6+ Classes that provides theses 
 
 ## Implementation  
 
-- **Experimental**. The specifications are still subject to changes. Feel free to submit your suggestions.
+- **Beta**. The specifications are still subject to changes. Feel free to submit your suggestions.
 - External Dependencies: jQuery, Lodash (may be removed in next releases)
+
+## Contributing
+
+If you have any questions, feel free to create an [issue](https://github.com/jfactory-es/jfactory/issues). Thank you to everyone who takes the time to share their comments, bug reports and fixes.

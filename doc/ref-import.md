@@ -13,11 +13,11 @@ See also https://github.com/jfactory-es/jfactory-starterkit
 ```javascript
 import {jFactory} from "jfactory-es" 
 ```
->**If this does not work, or does not switch to developer mode when webpack "mode" is "development", see below**.
+>**If this does not work, or does not switch to developer mode when webpack ["mode"](https://webpack.js.org/configuration/mode/) is "development", see below**.
 >
 > (running in developer mode, you should see a warning in the console)
 
-##Distributions
+## Distributions
 
 #### Manual import
 

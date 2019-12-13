@@ -25,6 +25,10 @@ below) provided that the following conditions are met:
     classes or modules is not permitted without the prior written permission
     of the copyright holder above.
 
+    * Neither the name of the copyright holder nor the names of its
+    contributors may be used to endorse or promote products derived from
+    this software without specific prior written permission.
+
     * Redistributions of source code, with or without modification,
     must retain the above copyright notice in all copies or substantial
     portions of the Software, this list of conditions and the following
