@@ -5,7 +5,10 @@
 [Properties](#properties) / [Methods](#methods) / [Options](#options) / [Usages](#usages)
 
 Provides an extended Promise that supports an awaitable and expirable promise tree, status, explorable chain map, shared data, debug data and trace.
- 
+
+```javascript
+import {JFactoryPromise} from "jfactory-es" 
+``` 
 * [Status](#promise-status)
 * [Chain](#promise-chain)
 * [Chain Completion](#chain-completion--cancellation)
@@ -347,28 +350,28 @@ Manually completes the chain by calling `$chainComplete()` in the last then().
 Should only be reliable for vertically chained promises (not with multibranch chains. See example 5). 
 
 ```javascript
-    let handlerCalled = 0;
+let handlerCalled = 0;
 
-    // ---helper
-    let doSomethingAsync = function (name) {
-        console.log("called:", name);
-        handlerCalled++;
-        // block the handler by returning a unpredictable pending promise:
-        return new Promise(function (resolve){
-            setTimeout(resolve, Math.random()*50)
-        });
-    };
-    // ---
+// ---helper
+let doSomethingAsync = function (name) {
+    console.log("called:", name);
+    handlerCalled++;
+    // block the handler by returning a unpredictable pending promise:
+    return new Promise(function (resolve){
+        setTimeout(resolve, Math.random()*50)
+    });
+};
+// ---
 
-    let promiseRoot = JFactoryPromise.resolve()
-        .then(r => doSomethingAsync('A1'))
-        .then(r => doSomethingAsync('A2'))
-        .then(r => doSomethingAsync('A3'))
-        .then(r => doSomethingAsync('A4'))
-        .then(r => promiseRoot.$chainComplete());
+let promiseRoot = JFactoryPromise.resolve()
+    .then(r => doSomethingAsync('A1'))
+    .then(r => doSomethingAsync('A2'))
+    .then(r => doSomethingAsync('A3'))
+    .then(r => doSomethingAsync('A4'))
+    .then(r => promiseRoot.$chainComplete());
 
-    await promiseRoot.$chain;
-    console.log("Chain completed; handlerCalled =", handlerCalled) // 4
+await promiseRoot.$chain;
+console.log("Chain completed; handlerCalled =", handlerCalled) // 4
 ```
 
 #### 5. Aborting a Chain - `$chainAbort()`

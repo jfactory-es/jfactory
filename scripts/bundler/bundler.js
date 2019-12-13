@@ -92,7 +92,7 @@ function onErr({ code, message, loc, frame }, fatal = true) {
     output.push(arguments[0])
   }
   console.error("\n" + output.join("\n"));
-  fatal && process.exit()
+  fatal && process.exit(1)
 }
 
 module.exports = { build, watch };
