@@ -67,7 +67,7 @@ let component = jFactory("WhatsNewComponent", {
   await component.$uninstall(); // stop/remove all
 }());
 ```
- JFactory ensures that before resolving a [Service State Change](https://github.com/jfactory-es/jfactory/blob/master/doc/TraitService-Phases.md), all Tasks of its [Service Handler](https://github.com/jfactory-es/jfactory/blob/master/doc/TraitService-States.md#service-state-handlers) are completed, including subpromise trees. 
+ jFactory ensures that before resolving a [Service State Change](https://github.com/jfactory-es/jfactory/blob/master/doc/TraitService-Phases.md), all Tasks of its [Service Handler](https://github.com/jfactory-es/jfactory/blob/master/doc/TraitService-States.md#service-state-handlers) are completed, including subpromise trees. 
 
 ## Patterns
 
