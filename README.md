@@ -116,8 +116,11 @@ jFactory is entirely designed from importable ES6+ Classes that provides theses 
 - Interoperable. Framework-agnostic. No transpiler.  
 - Provides a "Developer Build" for additional validations and debugging properties   
 
-## Implementation  
-[![npm version](https://img.shields.io/npm/v/jfactory-es.svg?style=flat)](https://www.npmjs.com/package/jfactory-es)  [![GitHub version](https://img.shields.io/github/package-json/v/jfactory-es/jfactory.svg?style=flat)](https://github.com/jfactory-es/jfactory) ![](https://github.com/jfactory-es/jfactory/workflows/Node%20CI/badge.svg)
+## Implementation
+[![vulnerabilities](https://img.shields.io/snyk/vulnerabilities/npm/jfactory-es.svg)]()
+[![npm version](https://img.shields.io/npm/v/jfactory-es.svg?style=flat)](https://www.npmjs.com/package/jfactory-es)
+[![GitHub version](https://img.shields.io/github/package-json/v/jfactory-es/jfactory.svg?style=flat)](https://github.com/jfactory-es/jfactory)
+[![](https://github.com/jfactory-es/jfactory/workflows/Node%20CI/badge.svg)]()
 
 - **Beta**. <!-- The specifications are still subject to changes.--> Feel free to submit your suggestions.
 - External Dependencies: jQuery, Lodash (may be removed in next releases)
