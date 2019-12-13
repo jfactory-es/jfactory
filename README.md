@@ -117,7 +117,7 @@ jFactory is entirely designed from importable ES6+ Classes that provides theses 
 - Provides a "Developer Build" for additional validations and debugging properties   
 
 ## Implementation  
-![](https://github.com/jfactory-es/jfactory/workflows/Node%20CI/badge.svg)
+[![npm version](https://img.shields.io/npm/v/jfactory-es.svg?style=flat)](https://www.npmjs.com/package/jfactory-es) ![](https://github.com/jfactory-es/jfactory/workflows/Node%20CI/badge.svg)
 
 - **Beta**. The specifications are still subject to changes. Feel free to submit your suggestions.
 - External Dependencies: jQuery, Lodash (may be removed in next releases)
