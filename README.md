@@ -71,7 +71,7 @@ let component = jFactory("WhatsNewComponent", {
 
 ## Patterns
 
-- Registry: all component subscriptions (listeners, promises, timers, fetch, dom...) are explorable in a registry, allowing quick visual inspections in DevTools.
+- Registry:<img align="right" src="doc/img/pic1.png"> all component subscriptions (listeners, promises, timers, fetch, dom...) are explorable in a registry, allowing quick visual inspections in DevTools.
 
 - [Tasks](doc/TraitTask.md): asynchronous processes can be registered as expirable tasks that block the current Service State Change, guaranteeing that everything is resolved before completing it, including all subpromises. 
 
