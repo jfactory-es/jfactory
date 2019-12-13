@@ -1,12 +1,11 @@
 {
   "name": "jfactory-es",
-  "version": "1.0.0-beta.1",
+  "version": "1.0.0-beta.4",
   "description": "A component-based architecture for asynchronous applications in JavaScript ES6+",
   "homepage": "https://github.com/jfactory-es/jfactory#readme",
   "bugs": "https://github.com/jfactory-es/jfactory/issues",
   "main": "dist/index.js",
   "//module": "dist/jFactory.mjs",
-  "private": true,
   "author": "Stéphane Plazis",
   "license": "SEE LICENSE IN LICENSE.txt",
   "devDependencies": {
@@ -47,5 +46,8 @@
   "dependencies": {
     "jquery": "^3.4.1",
     "lodash": "^4.17.15"
-  }
+  },
+  "files": [
+    "dist/**"
+  ]
 }

@@ -1,4 +1,5 @@
-/* jFactory Lint, Copyright (c) 2019, Stéphane Plazis, https://github.com/jfactory-es/jfactory/LICENSE.txt */
+/* jFactory Lint, Copyright (c) 2019, Stéphane Plazis,
+   https://github.com/jfactory-es/jfactory/blob/master/LICENSE.txt */
 
 // https://eslint.org/docs/6.0.0/developer-guide/nodejs-api
 

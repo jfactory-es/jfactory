@@ -1,0 +1,551 @@
+/* jFactory, Copyright (c) 2019, Stéphane Plazis, https://github.com/jfactory-es/jfactory/blob/master/LICENSE.txt */
+
+// ---------------------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
+// TraitComponents
+// ---------------------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
+
+import { jFactory } from "./jFactory";
+import { JFACTORY_DEV } from "./jFactory-env";
+import { jFactoryError } from "./JFactoryError";
+import { JFactoryExpect } from "./JFactoryExpect";
+import { TraitCore, TraitService } from "./TraitsCore";
+import { JFactoryFetch } from "./JFactoryFetch";
+import { JFactoryPromise } from "./JFactoryPromise";
+import { JFactoryObject } from "./JFactoryObject";
+import { jFactoryTrace } from "./JFactoryTrace";
+import { jQuery } from "./jFactory-helpers";
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Trait Fetch
+// ---------------------------------------------------------------------------------------------------------------------
+
+export class TraitFetch {
+    trait_constructor() {
+        const kernel = this.$[TraitCore.SYMBOL_PRIVATE].events.kernel;
+        kernel.on("disable", () => this.$fetchRemoveAll(TraitService.PHASE.DISABLE));
+        kernel.on("uninstall", () => this.$fetchRemoveAll(TraitService.PHASE.UNINSTALL));
+        this.$.assign("requests", this.$.createSubMap(), JFactoryObject.descriptors.ENUMERABLE);
+    }
+
+    $fetch(id, url, fetchOptions = {}) {
+        if (JFACTORY_DEV) {
+            JFactoryExpect("$fetch(id)", id).typeString();
+            JFactoryExpect("$fetch(url)", url).typeString();
+            JFactoryExpect("$fetch(fetchOptions)", fetchOptions).typePlainObject();
+            if (this.$.requests.has(id)) {
+                throw new jFactoryError.KEY_DUPLICATED({ target: "$fetch(id)", given: id })
+            }
+        }
+
+        let promise = new JFactoryFetch({
+            name: id,
+            traceSource: jFactoryTrace.tracer.captureTraceSource("$fetch"),
+            config: {
+                chainAutoComplete: true
+            }
+        }, url, fetchOptions);
+
+        this.$.requests.$registerAsync(id, '$fetch("' + id + '")', promise);
+
+        promise.$chain.then(() => {
+            if (this.$.requests.has(id)) {
+                this.$fetchRemove(id)
+            }
+        });
+
+        return promise;
+    }
+
+    $fetchText(id, url, fetchOptions = {}) {
+        return this.$fetch(id, url, { ...fetchOptions, $typeText: true });
+    }
+
+    $fetchJSON(id, url, fetchOptions = {}) {
+        return this.$fetch(id, url, { ...fetchOptions, $typeJSON: true });
+    }
+
+    $fetchRemove(id, reason) {
+        if (JFACTORY_DEV) {
+            JFactoryExpect("$fetchRemove(id)", id).typeString();
+            reason && JFactoryExpect("$fetchRemove(reason)", reason).typeString();
+            if (!this.$.requests.has(id)) {
+                throw new jFactoryError.KEY_MISSING({
+                    target: "$fetchRemove(id)",
+                    given: id
+                })
+            }
+            // eslint-disable-next-line no-debugger,brace-style
+            if (this.$.requests.get(id)._debug_remove_called) {debugger}
+            this.$.requests.get(id)._debug_remove_called = true
+        }
+
+        let entry = this.$.requests.get(id);
+        this.$.requests.delete(id);
+        entry.$chainAbort(reason || "$fetchRemove()");
+    }
+
+    $fetchRemoveAll(removePhase) {
+        if (JFACTORY_DEV) {
+            JFactoryExpect("removePhase", removePhase)
+                .equalIn(TraitService.PHASES)
+        }
+        let subs = this.$.requests;
+        if (subs.size) {
+            for (const [key, sub] of subs) {
+                if (sub.$phaseRemove === removePhase) {
+                    this.$fetchRemove(key, "$fetchRemoveAll(" + removePhase + ")")
+                }
+            }
+        }
+    }
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Trait Timeout
+// ---------------------------------------------------------------------------------------------------------------------
+
+export class TraitTimeout {
+    trait_constructor() {
+        const kernel = this.$[TraitCore.SYMBOL_PRIVATE].events.kernel;
+        kernel.on("disable", () => this.$timeoutRemoveAll(TraitService.PHASE.DISABLE));
+        kernel.on("uninstall", () => this.$timeoutRemoveAll(TraitService.PHASE.UNINSTALL));
+        this.$.assign("timeouts", this.$.createSubMap(), JFactoryObject.descriptors.ENUMERABLE);
+    }
+
+    $timeout(id, delay, handler = null, ...args) {
+        // id
+        // id, delay
+        // id, delay, handler, ...args
+
+        if (JFACTORY_DEV) {
+            JFactoryExpect("id", id).typeString();
+            JFactoryExpect("delay", delay).typeNumber();
+            JFactoryExpect("handler", handler).type(Function, null);
+            if (this.$.timeouts.has(id)) {
+                throw new jFactoryError.KEY_DUPLICATED({ target: "$timeout(id)", given: id })
+            }
+        }
+
+        let timer;
+        let promise = new JFactoryPromise(
+            {
+                name: id,
+                traceSource: jFactoryTrace.tracer.captureTraceSource("$timeout"),
+                config: {
+                    chainAutoComplete: true
+                }
+            },
+            resolve => {
+                timer = setTimeout(() => {
+                    if (!promise.$isExpired) {
+                        resolve(handler ? handler(...args) : undefined);
+                    }
+                }, delay)
+            }
+        );
+
+        this.$.timeouts.$registerAsync(id, '$timeout("' + id + '")', promise);
+        promise.$chain.data.timer = timer;
+
+        promise.$chain.then(() => {
+            if (this.$.timeouts.has(id)) {
+                this.$timeoutRemove(id);
+            }
+        });
+
+        return promise;
+    }
+
+    $timeoutRemove(id, reason) {
+        if (JFACTORY_DEV) {
+            JFactoryExpect("$timeoutRemove(id)", id).typeString();
+            reason && JFactoryExpect("$timeoutRemove(reason)", reason).typeString();
+            if (!this.$.timeouts.has(id)) {
+                throw new jFactoryError.KEY_MISSING({
+                    target: "$timeoutRemove(id)",
+                    given: id
+                })
+            }
+            // eslint-disable-next-line no-debugger,brace-style
+            if (this.$.timeouts.get(id)._debug_remove_called) {debugger}
+            this.$.timeouts.get(id)._debug_remove_called = true;
+        }
+
+        let entry = this.$.timeouts.get(id);
+        clearTimeout(entry.$chain.data.timer);
+        // deleting before chainAbort() to prevent remove() recall
+        this.$.timeouts.delete(id);
+        entry.$chainAbort(reason || "$timeoutRemove()");
+    }
+
+    $timeoutRemoveAll(removePhase) {
+        if (JFACTORY_DEV) {
+            JFactoryExpect("removePhase", removePhase)
+                .equalIn(TraitService.PHASES);
+        }
+        let subs = this.$.timeouts;
+        if (subs.size) {
+            for (const [key, sub] of subs) {
+                if (sub.$phaseRemove === removePhase) {
+                    this.$timeoutRemove(key, "$timeoutRemoveAll()")
+                }
+            }
+        }
+    }
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Trait Interval
+// ---------------------------------------------------------------------------------------------------------------------
+
+export class TraitInterval {
+    trait_constructor() {
+        const kernel = this.$[TraitCore.SYMBOL_PRIVATE].events.kernel;
+        kernel.on("disable", () => this.$intervalRemoveAll(TraitService.PHASE.DISABLE));
+        kernel.on("uninstall", () => this.$intervalRemoveAll(TraitService.PHASE.UNINSTALL));
+        this.$.assign("timeints", this.$.createSubMap(), JFactoryObject.descriptors.ENUMERABLE);
+    }
+
+    $interval(id, delay, handler, ...args) {
+        if (JFACTORY_DEV) {
+            JFactoryExpect("id", id).typeString();
+            JFactoryExpect("handler", handler).typeFunction();
+            JFactoryExpect("delay", delay).typeNumber();
+            if (this.$.timeints.has(id)) {
+                throw new jFactoryError.KEY_DUPLICATED({ target: "$interval(id)", given: id })
+            }
+        }
+        let timer = setInterval(handler, delay, ...args);
+        this.$.timeints.$registerSync(id, timer)
+    }
+
+    $intervalRemove(id) {
+        if (JFACTORY_DEV) {
+            JFactoryExpect("$intervalRemove(id)", id).typeString();
+            if (!this.$.timeints.has(id)) {
+                throw new jFactoryError.KEY_MISSING({
+                    target: "$intervalRemove(id)",
+                    given: id
+                })
+            }
+            // eslint-disable-next-line no-debugger,brace-style
+            if (this.$.timeints.get(id)._debug_remove_called) {debugger}
+            this.$.timeints.get(id)._debug_remove_called = true
+        }
+        clearInterval(this.$.timeints.get(id).$value);
+        this.$.timeints.delete(id)
+    }
+
+    $intervalRemoveAll(removePhase) {
+        if (JFACTORY_DEV) {
+            JFactoryExpect("removePhase", removePhase)
+                .equalIn(TraitService.PHASES)
+        }
+        let subs = this.$.timeints;
+        if (subs.size) {
+            for (const [key, sub] of subs) {
+                if (sub.$phaseRemove === removePhase) {
+                    this.$intervalRemove(key)
+                }
+            }
+        }
+    }
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Trait Mutations
+// ---------------------------------------------------------------------------------------------------------------------
+
+export class TraitMutation {
+    trait_constructor() {
+        const kernel = this.$[TraitCore.SYMBOL_PRIVATE].events.kernel;
+        kernel.on("disable", () => this.$mutationRemoveAll(TraitService.PHASE.DISABLE));
+        kernel.on("uninstall", () => this.$mutationRemoveAll(TraitService.PHASE.UNINSTALL));
+        this.$.assign("mutations", this.$.createSubMap(), JFactoryObject.descriptors.ENUMERABLE);
+    }
+
+    $mutation(id, parent, config, handler) {
+        if (JFACTORY_DEV) {
+            JFactoryExpect("id", id).typeString();
+            JFactoryExpect("parent", parent).type(HTMLElement, Document);
+            JFactoryExpect("config", config).typePlainObject();
+            JFactoryExpect("handler", handler).typeFunction();
+            if (this.$.mutations.has(id)) {
+                throw new jFactoryError.KEY_DUPLICATED({ target: "$mutation(id)", given: id })
+            }
+        }
+        let observer = new MutationObserver(handler);
+        observer.observe(parent, config);
+        this.$.mutations.$registerSync(id, observer);
+    }
+
+    $mutationRemove(id, reason) {
+        if (JFACTORY_DEV) {
+            JFactoryExpect("$mutationRemove(id)", id).typeString();
+            reason && JFactoryExpect("$mutationRemove(reason)", reason).typeString();
+            if (!this.$.mutations.has(id)) {
+                throw new jFactoryError.KEY_MISSING({
+                    target: "$mutationRemove(id)",
+                    given: id
+                })
+            }
+            // eslint-disable-next-line no-debugger,brace-style
+            if (this.$.mutations.get(id)._debug_remove_called) {debugger}
+            this.$.mutations.get(id)._debug_remove_called = true
+        }
+        this.$.mutations.get(id).$value.disconnect();
+        this.$.mutations.delete(id)
+    }
+
+    $mutationRemoveAll(removePhase) {
+        if (JFACTORY_DEV) {
+            JFactoryExpect("removePhase", removePhase)
+                .equalIn(TraitService.PHASES)
+        }
+        let subs = this.$.mutations;
+        if (subs.size) {
+            for (const [key, sub] of subs) {
+                if (sub.$phaseRemove === removePhase) {
+                    this.$mutationRemove(key)
+                }
+            }
+        }
+    }
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Trait DOM
+// ---------------------------------------------------------------------------------------------------------------------
+
+export class TraitDOM {
+    trait_constructor() {
+        const kernel = this.$[TraitCore.SYMBOL_PRIVATE].events.kernel;
+        kernel.on("disable", () => this.$domRemoveAll(TraitService.PHASE.DISABLE));
+        kernel.on("uninstall", () => this.$domRemoveAll(TraitService.PHASE.UNINSTALL));
+        this.$.assign("dom", this.$.createSubMap(), JFactoryObject.descriptors.ENUMERABLE);
+    }
+
+    $dom(id, jQueryArgument) {
+        if (JFACTORY_DEV) {
+            JFactoryExpect("id", id).typeString();
+            JFactoryExpect("jQueryArgument", jQueryArgument).type(String, Object);
+        }
+
+        let domId;
+        if (id[0] === "#") {
+            id = id.substring(1);
+            domId = true
+        }
+
+        if (JFACTORY_DEV && this.$.dom.has(id)) {
+            throw new jFactoryError.KEY_DUPLICATED({ target: "$dom(id)", given: id })
+        }
+
+        let dom = jQuery(jQueryArgument);
+        if (domId) {
+            dom[0].id = id
+        }
+        return this.$.dom.$registerSync(id, dom).$value;
+    }
+
+    $domFetch(id, url, fetchOptions) {
+        if (JFACTORY_DEV) {
+            JFactoryExpect("id", id).typeString();
+            JFactoryExpect("url", url).typeString();
+        }
+
+        let domId;
+        if (id[0] === "#") {
+            id = id.substring(1);
+            domId = true
+        }
+
+        if (JFACTORY_DEV && this.$.dom.has(id)) {
+            throw new jFactoryError.KEY_DUPLICATED({ target: "$domFetch(id)", given: id })
+        }
+
+        let promise = this.$fetchText('$domFetch("' + id + '")', url, fetchOptions)
+            .then(r => {
+                let dom = jQuery(r);
+                if (domId) {
+                    dom[0].id = id
+                }
+                return dom
+            });
+
+        this.$.dom.$registerAsync(id, '$domFetch("' + id + '")', promise);
+        return promise
+    }
+
+    $domRemove(id, reason) {
+        if (JFACTORY_DEV) {
+            JFactoryExpect("$domRemove(id)", id).typeString();
+            reason && JFactoryExpect("$domRemove(reason)", reason).typeString();
+            if (!this.$.dom.has(id)) {
+                throw new jFactoryError.KEY_MISSING({
+                    target: "$domRemove(id)",
+                    given: id
+                })
+            }
+            // eslint-disable-next-line no-debugger,brace-style
+            if (this.$.dom.get(id)._debug_remove_called) {debugger}
+            this.$.dom.get(id)._debug_remove_called = true
+        }
+
+        let entry = this.$.dom.get(id);
+        let value = entry.$value;
+        if (value instanceof jQuery) {
+            value.remove()
+        }
+        if (entry instanceof JFactoryFetch) {
+            entry.$chainAbort(reason || "$domRemove()");
+        }
+        this.$.dom.delete(id)
+    }
+
+    $domRemoveAll(removePhase) {
+        if (JFACTORY_DEV) {
+            JFactoryExpect("removePhase", removePhase)
+                .equalIn(TraitService.PHASES)
+        }
+        let subs = this.$.dom;
+        if (subs.size) {
+            for (const [key, sub] of subs) {
+                if (sub.$phaseRemove === removePhase) {
+                    this.$domRemove(key)
+                }
+            }
+        }
+    }
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+//  Trait CSS
+// ---------------------------------------------------------------------------------------------------------------------
+
+export class TraitCSS {
+    trait_constructor() {
+        const kernel = this.$[TraitCore.SYMBOL_PRIVATE].events.kernel;
+        kernel.on("disable", () => this.$cssRemoveAll(TraitService.PHASE.DISABLE));
+        kernel.on("uninstall", () => this.$cssRemoveAll(TraitService.PHASE.UNINSTALL));
+        this.$.assign("css", this.$.createSubMap(), JFactoryObject.descriptors.ENUMERABLE);
+    }
+
+    $css(id, styleBody) {
+        if (JFACTORY_DEV) {
+            JFactoryExpect("id", id).typeString();
+            JFactoryExpect("css", styleBody).typeString();
+        }
+
+        let cssId;
+        if (id[0] === "#") {
+            id = id.substring(1);
+            cssId = true
+        }
+
+        if (JFACTORY_DEV && this.$.css.has(id)) {
+            throw new jFactoryError.KEY_DUPLICATED({ target: "$css(id)", given: id })
+        }
+
+        return this.$.css.$registerSync(id,
+            jQuery("<style>")
+                .attr(cssId ? { id } : {})
+                .addClass("jFactory-css")
+                .html(styleBody)
+                .appendTo("head")
+        ).$value;
+    }
+
+    $cssFetch(id, url) {
+        if (JFACTORY_DEV) {
+            JFactoryExpect("id", id).typeString();
+            JFactoryExpect("url", url).typeString();
+        }
+
+        let cssId;
+        if (id[0] === "#") {
+            id = id.substring(1);
+            cssId = true
+        }
+
+        if (JFACTORY_DEV && this.$.css.has(id)) {
+            throw new jFactoryError.KEY_DUPLICATED({ target: "$cssFetch(id)", given: id })
+        }
+
+        let dom;
+        let promise = new JFactoryPromise(
+            {
+                name: id,
+                config: {
+                    // promiseRejectIfExpired: true,
+                    chainAutoComplete: true
+                },
+                traceSource: jFactoryTrace.tracer.captureTraceSource("$cssFetch")
+            },
+            resolve => dom = jQuery("<link>", { id: cssId ? id : "", rel: "stylesheet", type: "text/css" })
+                .addClass("jFactory-css")
+                .appendTo("head")
+                .on("load", () => {
+                    resolve(dom)
+                }).attr("href", url)
+        );
+        promise.$chain.data.dom = dom;
+        this.$.css.$registerAsync(id, '$cssFetch("' + id + '")', promise);
+        return promise
+    }
+
+    $cssRemove(id, reason) {
+        if (JFACTORY_DEV) {
+            JFactoryExpect("$cssRemove(id)", id).typeString();
+            reason && JFactoryExpect("$cssRemove(reason)", reason).typeString();
+            if (!this.$.css.has(id)) {
+                throw new jFactoryError.KEY_MISSING({
+                    target: "$cssRemove(id)",
+                    given: id
+                })
+            }
+            // eslint-disable-next-line no-debugger,brace-style
+            if (this.$.css.get(id)._debug_remove_called) {debugger}
+            this.$.css.get(id)._debug_remove_called = true
+        }
+
+        let entry = this.$.css.get(id);
+        let value = entry.$value || entry.$chain && entry.$chain.data.dom;
+        if (value instanceof jQuery) {
+            value.remove()
+        }
+        if (entry instanceof JFactoryPromise) {
+            entry.$chainAbort(reason || "$cssRemove()")
+        }
+        this.$.css.delete(id)
+    }
+
+    $cssRemoveAll(removePhase) {
+        if (JFACTORY_DEV) {
+            JFactoryExpect("removePhase", removePhase)
+                .equalIn(TraitService.PHASES)
+        }
+        let subs = this.$.css;
+        if (subs.size) {
+            for (const [key, sub] of subs) {
+                if (sub.$phaseRemove === removePhase) {
+                    this.$cssRemove(key)
+                }
+            }
+        }
+    }
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
+
+jFactory.TraitFetch = TraitFetch;
+jFactory.TraitTimeout = TraitTimeout;
+jFactory.TraitInterval = TraitInterval;
+jFactory.TraitMutation = TraitMutation;
+jFactory.TraitDOM = TraitDOM;
+jFactory.TraitCSS = TraitCSS;

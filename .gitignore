@@ -2,4 +2,3 @@ _*
 .env
 .idea
 node_modules
-src

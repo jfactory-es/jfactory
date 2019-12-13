@@ -1,4 +1,5 @@
-/* jFactory Build, Copyright (c) 2019, Stéphane Plazis, https://github.com/jfactory-es/jfactory/LICENSE.txt */
+/* jFactory Build, Copyright (c) 2019, Stéphane Plazis,
+   https://github.com/jfactory-es/jfactory/blob/master/LICENSE.txt */
 
 require("./env").initEnv();
 if (require.main === module) {

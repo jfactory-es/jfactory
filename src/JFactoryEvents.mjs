@@ -1,0 +1,583 @@
+/* jFactory, Copyright (c) 2019, Stéphane Plazis, https://github.com/jfactory-es/jfactory/blob/master/LICENSE.txt */
+
+import { JFACTORY_DEV } from "./jFactory-env";
+import { JFactoryExpect } from "./JFactoryExpect";
+import { JFactoryPromiseSync } from "./JFactoryPromise";
+import { JFactoryFunctionComposer } from "./JFactoryFunction";
+import { jFactoryError } from "./JFactoryError";
+import { jQuery, helper_isPlainObject } from "./jFactory-helpers";
+
+// ---------------------------------------------------------------------------------------------------------------------
+// JFactoryEvents
+// ---------------------------------------------------------------------------------------------------------------------
+// https://learn.jquery.com/events/event-extensions/
+// ---------------------------------------------------------------------------------------------------------------------
+// Status: Beta
+// ---------------------------------------------------------------------------------------------------------------------
+
+export class JFactoryEvents {
+    // -----------------------------------------------------------------------------------------------------------------
+    // jQuery doesn't handle async trigger so jFactory provides the following :
+    //
+    // - triggerParallel(): the trigger function returns a Promise.all(pendingArray)
+    //   where pendingArray is filled by any async running handler.
+    //   Not recommended because it's the best way to produce unpredictable async side effects
+    //
+    // - triggerSeries(): handlers are run in a synchronous order, with "await"
+    //   This avoids unpredictable async race condition
+    //
+    //  Both returns a JFactoryPromiseSync that contains the jFactory_fulfilled flag
+    //  This flag is immediately (not async) set to true if no async handler is still pending
+    //
+    // => handlers are wrapped. OriginalHandlers and wrappedHandlers relations are stored in a WeakMap
+    // -----------------------------------------------------------------------------------------------------------------
+
+    constructor() {
+        Object.defineProperties(this, /** @lends JFactoryEvents# */ {
+            registry: { value: jQuery(Object.create(null)) },
+            handlers: { value: new WeakMap },
+            onListenerUpdate: { value: null, writable: true },
+            onObserverUpdate: { value: null, writable: true }
+        });
+    }
+
+    on({ events, handler, target, selector }) {
+        if (JFACTORY_DEV) {
+            JFactoryEvents.validateSelector(events);
+            JFactoryExpect("JFactoryEvents.on({handler})", handler).typeFunction();
+            target && JFactoryExpect("JFactoryEvents.on({target})", target).type(String, jQuery, HTMLElement);
+            selector && JFactoryExpect("JFactoryEvents.on({selector})", target).typeString();
+        }
+
+        let wrappedHandler = this.handlers.get(handler);
+        if (target) {
+            // don't need to wrap DOM handlers
+            if (!wrappedHandler) {
+                this.handlers.set(handler, true);
+            }
+            if (selector) {
+                jQuery(target).on(events, selector, handler);
+            } else {
+                jQuery(target).on(events, handler);
+            }
+            if (this.onListenerUpdate) {
+                this.onListenerUpdate(arguments)
+            }
+        } else {
+            if (!wrappedHandler) {
+                this.handlers.set(handler, wrappedHandler = function(e, { data, stack }) {
+                    stack.push(() => handler(e, data))
+                });
+                wrappedHandler.originalHandler = handler;
+            }
+            this.registry.on(events, wrappedHandler);
+            if (this.onObserverUpdate) {
+                this.onObserverUpdate(arguments)
+            }
+        }
+    }
+
+    off({ events, handler, target, selector }) {
+        if (JFACTORY_DEV) {
+            if (events !== undefined) { // off() is valid
+                JFactoryEvents.validateSelector(events);
+                handler && JFactoryExpect("JFactoryEvents.off({handler})", handler).typeFunction();
+                target && JFactoryExpect("JFactoryEvents.off({target})", target).type(String, jQuery, HTMLElement);
+                selector && JFactoryExpect("JFactoryEvents.off({selector})", target).typeString();
+            }
+        }
+
+        if (target) {
+            if (selector) {
+                jQuery(target).off(events, selector, handler)
+            } else {
+                jQuery(target).off(events, handler)
+            }
+        } else {
+            jQuery("*").off(events, handler);
+
+            if (handler) {
+                handler = this.handlers.get(handler);
+                if (!handler) {
+                    throw new jFactoryError.INVALID_VALUE({
+                        target: "handler",
+                        reason: "not registered",
+                        given: handler
+                    })
+                }
+            }
+            this.registry.off(events, handler);
+        }
+        if (this.onObserverUpdate) {
+            this.onObserverUpdate(arguments)
+        }
+        if (this.onListenerUpdate) {
+            this.onListenerUpdate(arguments)
+        }
+    }
+
+    /**
+     * Run in parallel. Don't "await" for async handlers
+     * Obviously produces unpredictable race conditions
+     */
+    triggerParallel({ events, data, target }) {
+        if (JFACTORY_DEV) {
+            JFactoryEvents.validateSelector(events);
+            target
+                && JFactoryExpect("JFactoryEvents.triggerParallel({target})", target).type(String, jQuery, HTMLElement)
+        }
+
+        const stack = [];
+        const pending = [];
+        events = events.split(" ");
+
+        if (target) {
+            for (let event of events) {
+                jQuery(target).trigger(event, { data, stack });
+            }
+        } else {
+            for (let event of events) {
+                this.registry.triggerHandler(event, { data, stack })
+            }
+        }
+
+        for (let handler of stack) {
+            let result = handler();
+            if (result instanceof Promise
+                && !result.$isSettled // don't need to await
+            ) {
+                pending.push(result)
+            }
+        }
+
+        if (pending.length) {
+            return Promise.all(pending)
+        } else {
+            return JFactoryPromiseSync.resolve()
+        }
+    }
+
+    /**
+     * Run in declaration order synchronously. Will "await" for async handlers
+     * Prevents unpredictable race conditions
+     */
+    triggerSeries({ events, data, target }) {
+        if (JFACTORY_DEV) {
+            JFactoryEvents.validateSelector(events);
+            target && JFactoryExpect("JFactoryEvents.triggerSeries({target})", target).type(String, jQuery, HTMLElement)
+        }
+
+        return new JFactoryPromiseSync(async resolve => {
+            const stack = [];
+            events = events.split(" ");
+
+            if (target) {
+                for (let event of events) {
+                    jQuery(target).trigger(event, { data, stack });
+                }
+            } else {
+                for (let event of events) {
+                    this.registry.triggerHandler(event, { data, stack })
+                }
+            }
+
+            for (let handler of stack) {
+                let result = handler();
+                if (result instanceof Promise
+                    && !result.$isSettled // don't need to await
+                ) {
+                    await result
+                }
+            }
+            resolve()
+        })
+    }
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
+
+export class JFactoryEventsManager extends JFactoryEvents {
+    constructor(parent) {
+        super();
+        Object.defineProperties(this, {
+            parent: { value: parent },
+            affiliateRules: { value: new JFactoryFunctionComposer().compose() }
+        });
+        this.affiliateAddRule(JFactoryEventsManager.rule_namespace)
+    }
+
+    affiliate(events = "", namespaces = "", options) {
+        let parser = new JFactoryEventSelectorParser(events);
+        for (let parsedEvent of parser.events) {
+            this.affiliateRules(parsedEvent, namespaces, options)
+        }
+        return parser.toString();
+    }
+
+    affiliateAddRule(handler) {
+        this.affiliateRules.composer.last(handler)
+    }
+
+    static rule_namespace(context, parsedEvent, namespaces) {
+        namespaces = namespaces.split(".");
+        for (let namespace of namespaces) {
+            namespace && parsedEvent.addNamespace(namespace);
+        }
+    }
+
+    on(events, target, selector, handler, options) {
+        // Observers:
+        // events, handler
+        // events, handler, options
+
+        // DOM Events:
+        // events, target, handler
+        // events, target, handler, options
+        // events, target, selector, handler,
+        // events, target, selector, handler, options
+
+        switch (arguments.length) {
+            case 2:
+                // events, handler
+                [handler, target] = [target/*, undefined*/];
+                break;
+            case 3:
+                if (typeof arguments[2] === "function") {
+                    // events, target, handler
+                    [handler, selector] = [selector/*, undefined*/];
+                } else {
+                    // events, handler, options
+                    [handler, options, target, selector] = [target, selector/*, undefined, undefined*/];
+                }
+                break;
+            case 4:
+                if (typeof arguments[3] === "object") {
+                    // events, target, handler, options
+                    [options, handler, selector] = [handler, selector/*, undefined*/];
+                }
+                break;
+        }
+
+        events = this.affiliate(events, this.parent.$.about.fingerprint, options);
+
+        target === undefined ?
+            super.on({ events, handler }) :
+            super.on({ events, target, selector, handler/*, options*/ })
+    }
+
+    off(events, target, selector, handler, options) {
+        // Both:
+        // events (can be namespaces)
+        // events, options
+        // options (can be removal)
+
+        // Observer:
+        // events, handler
+        // events, handler, options
+
+        // DOM Events:
+        // events, target, handler
+        // events, target, handler, options
+        // events, target, selector
+        // events, target, selector, handler,
+        // events, target, selector, handler, options
+
+        const argL = arguments.length;
+        switch (argL) {
+            case 1:
+                if (typeof arguments[0] === "object") {
+                    // options
+                    [options, events] = [events/*, undefined*/];
+                }
+                // else events (can namespaces)
+                break;
+            case 2:
+                if (typeof arguments[1] === "function") {
+                    // events, handler
+                    [handler, target] = [target/*, undefined*/];
+                } else if (helper_isPlainObject(arguments[1])) {
+                    // events, options
+                    [options, target] = [target/*, undefined*/]
+                }
+                // else events, target
+                break;
+            case 3:
+                if (typeof arguments[2] === "function") {
+                    // events, target, handler
+                    [handler, selector] = [selector/*, undefined*/];
+                } else if (typeof arguments[1] === "function") {
+                    // events, handler, options
+                    [handler, options, target, selector] = [target, selector/*, undefined, undefined*/];
+                } else {
+                    // events, target, selector
+                }
+                break;
+            case 4:
+                if (typeof arguments[3] === "object") {
+                    // events, target, handler, options
+                    [options, handler, selector] = [handler, selector/*, undefined*/];
+                }
+                break;
+        }
+
+        events = this.affiliate(events, this.parent.$.about.fingerprint, options);
+
+        if (argL < 2) {
+            super.off({ events });
+        } else {
+            target ?
+                super.off({ events, target, selector, handler/*, options*/ }) :
+                super.off({ events, handler })
+        }
+    }
+
+    trigger(events, target, data) {
+        // events
+        // events, target
+        // events, data
+        // events, target, data
+
+        switch (arguments.length) {
+            case 2:
+                if (typeof target === "object" && !target.jquery) {
+                    // events, data
+                    [data, target] = [target]
+                }
+                // events, target
+                break
+        }
+
+        return target ?
+            super.triggerSeries({ events, target, data }) :
+            super.triggerSeries({ events, data })
+    }
+
+    triggerParallel(events, target, data) {
+        // events
+        // events, target
+        // events, data
+        // events, target, data
+
+        switch (arguments.length) {
+            case 2:
+                if (typeof target === "object" && !target.jquery) {
+                    // events, data
+                    [data, target] = [target]
+                }
+                // events, target
+                break
+        }
+
+        return target ?
+            super.triggerParallel({ events, target, data }) :
+            super.triggerParallel({ events, data })
+    }
+
+    // #unoptimized draft#
+    // It's not easy to keep this list up to date because:
+    // - listeners can be removed by external dom mutations
+    // - listeners can be delegated
+    // - off() method can remove listeners globally
+    getDomListeners(namespace) {
+        let result = new Map();
+        for (let elm of jQuery("*")) {
+            let data = jQuery._data(elm, "events");
+            if (data) {// data = {click: [{}], ... }
+                for (let entries of Object.values(data)) {// entries = [{type:...}]
+                    for (let entry of entries) {// entry = {type, namespace, handler, ...}
+                        let parser = new JFactoryEventSelector(entry.namespace);
+                        let types;
+                        if (parser.hasNamespace(namespace)) {
+                            if (!(types = result.get(elm))) {
+                                result.set(elm, types = {})
+                            }
+                            let type = types[entry.type] || (types[entry.type] = []);
+                            type.push({
+                                // ...entry,
+                                selector: entry.selector || null,
+                                handler: entry.handler,
+                                namespace: entry.namespace
+                            });
+                        }
+                    }
+                }
+            }
+        }
+        return result
+    }
+
+    // #unoptimized draft#
+    getObservers() {
+        let result = new Map();
+        let events = this.registry._events;
+
+        if (!events) {
+            let registry = Object.values(this.registry)[0];
+            let expando = Object.getOwnPropertyNames(registry).find(k => k.indexOf("jQuery") === 0);
+            if (registry && expando) {
+                events = this.registry._events = registry[expando].events;
+            }
+        }
+
+        if (events) {
+            for (let [key, val] of Object.entries(events)) {
+                let event = result.get(key);
+                if (!event) {
+                    event = [];
+                    result.set(key, event);
+                }
+                for (let eventTypeEntry of val) {
+                    event.push({
+                        handler: eventTypeEntry.handler.originalHandler,
+                        namespace: eventTypeEntry.namespace
+                    })
+                }
+            }
+        }
+
+        return result
+    }
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
+
+export class JFactoryEventSelectorParser {
+    constructor(selectors) {
+        if (JFACTORY_DEV) {
+            JFactoryEvents.validateSelector(selectors);
+        }
+        /**
+         * @type Array<JFactoryEventSelector>
+         */
+        this.events = selectors.split(" ").map(selector => new JFactoryEventSelector(selector))
+    }
+
+    toString() {
+        let s = [];
+        for (let event of this.events) {
+            s.push(event.toString())
+        }
+        return s.join(" ")
+    }
+}
+
+export class JFactoryEventSelector {
+    constructor(selector) {
+        let [event, ...namespace] = selector.split(".");
+        this.event = event;
+        this.namespace = new Set(namespace)
+    }
+
+    /** @return {Boolean|String} */
+    hasNamespace(namespaces) {
+        if (!Array.isArray(namespaces)) {
+            namespaces = [namespaces]
+        }
+        for (let namespace of namespaces) {
+            if (JFACTORY_DEV) {
+                if (!/^[\w:]+$/.test(namespace)) {
+                    throw new jFactoryError.INVALID_VALUE({
+                        target: "namespace",
+                        reason: "must be alphanumeric, underscore and colon characters",
+                        given: namespace
+                    })
+                }
+            }
+            if (namespace && this.namespace.has(namespace)) {
+                return namespace
+            }
+        }
+        return false
+    }
+
+    addNamespace(namespace) {
+        if (JFACTORY_DEV) {
+            if (!/^[\w:]+$/.test(namespace)) {
+                throw new jFactoryError.INVALID_VALUE({
+                    target: "namespace",
+                    reason: "must be alphanumeric, underscore and colon characters",
+                    given: namespace
+                })
+            }
+        }
+        this.namespace.add(namespace)
+    }
+
+    deleteNamespace(namespace) {
+        if (JFACTORY_DEV) {
+            if (!/^[\w:]+$/.test(namespace)) {
+                throw new jFactoryError.INVALID_VALUE({
+                    target: "namespace",
+                    reason: "must be alphanumeric, underscore and colon characters",
+                    given: namespace
+                })
+            }
+        }
+        this.namespace.delete(namespace)
+    }
+
+    toString() {
+        return this.namespace.size ? this.event + "." + Array.from(this.namespace.values()).join(".") : this.event;
+    }
+}
+
+// -----------------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------------
+
+if (JFACTORY_DEV) {
+    JFactoryEvents.validateSelector = function(selector) {
+        if (JFACTORY_DEV) {
+            JFactoryExpect("JFactoryEvents.validateSelector(selector)", selector)
+                .notUndefined()
+                .validSpaces();
+        }
+
+        for (let [event, ns] of selector.split(" ")
+            .map(v => v.split("."))
+            .map(v => [v.shift(), v.join(".")])) {
+            event && JFactoryEvents.validateEvent(event);
+            ns && JFactoryEvents.validateNamespace(ns);
+        }
+        return true
+    };
+
+    JFactoryEvents.validateEvent = function(event) {
+        if (JFACTORY_DEV) {
+            JFactoryExpect("JFactoryEvents.validateEvent(event)", event)
+                .notUndefined()
+                .notEmptyString()
+                .validSpaces();
+        }
+
+        if (!/^[\w:]+$/.test(event)) {
+            throw new jFactoryError.INVALID_VALUE({
+                target: "JFactoryEvents.validateEvent(event)",
+                reason: "must be alphanumeric, underscore and colon characters",
+                given: event
+            })
+        }
+
+        return true
+    };
+
+    JFactoryEvents.validateNamespace = function(namespace) { // ex: ns.ns2.ns3
+        if (JFACTORY_DEV) {
+            JFactoryExpect("JFactoryEvents.validateNamespace(namespace)", namespace)
+                .notUndefined()
+                .notEmptyString()
+                .validSpaces();
+        }
+
+        if (!/^[\w:.]+$/.test(namespace)) {
+            throw new jFactoryError.INVALID_VALUE({
+                target: "JFactoryEvents.validateNamespace(namespace)",
+                reason: "must be alphanumeric, underscore, dot and colon characters",
+                given: namespace
+            })
+        }
+
+        return true
+    };
+}

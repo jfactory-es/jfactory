@@ -1,5 +1,5 @@
 /* jFactory Developer Server, Copyright (c) 2019, Stéphane Plazis,
-   https://github.com/jfactory-es/jfactory/LICENSE.txt */
+   https://github.com/jfactory-es/jfactory/blob/master/LICENSE.txt */
 
 // ------------------------------------------------------------------------------
 // Webpack developer server (wds)
