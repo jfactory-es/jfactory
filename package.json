@@ -1,6 +1,6 @@
 {
   "name": "jfactory-es",
-  "version": "1.0.0-beta.4",
+  "version": "1.0.0-beta.5",
   "description": "A component-based architecture for asynchronous applications in JavaScript ES6+",
   "homepage": "https://github.com/jfactory-es/jfactory#readme",
   "bugs": "https://github.com/jfactory-es/jfactory/issues",
