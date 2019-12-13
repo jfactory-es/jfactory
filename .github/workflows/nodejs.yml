@@ -20,7 +20,7 @@ jobs:
     - name: npm install, build, and test
       run: |
         npm ci
-        npm build
-        npm test:bundle:prod
+        npm run build
+        npm run test:bundle:prod
       env:
         CI: true
