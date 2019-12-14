@@ -29,7 +29,7 @@ Any Classes can be dynamically extended to a Component using [JFactoryTraits](ht
 Alternatively, Components can also be created from an Object Literal, using the shortcut [`jFactory()`](https://github.com/jfactory-es/jfactory/blob/master/doc/ref-components.md#create-a-component-literal)
 
 ```javascript
-import { jFactory } from "jfactory"
+import { jFactory } from "jfactory-es"
 
 let component = jFactory("WhatsNewComponent", {
   onInstall() {

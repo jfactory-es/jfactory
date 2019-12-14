@@ -7,7 +7,7 @@
 Provides an extended Promise that supports an awaitable and expirable promise tree, status, explorable chain map, shared data, debug data and trace.
 
 ```javascript
-import {JFactoryPromise} from "jfactory-es" 
+import { JFactoryPromise } from "jfactory-es" 
 ``` 
 * [Status](#promise-status)
 * [Chain](#promise-chain)
