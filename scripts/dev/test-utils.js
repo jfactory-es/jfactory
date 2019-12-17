@@ -18,5 +18,5 @@ if (process.env.NODE_ENV === "development") {
 module.exports = {
   expect: chai.expect,
   chai,
-  wait: (t, value) => new Promise(resolve => setTimeout(resolve.bind(null, value), t))
+  wait: (t, value) => new Promise(resolve => setTimeout(() => resolve(value), t))
 };
