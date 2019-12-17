@@ -36,12 +36,20 @@ export class TraitCore {
             }
             $registerAsync(key, taskName, promise) {
                 let task = owner.$task(taskName, promise.$chain);
-                promise.$chain.then(function() { // synchronous then
-                    // use "autoComplete" instead of "Complete"
-                    // to allow other then(), if any,
-                    // otherwise synchronously completes the task chain
-                    task.$chainAutoComplete()
+
+                // End of promise chain must complete the task
+                // task.$chainAutoComplete()
+                promise.$chain.then(() => { // synchronous then
+                    task.$chainComplete("task completed")
                 });
+
+                // Aborted task must abort the promise if still running
+                task.$chain.then(() => {// synchronous then
+                    if (!promise.$chain.isCompleted) {
+                        promise.$chainAbort("aborted by task")
+                    }
+                });
+
                 Object.defineProperty(promise, "$phaseRemove", { value: task.$phaseRemove });
                 this.set(key, promise);
                 return task
@@ -423,8 +431,10 @@ export class TraitService {
             }
             return promise
                 .catch(e => {
-                    this.$logErr("unhandled promise rejection in " + this.$.service.phase + ";",
-                        ...(e instanceof JFactoryError ? e : [e]))
+                    if (!(this.$.service.isPhaseKilling && e instanceof jFactoryError.PROMISE_EXPIRED)) {
+                        this.$logErr("unhandled promise rejection in " + this.$.service.phase + ";",
+                            ...e instanceof JFactoryError ? e : [e])
+                    }
                 });
         };
 
@@ -439,9 +449,12 @@ export class TraitService {
 
     $install(enable) {
         if (!this.$.service.phaseQueue.$isSettled) {
-            return this.$.service.phaseQueue
-                .then(() => this.$install(enable))
+            return TraitService.phaseKill(this)
+                .then(() => this.$install())
         }
+
+        // eslint-disable-next-line no-debugger
+        if (JFACTORY_DEV) {if (this.$.service.isPhaseKilling) {debugger}}
 
         return this.$.service.phaseQueue = JFactoryPromiseSync.resolve()
             .then(() => {
@@ -463,9 +476,12 @@ export class TraitService {
 
     $enable() {
         if (!this.$.service.phaseQueue.$isSettled) {
-            return this.$.service.phaseQueue
+            return TraitService.phaseKill(this)
                 .then(() => this.$enable())
         }
+
+        // eslint-disable-next-line no-debugger
+        if (JFACTORY_DEV) {if (this.$.service.isPhaseKilling) {debugger}}
 
         return this.$.service.phaseQueue = JFactoryPromiseSync.resolve()
             .then(() => {
@@ -481,9 +497,12 @@ export class TraitService {
 
     $disable() {
         if (!this.$.service.phaseQueue.$isSettled) {
-            return this.$.service.phaseQueue
+            return TraitService.phaseKill(this)
                 .then(() => this.$disable())
         }
+
+        // eslint-disable-next-line no-debugger
+        if (JFACTORY_DEV) {if (this.$.service.isPhaseKilling) {debugger}}
 
         return this.$.service.phaseQueue = JFactoryPromiseSync.resolve()
             .then(() => {
@@ -499,9 +518,12 @@ export class TraitService {
 
     $uninstall() {
         if (!this.$.service.phaseQueue.$isSettled) {
-            return this.$.service.phaseQueue
+            return TraitService.phaseKill(this)
                 .then(() => this.$uninstall())
         }
+
+        // eslint-disable-next-line no-debugger
+        if (JFACTORY_DEV) {if (this.$.service.isPhaseKilling) {debugger}}
 
         return this.$.service.phaseQueue = JFactoryPromiseSync.resolve()
             .then(() => {
@@ -518,6 +540,22 @@ export class TraitService {
             .then(() => {
                 this.$.service.phase = TraitService.PHASE.NONE;
             });
+    }
+
+    static phaseKill(component) {
+        return new Promise(resolve => {
+            if (!component.$.service.phaseQueue.$isSettled) {
+                component.$.service.isPhaseKilling = true;
+                // component.$logWarn("phase kill [" + component.$.service.phase + "]...");
+                if (component.$.tasks.size) {
+                    component.$taskRemoveAll(TraitService.getContextualRemovePhase(component), true);
+                }
+                setTimeout(() => resolve(TraitService.phaseKill(component)), 50)
+            } else {
+                component.$.service.isPhaseKilling = false;
+                resolve()
+            }
+        })
     }
 
     static getContextualRemovePhase(jFactoryCoreObject) {

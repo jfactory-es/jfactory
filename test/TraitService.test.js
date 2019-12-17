@@ -637,4 +637,73 @@ describe("Trait Service", function() {
         await component.$uninstall();
         expect(() => component.$task()).throw("component disabled");
     });
+
+    it("should interrupt the pending phase on opposite phase change", async function() {
+        let fail;
+        let phase;
+        let component;
+
+        // ---
+        // uninstall should stop install
+        fail = false;
+        component = jFactory("component", {
+            async onInstall() {
+                await this.$timeout("timeout", 100, () => fail = true);
+                await this.$timeout("timeout", 5000, () => fail = true)
+            }
+        });
+
+        phase = component.$install();
+        await component.$uninstall();
+        await phase;
+        expect(fail).equal(false);
+
+        // ---
+        // disable should stop enable
+        fail = false;
+        component = jFactory("component", {
+            async onEnable() {
+                await this.$timeout("timeout", 100, () => fail = true);
+                await this.$timeout("timeout", 5000, () => fail = true)
+            }
+        });
+        await component.$install();
+
+        phase = component.$enable();
+        await component.$disable();
+        await phase;
+        expect(fail).equal(false);
+
+        // ---
+        // enable should stop disable
+        fail = false;
+        component = jFactory("component", {
+            async onDisable() {
+                await this.$timeout("timeout", 100, () => fail = true);
+                await this.$timeout("timeout", 5000, () => fail = true)
+            }
+        });
+        await component.$install(true);
+
+        phase = component.$disable();
+        await component.$enable();
+        await phase;
+        expect(fail).equal(false);
+
+        // ---
+        // install should stop uninstall
+        fail = false;
+        component = jFactory("component", {
+            async onUninstall() {
+                await this.$timeout("timeout", 100, () => fail = true);
+                await this.$timeout("timeout", 5000, () => fail = true)
+            }
+        });
+        await component.$install();
+
+        phase = component.$uninstall();
+        await component.$install();
+        await phase;
+        expect(fail).equal(false);
+    });
 });
