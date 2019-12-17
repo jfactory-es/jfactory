@@ -152,7 +152,7 @@ if (!BUNDLE) { // simplified build for development
         format: "cjs",
         file: "dist/jFactory-devel.cjs.js",
         interop: false,
-        sourcemap: DEBUG ? "inline" : false,
+        sourcemap: true,
         ...common_output
       },
       ...common,
@@ -165,7 +165,7 @@ if (!BUNDLE) { // simplified build for development
         format: "es",
         file: "dist/jFactory-devel.mjs",
         interop: false,
-        sourcemap: DEBUG ? "inline" : false,
+        sourcemap: true,
         ...common_output
       },
       ...common,
