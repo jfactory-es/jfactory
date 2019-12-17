@@ -8,8 +8,8 @@ const webpack = require("webpack");
 module.exports =  {
   mode: "development",
 
-  // devtool: 'inline-source-map',
-  // devtool: 'cheap-eval-source-map',
+  // devtool: "inline-source-map",
+  // devtool: "cheap-eval-source-map",
   // devtool: "eval",
   // devtool: "hidden-source-map",
   // devtool: "nosources-source-map",
