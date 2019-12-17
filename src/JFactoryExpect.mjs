@@ -311,7 +311,7 @@ const staticMethods = {
      * @memberOf JFactoryExpect
      */
     writable(label, value, key) {
-        if (!(Object.getOwnPropertyDescriptor(value, key).writable)) {
+        if (!Object.getOwnPropertyDescriptor(value, key).writable) {
             error(label, value, "must be writable")
         }
         return true
@@ -345,7 +345,7 @@ const staticMethods = {
      * @memberOf JFactoryExpect
      */
     enumerable(label, value, key) {
-        if (!(Object.prototype.propertyIsEnumerable.call(value, key))) {
+        if (!Object.prototype.propertyIsEnumerable.call(value, key)) {
             error(label, value, "must be enumerable")
         }
         return true
@@ -362,7 +362,7 @@ const staticMethods = {
      * @memberOf JFactoryExpect
      */
     notEnumerable(label, value, key) {
-        if ((Object.prototype.propertyIsEnumerable.call(value, key))) {
+        if (Object.prototype.propertyIsEnumerable.call(value, key)) {
             error(label, value, "must not be enumerable")
         }
         return true
@@ -379,7 +379,7 @@ const staticMethods = {
      * @memberOf JFactoryExpect
      */
     configurable(label, value, key) {
-        if (!(Object.getOwnPropertyDescriptor(value, key).configurable)) {
+        if (!Object.getOwnPropertyDescriptor(value, key).configurable) {
             error(label, value, "must be configurable")
         }
         return true

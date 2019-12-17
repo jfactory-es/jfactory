@@ -11,7 +11,7 @@
 export const JFACTORY_DEV = typeof COMPILER_DEV === "undefined" ? false : COMPILER_DEV; // Developer Mode
 export const JFACTORY_DEBUG = typeof COMPILER_DEBUG === "undefined" ? false : COMPILER_DEBUG; // Debug the library
 export const JFACTORY_CLI = typeof COMPILER_CLI === "undefined" ?
-    (typeof process !== "undefined" && process.versions && process.versions.node) : COMPILER_CLI;
+    typeof process !== "undefined" && process.versions && process.versions.node : COMPILER_CLI;
 
 // Mutable configuration
 export const jFactoryConfig = {
@@ -46,7 +46,7 @@ export const jFactoryConfig = {
                     info: "https://developer.mozilla.org/docs/Web/API/Request"
                 },
                 "AbortController, AbortSignal": {
-                    test: () => (new AbortController()).signal,
+                    test: () => new AbortController().signal,
                     info: "https://developer.mozilla.org/docs/Web/API/AbortController, " +
                         "https://developer.mozilla.org/docs/Web/API/AbortSignal"
                 },

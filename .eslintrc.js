@@ -33,6 +33,9 @@ module.exports = {
     "object-curly-spacing": ["error", "always", {
       // arraysInObjects: false
     }],
+    "no-extra-parens": ["error", "all", {
+      conditionalAssign: false
+    }],
     "comma-spacing": ["error", { before: false, after: true }],
     "arrow-spacing": "error",
     "func-call-spacing": "error",

@@ -48,7 +48,7 @@ function watch() {
         case "END":
           if (!ready) {
             count++;
-            if ((ready = (count === CONF_ROLLUP.length))) {
+            if ((ready = count === CONF_ROLLUP.length)) {
               _done();
             }
           }

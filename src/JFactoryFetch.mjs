@@ -45,7 +45,7 @@ export class JFactoryFetch extends JFactoryPromise {
                 promise = promise.catch(reason => {
                     throw new jFactoryError.REQUEST_ERROR({
                         reason: reason.message || reason,
-                        target: (this.$chain.fetchResponse && this.$chain.fetchResponse.url) || url,
+                        target: this.$chain.fetchResponse && this.$chain.fetchResponse.url || url,
                         owner: this,
                         fetchOptions,
                         fetchRequest,

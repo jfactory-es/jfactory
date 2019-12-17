@@ -164,7 +164,7 @@ export class JFactoryFunctionExpirable {
                     )
                 };
                 let result = condition.apply(this, context.parameters);
-                return (result instanceof Promise) ? result.then(done) : done(result);
+                return result instanceof Promise ? result.then(done) : done(result);
             })
         };
     }
@@ -174,7 +174,7 @@ export class JFactoryFunctionExpirable {
         let composite = function() {
             let isExpired = expirable.isExpired(this);
             let call = expirable.constructor.call.bind(undefined, expirable, this, arguments);
-            return (isExpired instanceof Promise) ? isExpired.then(call) : call(isExpired);
+            return isExpired instanceof Promise ? isExpired.then(call) : call(isExpired);
         };
         return Object.assign(composite, {
             expirable: this,
@@ -249,7 +249,7 @@ export class JFactoryFunctionConditional {
                 !result && (context.canceled = true);
             };
             let result = condition.apply(this, context.parameters);
-            return (result instanceof Promise) ? result.then(handle) : handle(result);
+            return result instanceof Promise ? result.then(handle) : handle(result);
         })
     }
 }

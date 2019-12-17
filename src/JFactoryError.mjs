@@ -86,7 +86,7 @@ export class JFactoryError extends Error {
             RE_PLACEHOLDER.lastIndex = 0;
             if ((placeholder = RE_PLACEHOLDER.exec(part))) {
                 do {
-                    if (placeholder[1] && (placeholder[1] in data)) {
+                    if (placeholder[1] && placeholder[1] in data) {
                         templateMessage.push(part.trim());
                         break
                     }
