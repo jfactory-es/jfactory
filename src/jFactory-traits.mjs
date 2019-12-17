@@ -19,9 +19,9 @@ export function jFactoryTraits(callerInstance, callerConstructor) {
             if (parsed) {
                 ({ propertyName, propertyDescriptor } = parsed);
 
-                let fn = propertyDescriptor.value;
-                if (typeof fn === "function") {
-                    switch (fn.name) {
+                let value = propertyDescriptor.value;
+                if (typeof value === "function") {
+                    switch (value.name) {
                         case "$install":
                         case "$uninstall":
                         case "$enable":
@@ -29,12 +29,12 @@ export function jFactoryTraits(callerInstance, callerConstructor) {
                         case "$state":
                             break;
                         default:
-                            propertyDescriptor.value = jFactoryFunctionWrappable(fn)
+                            propertyDescriptor.value = jFactoryFunctionWrappable(value)
                                 .beforeAll(function() {
                                     if (!this.$.states.enabled && this.$.service.phase === "PHASE_NONE") {
                                         let e = new jFactoryError.INVALID_CALL({
                                             owner: this,
-                                            target: fn,
+                                            target: value,
                                             reason: "component disabled"
                                         });
                                         this.$logErr(...e);
