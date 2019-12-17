@@ -135,7 +135,11 @@ describe("Trait Fetch", function() {
             .$chainAbort();
         expect(component.$.tasks.has('$fetch("n1")')).equal(false);
         expect(component.$.requests.has("n1")).equal(false);
-        expect(await n1).instanceof(jFactoryError.PROMISE_EXPIRED);
+        try {
+            await n1
+        } catch (e) {
+            expect(e).instanceof(jFactoryError.PROMISE_EXPIRED);
+        }
         component.$uninstall();
     });
 });

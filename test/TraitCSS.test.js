@@ -159,7 +159,11 @@ describe("Trait CSS", function() {
             .$chainAbort();
         expect(component.$.tasks.has('$cssFetch("n1")')).equal(false);
         expect(component.$.css.has("n1")).equal(true); // SPEC: the entry is not auto removed
-        expect(await n1).instanceof(jFactoryError.PROMISE_EXPIRED);
+        try {
+            await n1
+        } catch (e) {
+            expect(e).instanceof(jFactoryError.PROMISE_EXPIRED);
+        }
         component.$uninstall();
     });
 

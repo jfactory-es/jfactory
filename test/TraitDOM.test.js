@@ -158,7 +158,11 @@ describe("Trait DOM", function() {
             .$chainAbort();
         expect(component.$.tasks.has('$domFetch("n1")')).equal(false);
         expect(component.$.dom.has("n1")).equal(true); // SPEC: the entry is not auto removed
-        expect(await n1).instanceof(jFactoryError.PROMISE_EXPIRED);
+        try {
+            await n1
+        } catch (e) {
+            expect(e).instanceof(jFactoryError.PROMISE_EXPIRED);
+        }
         component.$uninstall();
     });
 

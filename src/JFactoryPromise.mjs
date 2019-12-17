@@ -134,7 +134,7 @@ export class JFactoryPromise extends Promise {
                 }
 
                 let then;
-                if (value !== null && (typeof(value) == "object" || typeof(x) == "function")) {
+                if (value !== null && (typeof value == "object" || typeof x == "function")) {
                     // 2.3.3.2. If retrieving the property x.then results in a thrown exception e,
                     // reject promise with e as the reason.
                     try {
@@ -145,7 +145,7 @@ export class JFactoryPromise extends Promise {
                     }
                 }
 
-                if (typeof(then) == "function") {
+                if (typeof then == "function") {
                     let called = false;
                     let resolvePromise = function(y) {
                         // 2.3.3.3.1. If/when resolvePromise is called with a value y, run [[Resolve]](promise, y).
@@ -249,6 +249,12 @@ export class JFactoryPromise extends Promise {
 
         if (onFulfilled && typeof onFulfilled === "function") {
             wrappedFulfilled = function(r) {
+                // SPEC: "await" throws the errorExpired if expired
+                // Allows async function to try catch the awaited promise
+                // and allows stack call exit if not caught
+                if (type === "await" && newPromise.$isExpired === true && newPromise.$chain.errorExpired === r) {
+                    return onRejected(r)
+                }
                 if (!newPromise.$isSettled) {
                     return onFulfilled(r)
                 }
@@ -262,7 +268,7 @@ export class JFactoryPromise extends Promise {
             }
         }
 
-        let type = forceType || (isNative ? "await" : (onFulfilled === undefined ? "catch" : "then"));
+        let type = forceType || (isNative ? "await" : onFulfilled === undefined ? "catch" : "then");
         newPromise = Object.assign(super.then(wrappedFulfilled, wrappedRejected), this);
         moduleGenId.uid--; // reverse because not a new chain
         newPromise.$type = type;
@@ -311,10 +317,10 @@ export class JFactoryPromise extends Promise {
         return newPromise
     }
 
-    $catchExpired(onAbort) {
+    $catchExpired(onExpired) {
         return this.then(r => {
             if (this.$chain.chainRoot.$isExpired) {
-                return onAbort(r)
+                return onExpired(r)
             } else {
                 return r
             }
@@ -384,8 +390,10 @@ export class JFactoryPromise extends Promise {
 
     static forceExpire(promise, reason) {
         promise.$isExpired = true;
-        if (promise.$type !== "await" && promise.$type !== "$catchExpired" && !promise.$isSettled) {
-            promise.__resolve__(reason)
+        if (!promise.$isSettled) {
+            if (promise.$type !== "await" && promise.$type !== "$catchExpired") {
+                promise.__resolve__(reason)
+            }
         }
     }
 }
