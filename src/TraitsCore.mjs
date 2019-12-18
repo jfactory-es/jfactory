@@ -449,7 +449,7 @@ export class TraitService {
 
     $install(enable) {
         if (!this.$.service.phaseQueue.$isSettled) {
-            return TraitService.phaseKill(this)
+            return this.$.service.phaseQueue
                 .then(() => this.$install())
         }
 
@@ -476,7 +476,7 @@ export class TraitService {
 
     $enable() {
         if (!this.$.service.phaseQueue.$isSettled) {
-            return TraitService.phaseKill(this)
+            return this.$.service.phaseQueue
                 .then(() => this.$enable())
         }
 

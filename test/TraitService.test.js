@@ -638,7 +638,7 @@ describe("Trait Service", function() {
         expect(() => component.$task()).throw("component disabled");
     });
 
-    it("should interrupt the pending phase on opposite phase change", async function() {
+    it("should interrupt the pending phase on opposite phase change for disable() and uninstall() only", async function() {
         let fail;
         let phase;
         let component;
@@ -675,12 +675,11 @@ describe("Trait Service", function() {
         expect(fail).equal(false);
 
         // ---
-        // enable should stop disable
-        fail = false;
+        // enable should NOT stop disable
+        fail = true;
         component = jFactory("component", {
             async onDisable() {
-                await this.$timeout("timeout", 100, () => fail = true);
-                await this.$timeout("timeout", 5000, () => fail = true)
+                await this.$timeout("timeout", 100, () => fail = false);
             }
         });
         await component.$install(true);
@@ -691,12 +690,11 @@ describe("Trait Service", function() {
         expect(fail).equal(false);
 
         // ---
-        // install should stop uninstall
-        fail = false;
+        // install should NOT stop uninstall
+        fail = true;
         component = jFactory("component", {
             async onUninstall() {
-                await this.$timeout("timeout", 100, () => fail = true);
-                await this.$timeout("timeout", 5000, () => fail = true)
+                await this.$timeout("timeout", 100, () => fail = false);
             }
         });
         await component.$install();
