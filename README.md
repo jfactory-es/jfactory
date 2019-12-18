@@ -1,5 +1,5 @@
 # jFactory
-A component-based architecture for asynchronous applications in JavaScript ES6+. 
+A component-based architecture in asynchronous Web applications. Designed to automate component shutdown cleanups, including promise chains, listeners, requests, DOMs, etc. 
 
 ```shell script
 npm add jfactory-es
@@ -13,61 +13,56 @@ npm add jfactory-es
 
 jFactory easily compartmentalize your application into components that can:
 
-- operate like phased services (install/enable/disable/uninstall) 
-- ensure all promise chains are completed when awaiting a service phase change
-- contextually switch off all subscribed listeners, timers, requests, promises, <!--callbacks, -->dom, css... 
-- automatically prevent all expired asynchronous calls (<!--callbacks, -->promise chains, event handlers...) 
-- keep track of all running subscriptions (listeners, timers, requests, promises, dom, css...)
-- provide observable and expirable trees of Promises
-- significantly improve debugging of asynchronous applications 
+- operate like services (install, enable, disable, uninstall) 
+- automatically ensure all promise chains and subtrees are completed at service state change
+- automatically switch off subscribed listeners, timers, requests, promises, <!--callbacks, -->dom, css... 
+- automatically prevent all expired asynchronous calls (<!--callbacks, -->promise subtrees, event handlers...) 
+- keep track in DevTools of all running subscriptions (listeners, timers, requests, promises, dom, css...)
+- improve the Promise chains (Awaitable, Completable, Cancelable and Expirable) 
 
 ## Overview
 
 In a nutshell, jFactory provides methods to register listeners, dom, css, fetch and asynchronous tasks that will be automatically stopped (including subpromise trees) and removed at oposite service state change. 
 
-Any Classes can be dynamically extended to a Component using [JFactoryTraits](https://github.com/jfactory-es/jfactory/blob/master/doc/ref-components.md#create-a-component-base-class).  
-Alternatively, Components can also be created from an Object Literal, using the shortcut [`jFactory()`](https://github.com/jfactory-es/jfactory/blob/master/doc/ref-components.md#create-a-component-literal)
 
+
+ jFactory ensures that before resolving a [Service State Change](https://github.com/jfactory-es/jfactory/blob/master/doc/TraitService-Phases.md), all asynchronous actions of the associated [Service Handler](https://github.com/jfactory-es/jfactory/blob/master/doc/TraitService-States.md#service-state-handlers) are completed, including subpromises. 
 ```javascript
 import { jFactory } from "jfactory-es"
 
-let component = jFactory("WhatsNewComponent", {
+let component = jFactory("whatsNewComponent", {
   onInstall() {
     this.$cssFetch("#whatsnew-css", "asset.css");
     this.$domFetch("#whatsnew-div", "asset.html")
-      .then(dom => dom.hide().appendTo("body")) // jQuery
+      .then(dom => dom.appendTo("body"));
+    this.$task("watsNew-init", new Promise(resolve => wait(500).then(resolve)))
+      .then(() => this.$log('init sub task done.'))
   },
 
   onEnable() {
-    this.$on("click", "#whatsnew", ".button", () => this.$log("click!"));
-    this.$fetchText("news", "whatsnew.html")
-      .then(html => $("#whatsnew").html(html).show()) // jQuery
-  },
-
-  onDisable() {$("#panel").hide()}, // jQuery
-
-  // -- custom methods ---
-
-  async somethingAsync() {
-    this.$fetchJSON("myLoader", "asset.json")
-      .then(data => this.$log("data:", data));
-    this.$task("myTask1", Promise.resolve(123))
-      .then(() => this.$log("done1"));
-    this.$task("myTask2", async resolve => setTimeout(resolve, 0))
-      .then(() => this.$log("done2"))
+    let count = 0;
+    this.$on("pointerdown", "#whatsnew-div", () => this.$log('click!'));
+    this.$interval("updateNews", 250, () =>
+      this.$fetchJSON("getNews", "asset.json")
+        .then(() => this.$log("updated", ++count))
+    )
   }
 });
 
-(async function() {
-  await component.$install(true); // await everything in onInstall, then await everything in onEnable()
-  component.somethingAsync(); // start async tasks in background
-  await component.$disable(); // stop/remove everything started during and after $enable()
-  await component.$enable(); // await everything in onEnable()
-  component.somethingAsync(); // start async tasks in background
-  await component.$uninstall(); // stop/remove all
-}());
+await component.$install(); 
+await component.$enable();
+await wait(1000);
+// stops/removes everything that has
+// started during and after onEnable()
+await component.$disable(); 
+component.$enable(); // restart in background... 
+component.$disable(); // ... abort and disable
+await wait(1000);
+await component.$uninstall(); 
 ```
- jFactory ensures that before resolving a [Service State Change](https://github.com/jfactory-es/jfactory/blob/master/doc/TraitService-Phases.md), all Tasks of its [Service Handler](https://github.com/jfactory-es/jfactory/blob/master/doc/TraitService-States.md#service-state-handlers) are completed, including subpromise trees. 
+
+Components can be created from an Object Literal, using the shortcut [`jFactory()`](https://github.com/jfactory-es/jfactory/blob/master/doc/ref-components.md#create-a-component-literal), or
+alternatively, any Class can be extended dynamically into a Component using [JFactoryTraits](https://github.com/jfactory-es/jfactory/blob/master/doc/ref-components.md#create-a-component-base-class).  
 
 ## Patterns
 
@@ -75,14 +70,14 @@ let component = jFactory("WhatsNewComponent", {
 
 - [Tasks](https://github.com/jfactory-es/jfactory/blob/master/doc/TraitTask.md): asynchronous processes can be registered as expirable tasks that block the current Service State Change, guaranteeing that everything is resolved before completing it, including all subpromises. 
 
-- [Remove Phase](https://github.com/jfactory-es/jfactory/blob/master/doc/TraitService-Phases.md#remove-phase): jFactory will automatically stop and remove the subscriptions (listeners, promises, timers, fetch, dom...) registered during an opposite phase (install/uninstall, enable/disable)
-
-- [Traits](https://github.com/jfactory-es/jfactory/blob/master/doc/ref-components.md#create-a-component-base-class): Components are Objects created from Classes dynamically extended by JFactoryTraits. 
+- [Remove Phase](https://github.com/jfactory-es/jfactory/blob/master/doc/TraitService-Phases.md#remove-phase): jFactory will automatically stop and remove the subscriptions (listeners, promises, timers, fetch, dom...) registered during an opposite state change (install/uninstall, enable/disable)
 
 - [Promise Chains](https://github.com/jfactory-es/jfactory/blob/master/doc/JFactoryPromise.md): jFactory uses extended native Promises that makes the whole Chain[ Awaitable](https://github.com/jfactory-es/jfactory/blob/master/doc/JFactoryPromise.md#chain-awaitable), [Completable](https://github.com/jfactory-es/jfactory/blob/master/doc/JFactoryPromise.md#chain-completion--cancellation), [Cancelable](https://github.com/jfactory-es/jfactory/blob/master/doc/JFactoryPromise.md#chain-completion--cancellation) and [Expirable](https://github.com/jfactory-es/jfactory/blob/master/doc/JFactoryPromise.md#chain-expiration).
 
+- [Traits](https://github.com/jfactory-es/jfactory/blob/master/doc/ref-components.md#create-a-component-base-class): Components are Objects created from Classes dynamically extended by JFactoryTraits. 
+
 - Debug: jFactory is designed for asynchronous component-based application development, using contextual loggers and subloggers,
- filterable source-mapped stack traces, named objects, loggable extended errors, explorable promise chains, ...
+ filterable source-mapped stack traces, identifiers, loggable extended errors, explorable promise chains, ...
 
      
 ## Internal Framework   
@@ -121,10 +116,12 @@ jFactory is entirely designed from importable ES6+ Classes that provides theses 
 [![GitHub version](https://img.shields.io/github/package-json/v/jfactory-es/jfactory.svg?label=git)](https://github.com/jfactory-es/jfactory)
 [![Node CI](https://github.com/jfactory-es/jfactory/workflows/Node%20CI/badge.svg)](#implementation)
 [![vulnerabilities](https://img.shields.io/snyk/vulnerabilities/npm/jfactory-es.svg)](#implementation)
+[![vulnerabilities](https://img.shields.io/github/issues/jfactory-es/jfactory.svg?style=flat)](#implementation)
+
 
 - **Beta**. <!-- The specifications are still subject to changes.--> Feel free to submit your suggestions.
 - External Dependencies: jQuery, Lodash (may be removed in next releases)
 
 ## Contributing
 
-If you have any questions, feel free to create an [issue](https://github.com/jfactory-es/jfactory/issues). Thank you to everyone who takes the time to share their comments, bug reports and fixes.
+Thank you to everyone who takes the time to share their comments, bug reports and fixes. If you have any questions, feel free to create an [issue](https://github.com/jfactory-es/jfactory/issues). 
