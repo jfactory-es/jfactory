@@ -8,6 +8,9 @@ Provides an extended Promise that supports an awaitable and expirable promise tr
 
 ```javascript
 import { JFactoryPromise } from "jfactory-es" 
+let myPromise = new JFactoryPromise((resolve, reject) => {
+    resolve('ok')
+});
 ``` 
 * [Status](#promise-status)
 * [Chain](#promise-chain)
