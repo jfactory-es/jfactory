@@ -1,9 +1,13 @@
 {
   "name": "jfactory-es",
-  "version": "1.1.0-beta.2",
+  "version": "1.1.0-beta.3",
   "description": "ES6+ JavaScript library for component-based architectures in asynchronous Web applications. Designed to automate component shutdown cleanups, including promise chains, listeners, requests, DOMs, etc. ",
   "homepage": "https://github.com/jfactory-es/jfactory#readme",
   "bugs": "https://github.com/jfactory-es/jfactory/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jfactory-es/jfactory.git"
+  },
   "main": "dist/index.js",
   "//private": true,
   "//module": "dist/jFactory.mjs",
@@ -16,7 +20,6 @@
     "del": "^5.1.0",
     "dotenv": "^8.2.0",
     "eslint": "^6.7.2",
-    "eslint-config-google": "^0.14.0",
     "html-webpack-plugin": "^3.2.0",
     "inquirer": "^7.0.1",
     "jsdom": "^15.2.1",
@@ -49,6 +52,7 @@
     "lodash": "^4.17.15"
   },
   "files": [
-    "dist/**"
+    "dist/**",
+    "src/**"
   ]
 }
