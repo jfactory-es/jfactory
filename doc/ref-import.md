@@ -59,7 +59,7 @@ Imports the "production" or "development" version, based on the compile time val
 
 ## External Dependencies
 
-jFactory imports External Dependencies (lodash and jQuery).
+jFactory imports `lodash` and `jQuery`, wich must be defined in the dependencies of the package.json of your application.
 
 But you may want to load these dependency from external sources (CDN, custom object, etc) instead of bundling them into your project.
 To do so, you can configure your bundler to exclude these imports:
