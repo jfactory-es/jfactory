@@ -52,8 +52,8 @@ let component = jFactory("whatsNewComponent", {
 await component.$install(); 
 await component.$enable();
 await wait(1000);
-// stops/removes everything that has
-// started during and after onEnable()
+// stops/removes everything started
+// during and after onEnable()
 await component.$disable(); 
 component.$enable(); // restart in background... 
 component.$disable(); // ... abort and disable
