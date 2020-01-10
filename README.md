@@ -1,5 +1,5 @@
 # jFactory
-A component-based architecture in asynchronous Web applications. Designed to automate component shutdown cleanups, including promise chains, listeners, requests, DOMs, etc. 
+A component-based architecture for asynchronous Web applications. Designed to automate component shutdown cleanups of promise chains, listeners, requests, DOMs, etc. 
 
 ```shell script
 npm add jfactory-es
