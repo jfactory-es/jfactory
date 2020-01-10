@@ -14,7 +14,7 @@ npm add jfactory-es
 jFactory easily compartmentalize your application into components that can:
 
 - operate like services (install, enable, disable, uninstall) 
-- automatically ensure all promise chains and subtrees are completed at service state change
+- automatically ensure all the promise chains are completed at service state change
 - automatically switch off subscribed listeners, timers, requests, promises, <!--callbacks, -->dom, css... 
 - automatically prevent all expired asynchronous calls (<!--callbacks, -->promise subtrees, event handlers...) 
 - keep track in DevTools of all running subscriptions (listeners, timers, requests, promises, dom, css...)
