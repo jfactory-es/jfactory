@@ -1,5 +1,5 @@
 # jFactory
-jFactory is a JavaScript library that allows you to easily compartmentalize your application into components. Thus, all the actions you perform in your components can be tracked and stopped automatically. 
+jFactory is a JavaScript library that allows you to easily compartmentalize your application into components. Thus, all the actions you perform in your components can be tracked, stopped and removed automatically. 
 
 For example, let's imagine a component that displays a DOM window with its CSS, loads data and performs various asynchronous and timed processes. Simply call the `$uninstall()` method of your component to automatically remove the DOM, uninstall the CSS, interrupt the promise chains, the queries, timers, and remove the event listeners. 
 
