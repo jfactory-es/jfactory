@@ -10,7 +10,7 @@ npm add jfactory-es
 * [Documentation](https://github.com/jfactory-es/jfactory/blob/master/doc/ref-index.md) / [Traits](https://github.com/jfactory-es/jfactory/blob/master/doc/ref-index.md#traits-component-features) / [Classes](https://github.com/jfactory-es/jfactory/blob/master/doc/ref-index.md#classes-internal-library)
 * [Installation & Dependencies](https://github.com/jfactory-es/jfactory/blob/master/doc/ref-import.md)
 
-[&nbsp;&nbsp;&nbsp;**>> Starter Kit <<**](https://github.com/jfactory-es/jfactory-starterkit)
+&nbsp;&nbsp; [**>> Starter Kit <<**](https://github.com/jfactory-es/jfactory-starterkit)
 
 ## Abstract
 
