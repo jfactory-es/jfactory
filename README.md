@@ -1,7 +1,7 @@
 # jFactory
 jFactory is a JavaScript library that allows you to easily compartmentalize your application into components. Thus, all the actions you perform in your components can be tracked, stopped and removed automatically. 
 
-For example, let's imagine a component that displays a DOM window with its CSS, loads data and performs various asynchronous and timed processes. Simply call the `$uninstall()` method of your component to automatically remove the DOM, uninstall the CSS, interrupt the promise chains, the queries, timers, and remove the event listeners. 
+For example, let's imagine a (web/react/...) component that displays a DOM window with its CSS, loads data and performs various asynchronous and timed processes. Simply call the `$uninstall()` method of your component to automatically remove the DOM, uninstall the CSS, interrupt the promise chains, the queries, timers, and remove the event listeners. 
 
 ```shell script
 npm add jfactory-es
@@ -9,14 +9,15 @@ npm add jfactory-es
 
 * [Documentation](https://github.com/jfactory-es/jfactory/blob/master/doc/ref-index.md) / [Traits](https://github.com/jfactory-es/jfactory/blob/master/doc/ref-index.md#traits-component-features) / [Classes](https://github.com/jfactory-es/jfactory/blob/master/doc/ref-index.md#classes-internal-library)
 * [Installation & Dependencies](https://github.com/jfactory-es/jfactory/blob/master/doc/ref-import.md)
-* [**>> Starter Kit <<**](https://github.com/jfactory-es/jfactory-starterkit)
+
+[&nbsp;&nbsp;&nbsp;**>> Starter Kit <<**](https://github.com/jfactory-es/jfactory-starterkit)
 
 ## Abstract
 
 jFactory easily compartmentalize your application into components that can:
 
 - operate like services (install, enable, disable, uninstall) 
-- automatically ensure all the promise chains are completed at service state change
+- automatically ensure that all the promise chains are completed at service state change
 - automatically switch off subscribed listeners, timers, requests, promises, <!--callbacks, -->dom, css... 
 - automatically prevent all expired asynchronous calls (<!--callbacks, -->promise subtrees, event handlers...) 
 - keep track in DevTools of all running subscriptions (listeners, timers, requests, promises, dom, css...)
@@ -26,41 +27,41 @@ jFactory easily compartmentalize your application into components that can:
 
 In a nutshell, jFactory provides methods to register listeners, dom, css, fetch and asynchronous tasks that will be automatically stopped (including subpromise trees) and removed at oposite service state change. 
 
-
-
  jFactory ensures that before resolving a [Service State Change](https://github.com/jfactory-es/jfactory/blob/master/doc/TraitService-Phases.md), all asynchronous actions of the associated [Service Handler](https://github.com/jfactory-es/jfactory/blob/master/doc/TraitService-States.md#service-state-handlers) are completed, including subpromises. 
 ```javascript
 import { jFactory } from "jfactory-es"
 
-let component = jFactory("whatsNewComponent", {
+let component = jFactory("myComponent", {
+
   onInstall() {
-    this.$cssFetch("#whatsnew-css", "asset.css");
-    this.$domFetch("#whatsnew-div", "asset.html")
-      .then(dom => dom.appendTo("body"));
-    this.$task("watsNew-init", new Promise(resolve => wait(500).then(resolve)))
-      .then(() => this.$log('init sub task done.'))
+    this.$cssFetch("#myComponent-css", "/asset.css");
+    this.$domFetch("#myComponent-div", "/asset.html").then(dom => dom.appendTo("body"));
+    this.$task("myInitTask", new Promise(resolve => wait(500).then(resolve)))
+      .then(() => this.$log('done'))
   },
 
   onEnable() {
-    let count = 0;
-    this.$on("pointerdown", "#whatsnew-div", () => this.$log('click!'));
-    this.$interval("updateNews", 250, () =>
-      this.$fetchJSON("getNews", "asset.json")
-        .then(() => this.$log("updated", ++count))
+    this.$interval("myUpdater", 250, () =>
+      this.$fetchJSON("myRequest", "/asset.json").then(() => this.$log("updated"))
     )
   }
+  
+  // ... 
+
 });
 
 await component.$install(); 
 await component.$enable();
-await wait(1000);
-// stops/removes everything started
-// during and after onEnable()
+await wait(1000); // interval and requests are running 
+
+// stops/removes everything started during and after onEnable()
 await component.$disable(); 
-component.$enable(); // restart in background... 
-component.$disable(); // ... abort and disable
-await wait(1000);
-await component.$uninstall(); 
+
+component.$enable(); // restart in background...  
+component.$disable(); // ... abort and disable 
+await wait(1000); // everything is disabled
+
+await component.$uninstall(); // remove all, including css, dom, timers, requests... 
 ```
 
 Components can be created from an Object Literal, using the shortcut [`jFactory()`](https://github.com/jfactory-es/jfactory/blob/master/doc/ref-components.md#create-a-component-literal), or
