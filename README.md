@@ -57,9 +57,9 @@ await wait(1000); // interval and requests are running
 // stops/removes everything started during and after onEnable()
 await component.$disable(); 
 
-component.$enable(); // restart in background...  
+component.$enable(); // restarts in background...  
 component.$disable(); // ... abort and disable 
-await wait(1000); // everything is disabled
+await wait(1000); // interval and requests are disabled
 
 await component.$uninstall(); // remove all, including css, dom, timers, requests... 
 ```
