@@ -133,6 +133,20 @@ if (!BUNDLE) { // simplified build for development
     {
       input: "src/index.mjs",
       output: {
+        format: "umd",
+        name: "jFactoryModule",
+        file: "dist/jFactory.umd.js",
+        interop: false,
+        sourcemap: DEBUG ? "inline" : false,
+        ...common_output
+      },
+      ...common,
+      plugins: plugins_prod
+    },
+
+    {
+      input: "src/index.mjs",
+      output: {
         format: "es",
         file: "dist/jFactory.mjs",
         interop: false,
