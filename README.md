@@ -1,5 +1,5 @@
 # jFactory
-jFactory is a JavaScript library that allows you to easily compartmentalize your application into components. Thus, everything they initialize can be individually tracked, stopped and removed automatically.
+jFactory is a JavaScript library that allows you to easily compartmentalize your application into components. Thus, everything they initialize can be  tracked, stopped and removed automatically.
 
 For example, let's imagine a web component (can be a react component or anything) that displays a DOM window with its CSS, loads data and performs various asynchronous and timed processes. Simply call the `$uninstall()` method of your component to automatically remove the DOM, uninstall the CSS, interrupt the promise chains, the queries, timers, and remove the event listeners. 
 
@@ -9,8 +9,6 @@ npm add jfactory-es
 
 * [Documentation](https://github.com/jfactory-es/jfactory/blob/master/doc/ref-index.md) / [Traits](https://github.com/jfactory-es/jfactory/blob/master/doc/ref-index.md#traits-component-features) / [Classes](https://github.com/jfactory-es/jfactory/blob/master/doc/ref-index.md#classes-internal-library)
 * [Installation & Dependencies](https://github.com/jfactory-es/jfactory/blob/master/doc/ref-import.md)
-
-&nbsp;&nbsp; [**>> Starter Kit <<**](https://github.com/jfactory-es/jfactory-starterkit)
 
 ## Abstract
 
@@ -66,6 +64,11 @@ await component.$uninstall(); // remove all, including css, dom, timers, request
 
 Components can be created from an Object Literal, using the shortcut [`jFactory()`](https://github.com/jfactory-es/jfactory/blob/master/doc/ref-components.md#create-a-component-literal), or
 alternatively, any Class can be extended dynamically into a Component using [JFactoryTraits](https://github.com/jfactory-es/jfactory/blob/master/doc/ref-components.md#create-a-component-base-class).  
+
+## Try it 
+
+* [JS Bin](https://jsbin.com/winazez/edit?js,output)
+* [Starter Kit](https://github.com/jfactory-es/jfactory-starterkit)
 
 ## Patterns
 
