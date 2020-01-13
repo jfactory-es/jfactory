@@ -1,6 +1,6 @@
 {
   "name": "jfactory-es",
-  "version": "1.1.1",
+  "version": "1.1.0",
   "description": "ES6+ JavaScript library for component-based architectures in asynchronous Web applications. Designed to automate component shutdown cleanups, including promise chains, listeners, requests, DOMs, etc. ",
   "homepage": "https://github.com/jfactory-es/jfactory#readme",
   "bugs": "https://github.com/jfactory-es/jfactory/issues",
