@@ -1,7 +1,7 @@
 # jFactory
 jFactory is a JavaScript library that allows you to easily compartmentalize your application into components. Thus, everything they initialize can be individually tracked, stopped and removed automatically.
 
-For example, let's imagine a (web/react/...) component that displays a DOM window with its CSS, loads data and performs various asynchronous and timed processes. Simply call the `$uninstall()` method of your component to automatically remove the DOM, uninstall the CSS, interrupt the promise chains, the queries, timers, and remove the event listeners. 
+For example, let's imagine a web component (can be a react component or anything) that displays a DOM window with its CSS, loads data and performs various asynchronous and timed processes. Simply call the `$uninstall()` method of your component to automatically remove the DOM, uninstall the CSS, interrupt the promise chains, the queries, timers, and remove the event listeners. 
 
 ```shell script
 npm add jfactory-es
