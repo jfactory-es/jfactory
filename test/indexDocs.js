@@ -1,1 +1,1 @@
-require("./doc/README.test");
+require("./docs/README.test");

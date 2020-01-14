@@ -7,8 +7,8 @@ For example, let's imagine a web component (can be a react component or anything
 npm add jfactory-es
 ```
 
-* [Documentation](https://github.com/jfactory-es/jfactory/blob/master/doc/ref-index.md) / [Traits](https://github.com/jfactory-es/jfactory/blob/master/doc/ref-index.md#traits-component-features) / [Classes](https://github.com/jfactory-es/jfactory/blob/master/doc/ref-index.md#classes-internal-library)
-* [Installation & Dependencies](https://github.com/jfactory-es/jfactory/blob/master/doc/ref-import.md)
+* [Documentation](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-index.md) / [Traits](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-index.md#traits-component-features) / [Classes](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-index.md#classes-internal-library)
+* [Installation & Dependencies](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-import.md)
 
 ## Abstract
 
@@ -25,7 +25,7 @@ jFactory easily compartmentalize your application into components that can:
 
 In a nutshell, jFactory provides methods to register listeners, dom, css, fetch and asynchronous tasks that will be automatically stopped (including subpromise trees) and removed at oposite service state change. 
 
- jFactory ensures that before resolving a [Service State Change](https://github.com/jfactory-es/jfactory/blob/master/doc/TraitService-Phases.md), all asynchronous actions of the associated [Service Handler](https://github.com/jfactory-es/jfactory/blob/master/doc/TraitService-States.md#service-state-handlers) are completed, including subpromises. 
+ jFactory ensures that before resolving a [Service State Change](https://github.com/jfactory-es/jfactory/blob/master/docs/TraitService-Phases.md), all asynchronous actions of the associated [Service Handler](https://github.com/jfactory-es/jfactory/blob/master/docs/TraitService-States.md#service-state-handlers) are completed, including subpromises. 
 ```javascript
 import { jFactory } from "jfactory-es"
 
@@ -62,8 +62,8 @@ await wait(1000); // interval and requests are disabled
 await component.$uninstall(); // remove all, including css, dom, timers, requests... 
 ```
 
-Components can be created from an Object Literal, using the shortcut [`jFactory()`](https://github.com/jfactory-es/jfactory/blob/master/doc/ref-components.md#create-a-component-literal), or
-alternatively, any Class can be extended dynamically into a Component using [JFactoryTraits](https://github.com/jfactory-es/jfactory/blob/master/doc/ref-components.md#create-a-component-base-class).  
+Components can be created from an Object Literal, using the shortcut [`jFactory()`](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-components.md#create-a-component-literal), or
+alternatively, any Class can be extended dynamically into a Component using [JFactoryTraits](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-components.md#create-a-component-base-class).  
 
 ## Try it 
 
@@ -72,15 +72,15 @@ alternatively, any Class can be extended dynamically into a Component using [JFa
 
 ## Patterns
 
-- Registry:<img align="right" src="https://github.com/jfactory-es/jfactory/blob/master/doc/img/pic1.png"> all component subscriptions (listeners, promises, timers, fetch, dom...) are explorable in a registry, allowing quick visual inspections in DevTools.
+- Registry:<img align="right" src="https://github.com/jfactory-es/jfactory/blob/master/docs/img/pic1.png"> all component subscriptions (listeners, promises, timers, fetch, dom...) are explorable in a registry, allowing quick visual inspections in DevTools.
 
-- [Tasks](https://github.com/jfactory-es/jfactory/blob/master/doc/TraitTask.md): asynchronous processes can be registered as expirable tasks that block the current Service State Change, guaranteeing that everything is resolved before completing it, including all subpromises. 
+- [Tasks](https://github.com/jfactory-es/jfactory/blob/master/docs/TraitTask.md): asynchronous processes can be registered as expirable tasks that block the current Service State Change, guaranteeing that everything is resolved before completing it, including all subpromises. 
 
-- [Remove Phase](https://github.com/jfactory-es/jfactory/blob/master/doc/TraitService-Phases.md#remove-phase): jFactory will automatically stop and remove the subscriptions (listeners, promises, timers, fetch, dom...) registered during an opposite state change (install/uninstall, enable/disable)
+- [Remove Phase](https://github.com/jfactory-es/jfactory/blob/master/docs/TraitService-Phases.md#remove-phase): jFactory will automatically stop and remove the subscriptions (listeners, promises, timers, fetch, dom...) registered during an opposite state change (install/uninstall, enable/disable)
 
-- [Promise Chains](https://github.com/jfactory-es/jfactory/blob/master/doc/JFactoryPromise.md): jFactory uses extended native Promises that makes the whole Chain[ Awaitable](https://github.com/jfactory-es/jfactory/blob/master/doc/JFactoryPromise.md#chain-awaitable), [Completable](https://github.com/jfactory-es/jfactory/blob/master/doc/JFactoryPromise.md#chain-completion--cancellation), [Cancelable](https://github.com/jfactory-es/jfactory/blob/master/doc/JFactoryPromise.md#chain-completion--cancellation) and [Expirable](https://github.com/jfactory-es/jfactory/blob/master/doc/JFactoryPromise.md#chain-expiration).
+- [Promise Chains](https://github.com/jfactory-es/jfactory/blob/master/docs/JFactoryPromise.md): jFactory uses extended native Promises that makes the whole Chain[ Awaitable](https://github.com/jfactory-es/jfactory/blob/master/docs/JFactoryPromise.md#chain-awaitable), [Completable](https://github.com/jfactory-es/jfactory/blob/master/docs/JFactoryPromise.md#chain-completion--cancellation), [Cancelable](https://github.com/jfactory-es/jfactory/blob/master/docs/JFactoryPromise.md#chain-completion--cancellation) and [Expirable](https://github.com/jfactory-es/jfactory/blob/master/docs/JFactoryPromise.md#chain-expiration).
 
-- [Traits](https://github.com/jfactory-es/jfactory/blob/master/doc/ref-components.md#create-a-component-base-class): Components are Objects created from Classes dynamically extended by JFactoryTraits. 
+- [Traits](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-components.md#create-a-component-base-class): Components are Objects created from Classes dynamically extended by JFactoryTraits. 
 
 - Debug: jFactory is designed for asynchronous component-based application development, using contextual loggers and subloggers,
  filterable source-mapped stack traces, identifiers, loggable extended errors, explorable promise chains, ...
@@ -90,7 +90,7 @@ alternatively, any Class can be extended dynamically into a Component using [JFa
 
 jFactory is entirely designed from importable ES6+ Classes that provides theses features: 
 
-- [Extended Promise](https://github.com/jfactory-es/jfactory/blob/master/doc/JFactoryPromise.md)
+- [Extended Promise](https://github.com/jfactory-es/jfactory/blob/master/docs/JFactoryPromise.md)
     - Expirable, awaitable, explorable Promise Chain
     - Status properties 
 - Composite Functions
