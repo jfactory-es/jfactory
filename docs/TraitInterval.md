@@ -1,4 +1,4 @@
-[jFactory](../README.md) > [Reference](index.md) > [Traits](index.md#traits-component-features) > TraitInterval
+[jFactory](../README.md) > [Reference](ref-index.md) > [Traits](ref-index.md#traits-component-features) > TraitInterval
 
 # TraitInterval
 

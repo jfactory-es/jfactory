@@ -1,8 +1,8 @@
-[jFactory](../README.md) > [Reference](index.md) > Importing jFactory 
+[jFactory](../README.md) > [Reference](ref-index.md) > Importing jFactory 
 
 # Importing jFactory
 
-```shell script
+```
 npm add jfactory-es
 ```
 

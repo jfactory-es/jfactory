@@ -1,4 +1,4 @@
-[jFactory](../README.md) > [Reference](index.md) > [Classes](index.md#classes-internal-library) > JFactoryFunction
+[jFactory](../README.md) > [Reference](ref-index.md) > [Classes](ref-index.md#classes-internal-library) > JFactoryFunction
 
 # JFactoryFunction
 
