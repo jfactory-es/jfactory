@@ -7,7 +7,7 @@ For example, let's imagine a web component (can be a react component or anything
 npm add jfactory-es
 ```
 
-* [Documentation](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-index.md) / [Traits](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-index.md#traits-component-features) / [Classes](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-index.md#classes-internal-library)
+* [Documentation](https://github.com/jfactory-es/jfactory/blob/master/docs/index.md) / [Traits](https://github.com/jfactory-es/jfactory/blob/master/docs/index.md#traits-component-features) / [Classes](https://github.com/jfactory-es/jfactory/blob/master/docs/index.md#classes-internal-library)
 * [Installation & Dependencies](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-import.md)
 
 ## Abstract

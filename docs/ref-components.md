@@ -1,4 +1,4 @@
-[jFactory](../README.md) > [Reference](ref-index.md) > Components 
+[jFactory](../README.md) > [Reference](index.md) > Components 
 
 # Components
 
@@ -11,7 +11,7 @@ Components are Objects extended by `JFactoryTraits` to provide the features of j
 
 ### Create a Component (literal)
 
-The shortcut `jFactory(name, ...sources)` creates a component using the class `JFactoryComponent` that provides all the default [Traits](ref-index.md#traits-component-features). It also imports the properties and methods given as a second parameter into the new component. 
+The shortcut `jFactory(name, ...sources)` creates a component using the class `JFactoryComponent` that provides all the default [Traits](index.md#traits-component-features). It also imports the properties and methods given as a second parameter into the new component. 
 
 This is suitable for Object Literal declarations, when you don't need Object Inheritance:
 
