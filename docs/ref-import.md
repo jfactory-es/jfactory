@@ -1,4 +1,4 @@
-[jFactory](../README.md) > [Reference](ref-index.md) > Importing jFactory 
+[jFactory](index.md) > [Reference](ref-index.md) > Importing jFactory 
 
 # Importing jFactory
 

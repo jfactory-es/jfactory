@@ -1,4 +1,4 @@
-[jFactory](../README.md) > [Reference](ref-index.md) > Components 
+[jFactory](index.md) > [Reference](ref-index.md) > Components 
 
 # Components
 

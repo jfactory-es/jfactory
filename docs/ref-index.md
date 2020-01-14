@@ -1,4 +1,4 @@
-[jFactory](../README.md) > Reference 
+[jFactory](index.md) > Reference 
 
 # jFactory Reference Index
 

@@ -1,4 +1,4 @@
-[jFactory](../README.md) > [Reference](ref-index.md) > [Trait](ref-index.md#traits-component-features) > [TraitService](TraitService.md) > Service States  
+[jFactory](index.md) > [Reference](ref-index.md) > [Trait](ref-index.md#traits-component-features) > [TraitService](TraitService.md) > Service States  
 
 # Service States
 
