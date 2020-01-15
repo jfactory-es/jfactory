@@ -1,7 +1,7 @@
 # jFactory
 jFactory is a JavaScript library that allows you to easily compartmentalize your application into components. Thus, everything they initialize can be  tracked, stopped and removed automatically.
 
-For example, let's imagine a web component (can be a react component or anything) that displays a DOM window with its CSS, loads data and performs various asynchronous and timed processes. Simply call the `$uninstall()` method of your component to automatically remove the DOM, uninstall the CSS, interrupt the promise chains, the queries, timers, and remove the event listeners. 
+For example, let's imagine a web component that displays a DOM window with its CSS, loads data and performs various asynchronous and timed processes. Simply call the `$uninstall()` method of your component to automatically remove the DOM, uninstall the CSS, interrupt the promise chains, the queries, timers, and remove the event listeners. 
 
 ```
 npm add jfactory-es
@@ -121,8 +121,8 @@ jFactory is entirely designed from importable ES6+ Classes that provides theses 
 [![npm version](https://img.shields.io/npm/v/jfactory-es.svg)](https://www.npmjs.com/package/jfactory-es)
 [![GitHub version](https://img.shields.io/github/package-json/v/jfactory-es/jfactory.svg?label=git)](https://github.com/jfactory-es/jfactory)
 [![Node CI](https://github.com/jfactory-es/jfactory/workflows/Node%20CI/badge.svg)](#implementation)
-[![vulnerabilities](https://img.shields.io/snyk/vulnerabilities/npm/jfactory-es.svg)](#implementation)
-[![vulnerabilities](https://img.shields.io/github/issues/jfactory-es/jfactory.svg?style=flat)](#implementation)
+[![](https://img.shields.io/snyk/vulnerabilities/npm/jfactory-es.svg)](#implementation)
+[![](https://img.shields.io/github/issues/jfactory-es/jfactory.svg?style=flat)](#implementation)
 
 
 - **Beta**. <!-- The specifications are still subject to changes.--> Feel free to submit your suggestions.

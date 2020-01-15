@@ -16,7 +16,7 @@ The shortcut `jFactory(name, ...sources)` creates a component using the class `J
 This is suitable for Object Literal declarations, when you don't need Object Inheritance:
 
 ```javascript
-import {jFactory} from "jfactory-es";
+import { jFactory } from "jfactory-es";
 
 let myComponent = jFactory('myComponentName', {
     myProperty: 123,

@@ -29,7 +29,7 @@ Registers a $PLACEHOLDER that will be automatically removed from document at [Re
 ##Usages
 
 ```javascript
-import {jFactory} from "jfactory-es";
+import { jFactory } from "jfactory-es";
 
 let myComponent = jFactory("myComponent", {
     onInstall() {
