@@ -1,5 +1,5 @@
 # jFactory
-<img align="right" width="140" src="docs/img/jFactory.png">jFactory is a JavaScript library that allows you to easily compartmentalize your application into components. Thus, everything they initialize can be  tracked, stopped and removed automatically.
+<img align="right" width="140" src="https://jfactory-es.github.io/jfactory/img/jFactory.png">jFactory is a JavaScript library that allows you to easily compartmentalize your application into components. Thus, everything they initialize can be  tracked, stopped and removed automatically.
 
 For example, let's imagine a web component that displays a DOM window with its CSS, loads data and performs various asynchronous and timed processes. Simply call the `$uninstall()` method of your component to automatically remove the DOM, uninstall the CSS, interrupt the promise chains, the queries, timers, and remove the event listeners. 
 
@@ -72,7 +72,7 @@ alternatively, any Class can be extended dynamically into a Component using [JFa
 
 ## Patterns
 
-- Registry:<img align="right" src="https://github.com/jfactory-es/jfactory/blob/master/docs/img/pic1.png"> all component subscriptions (listeners, promises, timers, fetch, dom...) are explorable in a registry, allowing quick visual inspections in DevTools.
+- Registry:<img align="right" src="https://jfactory-es.github.io/jfactory/img/pic1.png"> all component subscriptions (listeners, promises, timers, fetch, dom...) are explorable in a registry, allowing quick visual inspections in DevTools.
 
 - [Tasks](https://github.com/jfactory-es/jfactory/blob/master/docs/TraitTask.md): asynchronous processes can be registered as expirable tasks that block the current Service State Change, guaranteeing that everything is resolved before completing it, including all subpromises. 
 
