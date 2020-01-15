@@ -5,42 +5,53 @@
 ```
 npm add jfactory-es
 ```
-
-See also https://github.com/jfactory-es/jfactory-starterkit
-
->jFactory should be imported (not loaded from a script tag) into your ES6 project using a bundler that supports [Tree Shaking](https://developer.mozilla.org/docs/Glossary/Tree_shaking), like [Webpack](https://webpack.js.org). 
+jFactory should be imported into your application using a bundler that supports [Tree Shaking](https://developer.mozilla.org/docs/Glossary/Tree_shaking), like [Webpack](https://webpack.js.org).
 
 ```javascript
-import {jFactory} from "jfactory-es" 
+import { jFactory } from "jfactory-es" 
 ```
->**If this does not work, or does not switch to developer mode when webpack ["mode"](https://webpack.js.org/configuration/mode/) is "development", see below**.
->
-> (running in developer mode, you should see a warning in the console)
+**If this doesn't work, or does not switch to developer mode when webpack ["mode"](https://webpack.js.org/configuration/mode/) equals "development", see below**
+(in developer mode, you should see a warning in the console)
 
-## Distributions
+See also the starter kit: https://github.com/jfactory-es/jfactory-starterkit
 
 #### Manual import
 
-If automatic import does not work, manually load one of these modules:
+If the automatic import doesn't work, manually load one of these modules:
 
 ```javascript
 // ES6 import
-import {jFactory} from "jfactory-es/dist/jFactory-devel.mjs" // development
-import {jFactory} from "jfactory-es/dist/jFactory.mjs" // production
+import { jFactory } from "jfactory-es/dist/jFactory-devel.mjs" // development
+import { jFactory } from "jfactory-es/dist/jFactory.mjs" // production
 
 // CommonJS import
-const {jFactory} = require('jfactory-es/dist/jFactory-devel.cjs') // development
-const {jFactory} = require('jfactory-es/dist/jFactory.cjs') // production
+const { jFactory } = require('jfactory-es/dist/jFactory-devel.cjs') // development
+const { jFactory } = require('jfactory-es/dist/jFactory.cjs') // production
+```
+
+If you prefer to load it from a script tag (not recommended), 
+ manually load jQuery and lodash, and use the umd package:
+  
+```html
+<script src="jFactory-devel.umd.js"></script> <!-- development -->
+<script src="jFactory.umd.js"></script> <!-- production -->
 ```
 
 #### Automatic import  
 ```javascript
-import {jFactory} from "jfactory-es" 
+import { jFactory } from "jfactory-es" 
+// or
+const { jFactory } = require("jfactory-es")  
 ```
 
-Imports the "production" or "development" version, based on the compile time value of `process.env.NODE_ENV`.
->This may require a plugin in your bundler to replace the string `process.env.NODE_ENV` with its current value (in output files before the Tree Shaking is applied).\
-> In webpack, this is the default behavior based on the value of ["mode"](https://webpack.js.org/configuration/mode/), but if you are using a developer server or CI, you may want to use the real NODE_ENV while keeping the value of "mode". This can be achieved 
+`jfactory-es` conditionally loads a cjs module using require(). 
+So it should works only on cjs compatible environment (including node and webpack). It requires
+a `process.env.NODE_ENV` to automatically switch between `production` and `development`. 
+
+Note that webpack injects a NODE_ENV with a value equal to its [`mode`](https://webpack.js.org/configuration/mode/) option, so you shouldn't need to set
+it.
+
+> If you are using a developer server or CI, you may want to use the real NODE_ENV while keeping the value of "mode". This can be achieved 
 > with the plugin: [`new webpack.EnvironmentPlugin(['NODE_ENV'])`](https://webpack.js.org/plugins/environment-plugin/)
 >
 >```javascript
@@ -59,9 +70,9 @@ Imports the "production" or "development" version, based on the compile time val
 
 ## External Dependencies
 
-jFactory imports `lodash` and `jQuery`, wich must be defined in the dependencies of the package.json of your application.
+jFactory imports `lodash` and `jQuery` from its own dependencies.
 
-But you may want to load these dependency from external sources (CDN, custom object, etc) instead of bundling them into your project.
+However you may want to load these dependencies from external sources (CDN, custom object, etc) instead of bundling them into your project.
 To do so, you can configure your bundler to exclude these imports:
 
 In webpack:
@@ -95,5 +106,4 @@ To safely rewrite the library at runtime (including changing the default configu
 
 #### Overriding in ES6
 
-Because ES6 "import" are handled before any other statements, you may need to define `globalThis.jFactoryOverride = true` in a module loaded before jFactory.
- 
+Because ES6 "import" is handled before any other statements, you may need to define a global (window/global/globalThis) `jFactoryOverride = true` in a module loaded before jFactory.
