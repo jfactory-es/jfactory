@@ -67,7 +67,7 @@ alternatively, any Class can be extended dynamically into a Component using [JFa
 
 ## Try it 
 
-* [JS Bin](https://jsbin.com/winazez/edit?js,output)
+* [CodePen](https://codepen.io/jfactory-es/pen/KKwxaqr?editors=1010)
 * [Starter Kit](https://github.com/jfactory-es/jfactory-starterkit)
 
 ## Patterns
