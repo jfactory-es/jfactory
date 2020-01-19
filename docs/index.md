@@ -1,7 +1,7 @@
 # jFactory
-<img align="right" width="140" src="img/jFactory.png">jFactory is a JavaScript library that allows you to easily compartmentalize your application into components. Thus, everything they initialize can be  tracked, stopped and removed automatically.
+<img align="right" width="140" src="https://jfactory-es.github.io/jfactory/img/jFactory.png">jFactory is a free JavaScript library that allows you to easily compartmentalize your application into components. Thus, everything they initialize can be  tracked, stopped and removed automatically.
 
-For example, let's imagine a web component that displays a DOM window with its CSS, loads data and performs various asynchronous and timed processes. Simply call the `$uninstall()` method of your component to automatically remove the DOM, uninstall the CSS, interrupt the promise chains, the queries, timers, and remove the event listeners. 
+Imagine a web component that displays a DOM window with its CSS, loads data and performs various asynchronous and timed processes. **Simply call `myComponent.$uninstall()` to automatically interrupt and uninstall the DOM, CSS, promise chains, queries, timers, and event listeners.** 
 
 ```
 npm add jfactory-es
@@ -9,15 +9,16 @@ npm add jfactory-es
 
 * [Documentation](ref-index.md) / [Traits](ref-index.md#traits-component-features) / [Classes](ref-index.md#classes-internal-library)
 * [Installation & Dependencies](ref-import.md)
+* [CodePen](https://codepen.io/jfactory-es/pen/KKwxaqr?editors=1010) /  [Starter Kit](https://github.com/jfactory-es/jfactory-starterkit)
 
 ## Abstract
 
-jFactory easily compartmentalize your application into components that can:
+jFactory components are able to:
 
-- operate like services (install, enable, disable, uninstall) 
-- automatically ensure that all the promise chains are completed at service state change
+- operate like a service (install, enable, disable, uninstall) 
 - automatically switch off subscribed listeners, timers, requests, promises, <!--callbacks, -->dom, css... 
 - automatically prevent all expired asynchronous calls (<!--callbacks, -->promise subtrees, event handlers...) 
+- automatically ensure that all the promise chains are completed at service state change
 - keep track in DevTools of all running subscriptions (listeners, timers, requests, promises, dom, css...)
 - improve the Promise chains (Awaitable, Completable, Cancelable and Expirable) 
 
@@ -25,50 +26,32 @@ jFactory easily compartmentalize your application into components that can:
 
 In a nutshell, jFactory provides methods to register listeners, dom, css, fetch and asynchronous tasks that will be automatically stopped (including subpromise trees) and removed at oposite service state change. 
 
- jFactory ensures that before resolving a [Service State Change](TraitService-Phases.md), all asynchronous actions of the associated [Service Handler](TraitService-States.md#service-state-handlers) are completed, including subpromises. 
+Components can be created from an Object Literal, using the shortcut [`jFactory()`](ref-components.md#create-a-component-literal), or
+alternatively, **any Class can be extended into a Component** using [JFactoryTraits](ref-components.md#create-a-component-base-class).  
+
 ```javascript
-import { jFactory } from "jfactory-es"
-
 let component = jFactory("myComponent", {
-
   onInstall() {
-    this.$cssFetch("#myComponent-css", "/asset.css");
-    this.$domFetch("#myComponent-div", "/asset.html").then(dom => dom.appendTo("body"));
-    this.$task("myInitTask", new Promise(resolve => wait(500).then(resolve)))
-      .then(() => this.$log('done'))
+    this.$cssFetch("#myCSS", "asset.css").then(() => this.$log("css loaded"))
   },
 
   onEnable() {
     this.$interval("myUpdater", 250, () =>
-      this.$fetchJSON("myRequest", "/asset.json").then(() => this.$log("updated"))
+      this.$fetchJSON("myRequest", "asset.json").then(() => this.$log("updated"))
     )
   }
-  
-  // ... 
 
-});
+  // ... your own methods and properties
+})
 
 await component.$install(); 
 await component.$enable();
-await wait(1000); // interval and requests are running 
-
-// stops/removes everything started during and after onEnable()
 await component.$disable(); 
-
-component.$enable(); // restarts in background...  
-component.$disable(); // ... abort and disable 
-await wait(1000); // interval and requests are disabled
-
-await component.$uninstall(); // remove all, including css, dom, timers, requests... 
+await component.$uninstall();  
 ```
-
-Components can be created from an Object Literal, using the shortcut [`jFactory()`](ref-components.md#create-a-component-literal), or
-alternatively, any Class can be extended dynamically into a Component using [JFactoryTraits](ref-components.md#create-a-component-base-class).  
-
-## Try it 
-
-* [CodePen](https://codepen.io/jfactory-es/pen/KKwxaqr?editors=1010)
+* [Try on CodePen](https://codepen.io/jfactory-es/pen/KKwxaqr?editors=1010)
 * [Starter Kit](https://github.com/jfactory-es/jfactory-starterkit)
+
 
 ## Patterns
 
@@ -120,14 +103,13 @@ jFactory is entirely designed from importable ES6+ Classes that provides theses 
 ## Implementation
 [![npm version](https://img.shields.io/npm/v/jfactory-es.svg)](https://www.npmjs.com/package/jfactory-es)
 [![GitHub version](https://img.shields.io/github/package-json/v/jfactory-es/jfactory.svg?label=git)](https://github.com/jfactory-es/jfactory)
-[![Node CI](https://github.com/jfactory-es/jfactory/workflows/Node%20CI/badge.svg)](#implementation)
-[![](https://img.shields.io/snyk/vulnerabilities/npm/jfactory-es.svg)](#implementation)
+[![Tests](https://github.com/jfactory-es/jfactory/workflows/Node%20CI/badge.svg)](#implementation)
+<!--
 [![](https://img.shields.io/github/issues/jfactory-es/jfactory.svg?style=flat)](#implementation)
-
-
-- **Beta**. <!-- The specifications are still subject to changes.--> Feel free to submit your suggestions.
+[![](https://img.shields.io/snyk/vulnerabilities/npm/jfactory-es.svg)](#implementation) 
+-->
 - External Dependencies: jQuery, Lodash (may be removed in next releases)
 
-## Contributing
+## How to Contribute
 
-Thank you to everyone who takes the time to share their comments, bug reports and fixes. If you have any questions, feel free to create an [issue](https://github.com/jfactory-es/jfactory/issues). 
+jFactory is an Open Source project. Your comments, bug reports and code proposals are always welcome. This project is new and you can help a lot by spreading the word. Also consider adding a github star, as it seems very important for its visibility at this stage. Thank you for your contributions! 

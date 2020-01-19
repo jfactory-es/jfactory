@@ -33,8 +33,8 @@ If you prefer to load it from a script tag (not recommended),
  manually load jQuery and lodash, and use the umd package:
   
 ```html
-<script src="jFactory-devel.umd.js"></script> <!-- development -->
-<script src="jFactory.umd.js"></script> <!-- production -->
+<script src="https://cdn.jsdelivr.net/gh/jfactory-es/jfactory/dist/jFactory-devel.umd.js"></script> <!-- development -->
+<script src="https://cdn.jsdelivr.net/gh/jfactory-es/jfactory/dist/jFactory.umd.js"></script> <!-- production -->
 ```
 
 #### Automatic import  
