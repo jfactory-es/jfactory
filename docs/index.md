@@ -51,7 +51,7 @@ await component.$uninstall();
 ```
 * [Try on CodePen](https://codepen.io/jfactory-es/pen/KKwxaqr?editors=1010)
 * [Starter Kit](https://github.com/jfactory-es/jfactory-starterkit)
-
+* [Documentation](ref-index.md) / [Traits](ref-index.md#traits-component-features) / [Classes](ref-index.md#classes-internal-library)
 
 ## Patterns
 
@@ -69,7 +69,7 @@ await component.$uninstall();
  filterable source-mapped stack traces, identifiers, loggable extended errors, explorable promise chains, ...
 
      
-## Internal Framework   
+## Library   
 
 jFactory is entirely designed from importable ES6+ Classes that provides theses features: 
 
@@ -83,6 +83,8 @@ jFactory is entirely designed from importable ES6+ Classes that provides theses 
 - Loggers, with identified and formatted console logs and inherited switches 
 - Errors, with explorable data
 - Stack traces, filterable and source mapped   
+
+* [Documentation](ref-index.md) / [Traits](ref-index.md#traits-component-features) / [Classes](ref-index.md#classes-internal-library)
 
 ## Philosophy
 
