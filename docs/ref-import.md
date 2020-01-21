@@ -2,7 +2,7 @@
 
 # Importing jFactory
 
-#### \<script\> Import 
+### Import by \<script\> 
 
 This is not the recommended usage, but for immediate testing or web projects that doesn't compile a js bundle, you can use the UMD module from a CDN:
 
@@ -31,7 +31,7 @@ And initialize it:
 const { jFactory } = jFactoryModule; // UMD import
 ```
 
-### NPM Import 
+### Import by NPM 
 
 NPM is the recommended installation (jFactory should be imported into your application using a bundler that supports [Tree Shaking](https://developer.mozilla.org/docs/Glossary/Tree_shaking), like [Webpack](https://webpack.js.org)).
 
