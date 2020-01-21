@@ -33,7 +33,8 @@ const { jFactory } = jFactoryModule; // UMD import
 
 ### Import by NPM 
 
-NPM is the recommended installation (jFactory should be imported into your application using a bundler that supports [Tree Shaking](https://developer.mozilla.org/docs/Glossary/Tree_shaking), like [Webpack](https://webpack.js.org)).
+NPM is the recommended installation. jFactory should be imported into your application using a bundler that supports [Tree Shaking](https://developer.mozilla.org/docs/Glossary/Tree_shaking), like [Webpack](https://webpack.js.org).
+Dependencies are automatically imported by the module but you can [change this behavior](#external-dependencies).
 
 ```
 npm add jfactory-es
