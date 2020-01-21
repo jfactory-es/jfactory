@@ -3,9 +3,7 @@
 
 Imagine a web component that displays a DOM window with its CSS, loads data and performs various asynchronous and timed processes. **Simply call `myComponent.$uninstall()` to automatically interrupt and uninstall the DOM, CSS, promise chains, queries, timers, and event listeners.** 
 
-* [Installation & Dependencies](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-import.md)
-
-
+* [Installation](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-import.md)
 * [Documentation](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-index.md) / [Traits](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-index.md#traits-component-features) / [Classes](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-index.md#classes-internal-library)
 * [CodePen](https://codepen.io/jfactory-es/pen/KKwxaqr?editors=1010) /  [Starter Kit](https://github.com/jfactory-es/jfactory-starterkit)
 
@@ -49,7 +47,6 @@ await component.$uninstall();
 ```
 * [Try on CodePen](https://codepen.io/jfactory-es/pen/KKwxaqr?editors=1010)
 * [Starter Kit](https://github.com/jfactory-es/jfactory-starterkit)
-* [Documentation](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-index.md) / [Traits](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-index.md#traits-component-features) / [Classes](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-index.md#classes-internal-library)
 
 ## Patterns
 
@@ -65,7 +62,6 @@ await component.$uninstall();
 
 - Debug: jFactory is designed for asynchronous component-based application development, using contextual loggers and subloggers,
  filterable source-mapped stack traces, identifiers, loggable extended errors, explorable promise chains, ...
-
      
 ## Library   
 

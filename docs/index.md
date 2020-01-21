@@ -3,12 +3,8 @@
 
 Imagine a web component that displays a DOM window with its CSS, loads data and performs various asynchronous and timed processes. **Simply call `myComponent.$uninstall()` to automatically interrupt and uninstall the DOM, CSS, promise chains, queries, timers, and event listeners.** 
 
-```
-npm add jfactory-es
-```
-
+* [Installation](ref-import.md)
 * [Documentation](ref-index.md) / [Traits](ref-index.md#traits-component-features) / [Classes](ref-index.md#classes-internal-library)
-* [Installation & Dependencies](ref-import.md)
 * [CodePen](https://codepen.io/jfactory-es/pen/KKwxaqr?editors=1010) /  [Starter Kit](https://github.com/jfactory-es/jfactory-starterkit)
 
 ## Abstract
@@ -51,7 +47,6 @@ await component.$uninstall();
 ```
 * [Try on CodePen](https://codepen.io/jfactory-es/pen/KKwxaqr?editors=1010)
 * [Starter Kit](https://github.com/jfactory-es/jfactory-starterkit)
-* [Documentation](ref-index.md) / [Traits](ref-index.md#traits-component-features) / [Classes](ref-index.md#classes-internal-library)
 
 ## Patterns
 
