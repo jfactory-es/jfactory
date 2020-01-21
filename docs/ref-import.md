@@ -31,7 +31,7 @@ And initialize it:
 const { jFactory } = jFactoryModule; // UMD import
 ```
 
-#### NPM Import 
+### NPM Import 
 
 NPM is the recommended installation (jFactory should be imported into your application using a bundler that supports [Tree Shaking](https://developer.mozilla.org/docs/Glossary/Tree_shaking), like [Webpack](https://webpack.js.org)).
 
@@ -42,12 +42,13 @@ npm add jfactory-es
 ```javascript
 import { jFactory } from "jfactory-es" // NPM ES6 automatic import
 ```
-#### Developper mode
+### Developper mode
 
 The developer module provides debug data and logs. 
 You must see a warning in the console when loaded. If not, see Manual import. 
 
-####See also 
+### See also
+
 * Starter kit: https://github.com/jfactory-es/jfactory-starterkit
 
 ## Manual vs Automatic
