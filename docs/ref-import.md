@@ -2,22 +2,59 @@
 
 # Importing jFactory
 
+#### \<script\> Import 
+
+This is not the recommended usage, but for immediate testing or web projects that doesn't compile a js bundle, you can use the UMD module from a CDN:
+
+First load the dependencies (jQuery and lodash), by example :
+```html
+<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.15/lodash.min.js"
+        integrity="sha256-VeNaFBVDhoX3H+gJ37DpT/nTuZTdjYro9yBruHjVmoQ="
+        crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8="
+        crossorigin="anonymous"></script>
+```
+Then load jFactory:
+
+```html
+development:
+<script src="https://cdn.jsdelivr.net/npm/jfactory-es/dist/jFactory-devel.umd.js">
+</script>
+
+production:
+<script src="https://cdn.jsdelivr.net/npm/jfactory-es/dist/jFactory.umd.js">
+</script> 
+```
+And initialize it:
+```html
+const { jFactory } = jFactoryModule; // UMD import
+```
+
+#### NPM Import 
+
+NPM is the recommended installation (jFactory should be imported into your application using a bundler that supports [Tree Shaking](https://developer.mozilla.org/docs/Glossary/Tree_shaking), like [Webpack](https://webpack.js.org)).
+
 ```
 npm add jfactory-es
 ```
-jFactory should be imported into your application using a bundler that supports [Tree Shaking](https://developer.mozilla.org/docs/Glossary/Tree_shaking), like [Webpack](https://webpack.js.org).
 
 ```javascript
-import { jFactory } from "jfactory-es" 
+import { jFactory } from "jfactory-es" // NPM ES6 automatic import
 ```
-**If this doesn't work, or does not switch to developer mode when webpack ["mode"](https://webpack.js.org/configuration/mode/) equals "development", see below**
-(in developer mode, you should see a warning in the console)
+#### Developper mode
 
-See also the starter kit: https://github.com/jfactory-es/jfactory-starterkit
+The developer module provides debug data and logs. 
+You must see a warning in the console when loaded. If not, see Manual import. 
 
-#### Manual import
+####See also 
+* Starter kit: https://github.com/jfactory-es/jfactory-starterkit
 
-If the automatic import doesn't work, manually load one of these modules:
+## Manual vs Automatic
+
+#### NPM Manual import
+
+If the automatic import doesn't work, or does not switch to developer mode when webpack ["mode"](https://webpack.js.org/configuration/mode/) equals "development", manually load one of these modules:
 
 ```javascript
 // ES6 import
@@ -29,15 +66,7 @@ const { jFactory } = require('jfactory-es/dist/jFactory-devel.cjs') // developme
 const { jFactory } = require('jfactory-es/dist/jFactory.cjs') // production
 ```
 
-If you prefer to load it from a script tag (not recommended), 
- manually load jQuery and lodash, and use the umd package:
-  
-```html
-<script src="https://cdn.jsdelivr.net/gh/jfactory-es/jfactory/dist/jFactory-devel.umd.js"></script> <!-- development -->
-<script src="https://cdn.jsdelivr.net/gh/jfactory-es/jfactory/dist/jFactory.umd.js"></script> <!-- production -->
-```
-
-#### Automatic import  
+#### NPM Automatic import  
 ```javascript
 import { jFactory } from "jfactory-es" 
 // or
