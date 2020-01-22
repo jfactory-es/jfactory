@@ -1,3 +1,8 @@
+## 1.2.0 (Jan 22, 2020 )
+* feat: [TraitVue](docs/TraitVue.md): added support to Vue.js
+* feat: [TraitDom](docs/TraitDOM.md).$dom(): added optional argument "appendTo"  
+* feat: [TraitDom](docs/TraitDOM.md).$dom(): support \<template\> cloning  
+
 ## 1.1.0-beta.1 (Dec 17, 2019 )
 * fix: sourcemap for development bundles
 * fix: interrupt the pending phase on opposite phase change 
