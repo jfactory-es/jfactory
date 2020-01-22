@@ -5,30 +5,46 @@
 [Registry](#registry) / [Methods](#injected-methods) / [Usages](#usages)
 
 Registers the result of a jQuery selection that will be automatically removed from document at [Remove Phase](TraitService-Phases.md#remove-phase).
+Also supports \<template\> cloning and dom creation from string.
 
 ## Registry
 `myComponent.$.dom`
 
 ## Injected Methods
 
-### `$dom(registryId {string}, jQueryArgument {selector|HTML|HTMLElement|jQuery selection|array of HTMLElements})`
+### `$dom(registryId {string}, jQueryArgument [, appendTo])`
 Returns: `jQuery selection`
 
 Registers the jQuery selection returned by `$(jQueryArgument)`, with the key `registryId`.
-It can be a string selector, an array of dom elements or a jQuery selection. See https://api.jquery.com/jQuery.
+
+The `jQueryArgument` can be:
+- an HTML string: `"<div></div><div></div>"`
+- a selector: `"#myElement .myClass"`
+- an array of HTMLElements elements: `[HTMLDivElement, HTMLDivElement]`
+- a jQuery selection: `$("#myElement .myClass")` 
+
+See also https://api.jquery.com/jQuery.
  
-**Note**: `$dom()` should only be used to register parent containers that
+**Note**: `$dom()` should only be used to register root containers that
  must be cleared later with all their contents. It is useless to call
  `$dom()` for childNodes of these containers.       
+
+#### Using a \<template\>
+If the result of $(jQueryArgument) is an HTMLTemplate, the returned dom is cloned from its content.
 
 #### Register existing Elements from a Selector
    ```javascript
    myComponent.$dom("boxes", "#box1 .boxes, #box2 .boxes")
    ```
 
-#### Register new Elements from HTML
+#### Register new Elements from HTML with optional "appendTo"
 
    ```javascript
+   myComponent
+    .$dom("boxes", '<div id="box1"><div id="box2">', "body")
+  
+   // is a shortcut for:
+
    myComponent
     .$dom("boxes", '<div id="box1"><div id="box2">')
     .appendTo('body')
@@ -41,7 +57,7 @@ It can be a string selector, an array of dom elements or a jQuery selection. See
     >// => creates a div with id = box1
     >```
 
-### `$domFetch(registryId {string}, url {string} [, fetchOptions {object} = {}])`
+### `$domFetch(registryId {string}, url {string} [, fetchOptions {object} = {}] [, appendTo])`
 Returns: [`JFactoryPromise`](JFactoryPromise.md) resolved as a jQuery 
 
 Register the jQuery selection resulting from the HTMLFragment loaded from `url` and returns a promise that can be awaited.
