@@ -9,7 +9,6 @@ module.exports = {
     "**/*fork",
     "!scripts/",
     "!src/",
-    "!starter_kit/",
     "!test/**",
     "!.eslintrc.js"
   ],
