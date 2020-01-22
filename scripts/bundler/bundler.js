@@ -21,7 +21,7 @@ function build() { // https://github.com/rollup/rollup/issues/761
     .then(() => console.log("-".repeat(80)))
 }
 
-function watch() {
+function watch(verbose) {
   cleanDist();
 
   let _done, count = 0, ready = false,
@@ -45,7 +45,11 @@ function watch() {
       //   ERROR        — encountered an error while bundling
       //   FATAL        — encountered an unrecoverable error
       switch (event.code) {
+        case "START":
+          verbose && console.log("Compiling...");
+          break;
         case "END":
+          verbose && console.log("Compiled successfully.");
           if (!ready) {
             count++;
             if ((ready = count === CONF_ROLLUP.length)) {
@@ -68,7 +72,7 @@ function cleanDist() {
   }
   let dist = path.normalize(env.WORKSPACE + "/dist");
   if (fs.existsSync(dist)) {
-    del.sync(dist + "/*.{m,}js", { dryRun: false });
+    del.sync(dist + "/*.{cjs,umd,mjs,js}{,.map}", { dryRun: false });
   }
 }
 

@@ -3,7 +3,11 @@
 
 require("./env").initEnv();
 if (require.main === module) {
-  require("./bundler/bundler").build()
+  if (process.env.WATCH) {
+    require("./bundler/bundler").watch(true);
+  } else {
+    require("./bundler/bundler").build();
+  }
 } else {
-  module.exports = require("./bundler/bundler").build();
+  module.exports = require("./bundler/bundler")
 }
