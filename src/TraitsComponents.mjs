@@ -15,7 +15,7 @@ import { JFactoryFetch } from "./JFactoryFetch";
 import { JFactoryPromise } from "./JFactoryPromise";
 import { JFactoryObject } from "./JFactoryObject";
 import { jFactoryTrace } from "./JFactoryTrace";
-import { jQuery } from "./jFactory-helpers";
+import { helper_isPlainObject, jQuery } from "./jFactory-helpers";
 
 // ---------------------------------------------------------------------------------------------------------------------
 // Trait Fetch
@@ -327,10 +327,11 @@ export class TraitDOM {
         this.$.assign("dom", this.$.createSubMap(), JFactoryObject.descriptors.ENUMERABLE);
     }
 
-    $dom(id, jQueryArgument) {
+    $dom(id, jQueryArgument, appendTo) {
         if (JFACTORY_DEV) {
             JFactoryExpect("id", id).typeString();
             JFactoryExpect("jQueryArgument", jQueryArgument).type(String, Object);
+            appendTo && JFactoryExpect("appendTo", appendTo).type(String, Object);
         }
 
         let domId;
@@ -344,16 +345,31 @@ export class TraitDOM {
         }
 
         let dom = jQuery(jQueryArgument);
+
+        if (dom[0].tagName === "TEMPLATE") {
+            dom = jQuery(document.importNode(dom[0].content, true).children)
+        }
+
         if (domId) {
             dom[0].id = id
         }
+
+        if (appendTo) {
+            dom.appendTo(appendTo)
+        }
+
         return this.$.dom.$registerSync(id, dom).$value;
     }
 
-    $domFetch(id, url, fetchOptions) {
+    $domFetch(id, url, fetchOptions, appendTo) {
+        if (fetchOptions && !helper_isPlainObject(fetchOptions)) {
+            [fetchOptions, appendTo] = [{}, fetchOptions]
+        }
+
         if (JFACTORY_DEV) {
             JFactoryExpect("id", id).typeString();
             JFactoryExpect("url", url).typeString();
+            appendTo && JFactoryExpect("appendTo", appendTo).type(String, Object);
         }
 
         let domId;
@@ -371,6 +387,9 @@ export class TraitDOM {
                 let dom = jQuery(r);
                 if (domId) {
                     dom[0].id = id
+                }
+                if (appendTo) {
+                    dom.appendTo(appendTo)
                 }
                 return dom
             });
@@ -538,6 +557,63 @@ export class TraitCSS {
     }
 }
 
+export class TraitVue {
+    trait_constructor() {
+        const kernel = this.$[TraitCore.SYMBOL_PRIVATE].events.kernel;
+        kernel.on("disable", () => this.$vueRemoveAll(TraitService.PHASE.DISABLE));
+        kernel.on("uninstall", () => this.$vueRemoveAll(TraitService.PHASE.UNINSTALL));
+        this.$.assign("vue", this.$.createSubMap(), JFactoryObject.descriptors.ENUMERABLE);
+    }
+
+    $vue(id, vue) {
+        if (JFACTORY_DEV) {
+            JFactoryExpect("id", id).typeString();
+            JFactoryExpect("vue", vue).type(Object);
+        }
+
+        if (JFACTORY_DEV && this.$.vue.has(id)) {
+            throw new jFactoryError.KEY_DUPLICATED({ target: "$vue(id)", given: id })
+        }
+
+        return this.$.vue.$registerSync(id, vue).$value;
+    }
+
+    $vueRemove(id) {
+        if (JFACTORY_DEV) {
+            JFactoryExpect("$vueRemove(id)", id).typeString();
+            if (!this.$.vue.has(id)) {
+                throw new jFactoryError.KEY_MISSING({
+                    target: "$vueRemove(id)",
+                    given: id
+                })
+            }
+            // eslint-disable-next-line no-debugger,brace-style
+            if (this.$.vue.get(id)._debug_remove_called) {debugger}
+            this.$.vue.get(id)._debug_remove_called = true
+        }
+
+        let entry = this.$.vue.get(id);
+        jQuery(entry.$value.$el).remove();
+        entry.$value.$destroy();
+        this.$.vue.delete(id)
+    }
+
+    $vueRemoveAll(removePhase) {
+        if (JFACTORY_DEV) {
+            JFactoryExpect("removePhase", removePhase)
+                .equalIn(TraitService.PHASES)
+        }
+        let subs = this.$.vue;
+        if (subs.size) {
+            for (const [key, sub] of subs) {
+                if (sub.$phaseRemove === removePhase) {
+                    this.$vueRemove(key)
+                }
+            }
+        }
+    }
+}
+
 // ---------------------------------------------------------------------------------------------------------------------
 // ---------------------------------------------------------------------------------------------------------------------
 // ---------------------------------------------------------------------------------------------------------------------
@@ -549,3 +625,4 @@ jFactory.TraitInterval = TraitInterval;
 jFactory.TraitMutation = TraitMutation;
 jFactory.TraitDOM = TraitDOM;
 jFactory.TraitCSS = TraitCSS;
+jFactory.TraitVue = TraitVue;

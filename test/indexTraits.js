@@ -7,3 +7,4 @@ require("./TraitCSS.test");
 require("./TraitTimeout.test");
 require("./TraitInterval.test");
 require("./TraitMutation.test");
+require("./TraitVue.test");

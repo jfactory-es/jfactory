@@ -32,6 +32,7 @@ The Traits provides the methods, properties and registry injected into your comp
 | [TraitState](TraitState.md)       | `$.states`   | `$state()`                                                           |
 | [TraitTask](TraitTask.md)         | `$.tasks`    | `$task()` `$taskRemove()` `$taskRemoveAll()`                         |
 | [TraitTimeout](TraitTimeout.md)   | `$.timeouts` | `$timeout()` `$timeoutRemove()` `$timeoutRemoveAll()`                |
+| [TraitVue](TraitVue.md)           | `$.vue`      | `$vue()` `$vueRemove()` `$vueRemoveAll()`                            |
  
 ## Classes (Internal Library)
 
