@@ -22,7 +22,7 @@ jFactory components are able to:
 ## Supported libraries
 
 <img align="left" height="40" src="https://vuejs.org/images/logo.png">jFactory supports Vue.js objects,
- making components able to automatically uninstall their views or reinstall them from templates.
+ making components able to automatically uninstall/reinstall their views from templates.
 See [Playground](./docs/index-playground.md#vuejs).
 
 ## Overview
@@ -58,7 +58,7 @@ await component.$uninstall();
 
 jFactory is an easy-to-learn library based on jQuery. Unlike a framework, it does not impose an application architecture: you are free to use only what you want without restriction. 
 
-All the [methods are listed here](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-index.md#traits-component-features)
+All the [methods are listed here](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-index.md#traits-component-features).
 
 ## Patterns
 

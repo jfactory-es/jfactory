@@ -1,11 +1,11 @@
 # jFactory
-<img align="right" width="140" src="https://jfactory-es.github.io/jfactory/img/jFactory.png">jFactory is a free JavaScript library that allows you to easily compartmentalize your application into components. Thus, everything they initialize can be  tracked, stopped and removed automatically.
+<img align="right" width="140" src="img/jFactory.png">jFactory is a free JavaScript library that allows you to easily compartmentalize your application into components. Thus, everything they initialize can be  tracked, stopped and removed automatically.
 
-Imagine a web component that displays a DOM window with its CSS, loads data and performs various asynchronous and timed processes. **Simply call `myComponent.$uninstall()` to automatically interrupt and uninstall the DOM, CSS, promise chains, queries, timers, and event listeners.** 
+Imagine a component that use Vue.js to display a view with its CSS, loads data and performs various asynchronous and timed processes. **Simply call `myComponent.$uninstall()` to automatically interrupt and uninstall the Vue, DOM, CSS, promise chains, queries, timers, and event listeners.** 
 
 * [Installation](ref-import.md)
 * [Documentation](ref-index.md) / [Traits](ref-index.md#traits-component-features) / [Classes](ref-index.md#classes-internal-library)
-* [CodePen](https://codepen.io/jfactory-es/pen/KKwxaqr?editors=1010) /  [Starter Kit](https://github.com/jfactory-es/jfactory-starterkit)
+* [CodePen](index-playground.md) /  [Starter Kit](https://github.com/jfactory-es/jfactory-starterkit)
 
 ## Abstract
 
@@ -16,14 +16,21 @@ jFactory components are able to:
 - automatically prevent all expired asynchronous calls (<!--callbacks, -->promise subtrees, event handlers...) 
 - automatically ensure that all the promise chains are completed at service state change
 - keep track in DevTools of all running subscriptions (listeners, timers, requests, promises, dom, css...)
-- improve the Promise chains (Awaitable, Completable, Cancelable and Expirable) 
+- improve the Promise chains (Awaitable, Completable, Cancelable and Expirable)
+- easily create/load CSS & DOM and clone from \<template> 
+
+## Supported libraries
+
+<img align="left" height="40" src="https://vuejs.org/images/logo.png">jFactory supports Vue.js objects,
+ making components able to automatically uninstall/reinstall their views from templates.
+See [Playground](./docs/index-playground.md#vuejs).
 
 ## Overview
 
-In a nutshell, jFactory provides methods to register listeners, dom, css, fetch and asynchronous tasks that will be automatically stopped (including subpromise trees) and removed at oposite service state change. 
+In a nutshell, jFactory provides methods to register listeners, dom, css, fetch and asynchronous tasks that will be automatically stopped (including subpromise trees) and removed at oposite service state change (install/uninstall, enable/disable). 
 
-Components can be created from an Object Literal, using the shortcut [`jFactory()`](ref-components.md#create-a-component-literal), or
-alternatively, **any Class can be extended into a Component** using [JFactoryTraits](ref-components.md#create-a-component-base-class).  
+Components **[can be created from any Class](ref-components.md)**, 
+or by using a simple Object Literal through the shortcut [`jFactory()`](ref-components.md#create-a-component-literal):  
 
 ```javascript
 let component = jFactory("myComponent", {
@@ -45,8 +52,13 @@ await component.$enable();
 await component.$disable(); 
 await component.$uninstall();  
 ```
-* [Try on CodePen](https://codepen.io/jfactory-es/pen/KKwxaqr?editors=1010)
-* [Starter Kit](https://github.com/jfactory-es/jfactory-starterkit)
+[CodePen](index-playground.md) / [Starter Kit](https://github.com/jfactory-es/jfactory-starterkit)
+
+## Is that complicated?
+
+jFactory is an easy-to-learn library based on jQuery. Unlike a framework, it does not impose an application architecture: you are free to use only what you want without restriction. 
+
+All the [methods are listed here](ref-index.md#traits-component-features).
 
 ## Patterns
 
@@ -62,11 +74,10 @@ await component.$uninstall();
 
 - Debug: jFactory is designed for asynchronous component-based application development, using contextual loggers and subloggers,
  filterable source-mapped stack traces, identifiers, loggable extended errors, explorable promise chains, ...
-
      
 ## Library   
 
-jFactory is entirely designed from importable ES6+ Classes that provides theses features: 
+jFactory is designed from [ES6 Classes](ref-index.md#classes-internal-library):
 
 - [Extended Promise](JFactoryPromise.md)
     - Expirable, awaitable, explorable Promise Chain
@@ -79,8 +90,6 @@ jFactory is entirely designed from importable ES6+ Classes that provides theses 
 - Errors, with explorable data
 - Stack traces, filterable and source mapped   
 
-* [Documentation](ref-index.md) / [Traits](ref-index.md#traits-component-features) / [Classes](ref-index.md#classes-internal-library)
-
 ## Philosophy
 
 - Does not modify JavaScript prototypes
@@ -90,7 +99,7 @@ jFactory is entirely designed from importable ES6+ Classes that provides theses 
 - Most of the library is overridable (no inaccessible private function)
 - Designed for debugging and inspections
 
-## Modular JavaScript
+###### Modular JavaScript
   
 - Written in ES6+ Modules with Class optimized for Tree Shaking
 - Highly configurable, overridable and dynamically patchable
@@ -98,14 +107,17 @@ jFactory is entirely designed from importable ES6+ Classes that provides theses 
 - Provides a "Developer Build" for additional validations and debugging properties   
 
 ## Implementation
-[![npm version](https://img.shields.io/npm/v/jfactory-es.svg)](https://www.npmjs.com/package/jfactory-es)
 [![GitHub version](https://img.shields.io/github/package-json/v/jfactory-es/jfactory.svg?label=git)](https://github.com/jfactory-es/jfactory)
+[![npm version](https://img.shields.io/npm/v/jfactory-es.svg)](https://www.npmjs.com/package/jfactory-es)
 [![Tests](https://github.com/jfactory-es/jfactory/workflows/Node%20CI/badge.svg)](#implementation)
 <!--
 [![](https://img.shields.io/github/issues/jfactory-es/jfactory.svg?style=flat)](#implementation)
 [![](https://img.shields.io/snyk/vulnerabilities/npm/jfactory-es.svg)](#implementation) 
 -->
-- External Dependencies: jQuery, Lodash (may be removed in next releases)
+
+- Supports Vue.js
+- Supports Promises, Listeners, Timers, DOM, CSS   
+- Dependencies: jQuery, Lodash
 
 ## How to Contribute
 
