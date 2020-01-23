@@ -5,7 +5,7 @@ Imagine a component that use Vue.js to display a view with its CSS, loads data a
 
 * [Installation](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-import.md)
 * [Documentation](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-index.md) / [Traits](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-index.md#traits-component-features) / [Classes](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-index.md#classes-internal-library)
-* [CodePen](https://codepen.io/jfactory-es/pen/KKwxaqr?editors=1010) /  [Starter Kit](https://github.com/jfactory-es/jfactory-starterkit)
+* [CodePen](https://github.com/jfactory-es/jfactory/blob/master/docs/index-playground.md) /  [Starter Kit](https://github.com/jfactory-es/jfactory-starterkit)
 
 ## Abstract
 
@@ -46,7 +46,7 @@ await component.$enable();
 await component.$disable(); 
 await component.$uninstall();  
 ```
- [CodePen](https://codepen.io/jfactory-es/pen/KKwxaqr?editors=1010) / [Starter Kit](https://github.com/jfactory-es/jfactory-starterkit)
+[CodePen](https://github.com/jfactory-es/jfactory/blob/master/docs/index-playground.md) / [Starter Kit](https://github.com/jfactory-es/jfactory-starterkit)
 
 ## Is that complicated?
 
