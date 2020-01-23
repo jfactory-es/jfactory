@@ -5,6 +5,7 @@
 Components are Objects extended by `JFactoryTraits` to provide the features of jFactory.
 
 * [Create a Component (literal)](#create-a-component-literal)
+* [Create a Component (inherit)](#create-a-component-inherit)
 * [Create a Component (base class)](#create-a-component-base-class)
 
 ## Component Creation
@@ -22,6 +23,23 @@ let myComponent = jFactory('myComponentName', {
     myProperty: 123,
     myMethod: function() {}
 })
+```
+
+### Create a Component (inherit)
+
+You can create your Class component by inheriting from JFactoryComponent
+
+```javascript
+import {jFactory, JFactoryComponent} from "jfactory-es";
+
+class MyComponentClass extends JFactoryComponent {
+    constructor(name) {
+        super(name);
+    }
+}
+
+let myComponent1 = new MyComponentClass('Component1', 123);
+myComponent1.$install(true);
 ```
 
 ### Create a Component (base class)
