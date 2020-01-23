@@ -23,7 +23,7 @@ jFactory components are able to:
 
 <img align="left" height="40" src="https://vuejs.org/images/logo.png">jFactory supports Vue.js objects,
  making components able to automatically uninstall/reinstall their views from templates.
-See [Playground](./docs/index-playground.md#vuejs).
+See [Playground](index-playground.md#vuejs).
 
 ## Overview
 
