@@ -19,10 +19,10 @@ jFactory components are able to:
 - improve the Promise chains (Awaitable, Completable, Cancelable and Expirable)
 - easily create/load CSS & DOM and clone from \<template> 
 
-## Supports
+## Supported libraries
 
-<img align="left" height="40" src="https://vuejs.org/images/logo.png">jFactory can register Vue.js objects 
-so your components can automatically remove their views and recreate them from template.
+<img align="left" height="40" src="https://vuejs.org/images/logo.png">jFactory supports Vue.js objects,
+ making components able to automatically uninstall their views or reinstall them from templates.
 See [Playground](./docs/index-playground.md#vuejs).
 
 ## Overview
