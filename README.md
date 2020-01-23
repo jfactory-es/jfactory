@@ -19,6 +19,12 @@ jFactory components are able to:
 - improve the Promise chains (Awaitable, Completable, Cancelable and Expirable)
 - easily create/load CSS & DOM and clone from \<template> 
 
+## Supports
+
+<img align="left" height="40" src="https://vuejs.org/images/logo.png">jFactory can register Vue.js objects 
+so your components can automatically remove their views and recreate them from template.
+See [Playground](./docs/index-playground.md#vuejs).
+
 ## Overview
 
 In a nutshell, jFactory provides methods to register listeners, dom, css, fetch and asynchronous tasks that will be automatically stopped (including subpromise trees) and removed at oposite service state change (install/uninstall, enable/disable). 
@@ -50,7 +56,7 @@ await component.$uninstall();
 
 ## Is that complicated?
 
-jFactory is an easy-to-learn library, based on jQuery from which it takes its syntax. Contrary to a framework, it does not impose an application architecture: you are free to use only what you want without restriction. 
+jFactory is an easy-to-learn library based on jQuery. Unlike a framework, it does not impose an application architecture: you are free to use only what you want without restriction. 
 
 All the [methods are listed here](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-index.md#traits-component-features)
 
