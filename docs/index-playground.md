@@ -1,6 +1,6 @@
-[jFactory](index.md) > CodePen 
+[jFactory](index.md) > Playground 
 
-# CodePen
+## Simple Component
 
-* [Simple Component from Object Literal (Vanilla)](https://codepen.io/jfactory-es/pen/KKwxaqr?editors=1010) 
-* Simple Component from Object Literal (Vue.js)
+* [from Object Literal (Vanilla)](https://codepen.io/jfactory-es/pen/KKwxaqr?editors=1010) 
+* from Object Literal (Vue.js)
