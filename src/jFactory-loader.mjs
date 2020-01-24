@@ -26,7 +26,7 @@ export const jFactoryLoader = {
 };
 
 export function jFactoryDev() {
-    console.warn("jFactory: RUNNING IN DEVELOPER MODE, PERFORMANCES WILL BE AFFECTED");
+    console.log("jFactory is running in development mode.\nPerformances will be affected.");
     for (let [name, entry] of Object.entries(jFactoryConfig.jFactoryDev.requireCompatibility)) {
         let pass;
         try {pass = Boolean(entry.test())} catch (ignore) {}
