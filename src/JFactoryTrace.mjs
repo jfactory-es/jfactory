@@ -143,10 +143,8 @@ jFactoryLoader.onInit(function() {
     if (config && config.use !== false) {
         let constructor;
         constructor = typeof config.use === "function" ?
-            config.use : typeof StackTrace === "object" ?
-                JFactoryTrace_LIB_STACKTRACE :
-                (JFACTORY_DEV && console.warn("jFactory: StackTrace lib not found, using fallback"),
-                JFactoryTrace_NOFILTER);
+            config.use :
+            typeof StackTrace === "object" ? JFactoryTrace_LIB_STACKTRACE : JFactoryTrace_NOFILTER;
         if (constructor === JFactoryTrace_LIB_STACKTRACE) {
             console.warn("jFactory: Stack trace enabled; Performance will be affected")
         }
