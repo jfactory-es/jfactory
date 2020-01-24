@@ -1,7 +1,9 @@
 # jFactory
 <img align="right" width="140" src="img/jFactory.png">jFactory is a free JavaScript library that allows you to easily compartmentalize your application into components. Thus, everything they initialize can be  tracked, stopped and removed automatically.
 
-Imagine a component that use Vue.js to display a view with its CSS, loads data and performs various asynchronous and timed processes. **Simply call `myComponent.$uninstall()` to automatically interrupt and uninstall the Vue, DOM, CSS, promise chains, queries, timers, and event listeners.** 
+ **Simply call `myComponent.$uninstall()` to automatically interrupt and uninstall the Views, DOM, CSS, promise, queries, timers, and event listeners.** 
+
+ **Then call `myComponent.$install()` to reinstall your component.** 
 
 * [Installation](ref-import.md)
 * [Documentation](ref-index.md) / [Traits](ref-index.md#traits-component-features) / [Classes](ref-index.md#classes-internal-library)
@@ -21,13 +23,16 @@ jFactory components are able to:
 
 ## Supported libraries
 
-<img align="left" height="40" src="https://vuejs.org/images/logo.png">jFactory supports Vue.js objects,
-allowing components to automatically uninstall/reinstall their views from templates.
-See [Playground](index-playground.md#vuejs).
+<img align="left" height="40" src="https://vuejs.org/images/logo.png"> 
+<img align="left" height="40" src="https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg">
+
+jFactory supports **Vue.js** and **React**, allowing components to automatically **uninstall** and **reinstall** their views.
+
+See [Playground](index-playground.md).
 
 ## Overview
 
-In a nutshell, jFactory provides methods to register listeners, dom, css, fetch and asynchronous tasks that will be automatically stopped (including subpromise trees) and removed at oposite service state change (install/uninstall, enable/disable). 
+In a nutshell, jFactory provides methods to register listeners, views, dom, css, requests and asynchronous tasks that will be automatically stopped (including subpromise trees) and removed at opposite service state change (install/uninstall, enable/disable). 
 
 Components **[can be created from any Class](ref-components.md)**, 
 or by using a simple Object Literal through the shortcut [`jFactory()`](ref-components.md#create-a-component-literal):  
@@ -35,7 +40,7 @@ or by using a simple Object Literal through the shortcut [`jFactory()`](ref-comp
 ```javascript
 let component = jFactory("myComponent", {
   onInstall() {
-    this.$cssFetch("#myCSS", "asset.css").then(() => this.$log("css loaded"))
+    this.$domFetch("#myDiv", "asset.html", "#parent").then(() => this.$log("html loaded"));
   },
 
   onEnable() {
@@ -116,7 +121,7 @@ jFactory is designed from [ES6 Classes](ref-index.md#classes-internal-library):
 -->
 
 - Supports Vue.js
-- Supports Promises, Listeners, Timers, DOM, CSS   
+- Supports Promises, Listeners, Timers, Mutations, DOM, CSS   
 - Dependencies: jQuery, Lodash
 
 ## How to Contribute

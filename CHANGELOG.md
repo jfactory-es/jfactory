@@ -1,5 +1,8 @@
+## 1.3.0 (Jan 24, 2020 )
+* feat: [TraitLibReact](docs/TraitLibReact.md): added support to React
+
 ## 1.2.0 (Jan 22, 2020 )
-* feat: [TraitVue](docs/TraitVue.md): added support to Vue.js
+* feat: [TraitLibVue](docs/TraitLibVue.md): added support to Vue.js
 * feat: [TraitDom](docs/TraitDOM.md).$dom(): added optional argument "appendTo"  
 * feat: [TraitDom](docs/TraitDOM.md).$dom(): support \<template\> cloning  
 
