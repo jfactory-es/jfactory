@@ -166,7 +166,7 @@ if (!BUNDLE) { // simplified build for development
         format: "cjs",
         file: "dist/jFactory-devel.cjs.js",
         interop: false,
-        sourcemap: true,
+        sourcemap: "inline",
         ...common_output
       },
       ...common,
@@ -180,7 +180,7 @@ if (!BUNDLE) { // simplified build for development
         name: "jFactoryModule",
         file: "dist/jFactory-devel.umd.js",
         interop: false,
-        sourcemap: true,
+        sourcemap: "inline",
         ...common_output
       },
       ...common,
@@ -193,7 +193,7 @@ if (!BUNDLE) { // simplified build for development
         format: "es",
         file: "dist/jFactory-devel.mjs",
         interop: false,
-        sourcemap: true,
+        sourcemap: "inline",
         ...common_output
       },
       ...common,
