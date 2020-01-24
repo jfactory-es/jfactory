@@ -118,7 +118,7 @@ jFactory is designed from [ES6 Classes](ref-index.md#classes-internal-library):
 [![](https://img.shields.io/snyk/vulnerabilities/npm/jfactory-es.svg)](#implementation) 
 -->
 
-- Supports Vue.js
+- Supports Vue.js and React
 - Supports Promises, Listeners, Timers, Mutations, DOM, CSS   
 - Dependencies: jQuery, Lodash
 
