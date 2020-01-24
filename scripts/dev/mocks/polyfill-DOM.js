@@ -10,6 +10,7 @@ global.window = new jsdom.JSDOM(
 
 /* global window */
 global.document = window.document;
+global.navigator = window.navigator;
 
 Object.getOwnPropertyNames(window).forEach(key => {
   let k = key[0];
