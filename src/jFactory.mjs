@@ -37,7 +37,8 @@ export class JFactoryCoreObject {
  * @mixes TraitMutation
  * @mixes TraitTimeout
  * @mixes TraitInterval
- * @mixes TraitVue
+ * @mixes TraitLibVue
+ * @mixes TraitLibReact
  */
 export class JFactoryComponent extends JFactoryCoreObject {
     constructor(name) {
@@ -50,7 +51,8 @@ export class JFactoryComponent extends JFactoryCoreObject {
             .use(jFactory.TraitMutation)
             .use(jFactory.TraitTimeout)
             .use(jFactory.TraitInterval)
-            .use(jFactory.TraitVue);
+            .use(jFactory.TraitLibVue)
+            .use(jFactory.TraitLibReact);
     }
 }
 

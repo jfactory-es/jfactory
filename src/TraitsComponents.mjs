@@ -557,7 +557,7 @@ export class TraitCSS {
     }
 }
 
-export class TraitVue {
+export class TraitLibVue {
     trait_constructor() {
         const kernel = this.$[TraitCore.SYMBOL_PRIVATE].events.kernel;
         kernel.on("disable", () => this.$vueRemoveAll(TraitService.PHASE.DISABLE));
@@ -614,6 +614,75 @@ export class TraitVue {
     }
 }
 
+export class TraitLibReact {
+    trait_constructor() {
+        const kernel = this.$[TraitCore.SYMBOL_PRIVATE].events.kernel;
+        kernel.on("disable", () => this.$reactRemoveAll(TraitService.PHASE.DISABLE));
+        kernel.on("uninstall", () => this.$reactRemoveAll(TraitService.PHASE.UNINSTALL));
+        this.$.assign("react", this.$.createSubMap(), JFactoryObject.descriptors.ENUMERABLE);
+    }
+
+    $react(id, container, element, ...renderOtherArguments) {
+        if (JFACTORY_DEV) {
+            if (!jFactory.ReactDOM) {
+                throw new Error("jFactory.ReactDOM=ReactDOM must be set before using the React Trait");
+            }
+            JFactoryExpect("id", id).typeString();
+            JFactoryExpect("container", container).type(HTMLElement, jQuery);
+        }
+
+        if (JFACTORY_DEV && this.$.react.has(id)) {
+            throw new jFactoryError.KEY_DUPLICATED({ target: "$react(id)", given: id })
+        }
+
+        container = jQuery(container)[0];
+        let view = jFactory.ReactDOM.render(element, container, ...renderOtherArguments);
+        return this.$.react.$registerSync(id, { container, view }).$value.view;
+    }
+
+    $reactRemove(id) {
+        if (JFACTORY_DEV) {
+            JFactoryExpect("$reactRemove(id)", id).typeString();
+            if (!this.$.react.has(id)) {
+                throw new jFactoryError.KEY_MISSING({
+                    target: "$reactRemove(id)",
+                    given: id
+                })
+            }
+            // eslint-disable-next-line no-debugger,brace-style
+            if (this.$.react.get(id)._debug_remove_called) {debugger}
+            this.$.react.get(id)._debug_remove_called = true
+        }
+
+        let value = this.$.react.get(id).$value;
+        let el = value.container;
+        if (el) {
+            if (!jFactory.ReactDOM.unmountComponentAtNode(el)) {
+                if (JFACTORY_DEV) {
+                    this.$logWarn("unmountComponentAtNode failed to unmount", el);
+                }
+            }
+            jQuery(el).remove();
+        }
+        this.$.react.delete(id)
+    }
+
+    $reactRemoveAll(removePhase) {
+        if (JFACTORY_DEV) {
+            JFactoryExpect("removePhase", removePhase)
+                .equalIn(TraitService.PHASES)
+        }
+        let subs = this.$.react;
+        if (subs.size) {
+            for (const [key, sub] of subs) {
+                if (sub.$phaseRemove === removePhase) {
+                    this.$reactRemove(key)
+                }
+            }
+        }
+    }
+}
+
 // ---------------------------------------------------------------------------------------------------------------------
 // ---------------------------------------------------------------------------------------------------------------------
 // ---------------------------------------------------------------------------------------------------------------------
@@ -625,4 +694,5 @@ jFactory.TraitInterval = TraitInterval;
 jFactory.TraitMutation = TraitMutation;
 jFactory.TraitDOM = TraitDOM;
 jFactory.TraitCSS = TraitCSS;
-jFactory.TraitVue = TraitVue;
+jFactory.TraitLibVue = TraitLibVue;
+jFactory.TraitLibReact = TraitLibReact;

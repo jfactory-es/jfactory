@@ -26,13 +26,14 @@ The Traits provides the methods, properties and registry injected into your comp
 | [TraitEvents](TraitEvents.md)     | `$.listeners` `$.observers` | `$on()` `$off()` `$trigger()` `$triggerParallel()`    |
 | [TraitFetch](TraitFetch.md)       | `$.requests` | `$fetch()` `$fetchText()` `$fetchJSON()` `$fetchRemove()` `$fetchRemoveAll()` |
 | [TraitInterval](TraitInterval.md) | `$.timeints` | `$interval()` `$intervalRemove()` `$intervalRemoveAll()`             |
+| [TraitLibVue](TraitLibVue.md)     | `$.vue`      | `$vue()` `$vueRemove()` `$vueRemoveAll()`                            |
+| [TraitLibReact](TraitLibReact.md) | `$.react`    | `$react()` `$reactRemove()` `$reactRemoveAll()`                            |
 | [TraitLog](TraitLog.md)           | `$.logger`   | `$log()` `$logWarn()` `$logErr()`                                    |
 | [TraitMutation](TraitMutation.md) | `$.mutations`| `$mutation()` `$mutationRemove()` `$mutationRemoveAll()`             |
 | [TraitService](TraitService.md)   | `$.service`  | `$install()` `$enable()` `$disable()` `$uninstall()`                 |
 | [TraitState](TraitState.md)       | `$.states`   | `$state()`                                                           |
 | [TraitTask](TraitTask.md)         | `$.tasks`    | `$task()` `$taskRemove()` `$taskRemoveAll()`                         |
 | [TraitTimeout](TraitTimeout.md)   | `$.timeouts` | `$timeout()` `$timeoutRemove()` `$timeoutRemoveAll()`                |
-| [TraitVue](TraitVue.md)           | `$.vue`      | `$vue()` `$vueRemove()` `$vueRemoveAll()`                            |
  
 ## Classes (Internal Library)
 
