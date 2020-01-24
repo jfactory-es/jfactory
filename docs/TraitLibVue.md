@@ -1,10 +1,10 @@
-[jFactory](index.md) > [Reference](ref-index.md) > [Traits](ref-index.md#traits-component-features) > TraitVue
+[jFactory](index.md) > [Reference](ref-index.md) > [Traits](ref-index.md#traits-component-features) > TraitLibVue
 
-# TraitVue
+# TraitLibVue
 
 [Registry](#registry) / [Methods](#injected-methods) / [Usages](#usages)
 
-Registers a Vue.js object that will be automatically destroyed and removed from document at [Remove Phase](TraitService-Phases.md#remove-phase).
+Registers a Vue.js view that will be automatically destroyed and removed from document at [Remove Phase](TraitService-Phases.md#remove-phase).
 
 ## Registry
 `myComponent.$.vue`
