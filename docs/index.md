@@ -1,9 +1,8 @@
 # jFactory
 <img align="right" width="140" src="img/jFactory.png">jFactory is a free JavaScript library that allows you to easily compartmentalize your application into components. Thus, everything they initialize can be  tracked, stopped and removed automatically.
 
- **Simply call `myComponent.$uninstall()` to automatically interrupt and uninstall the Views, DOM, CSS, promise, queries, timers, and event listeners.** 
-
- **Then call `myComponent.$install()` to reinstall your component.** 
+**Simply call `myComponent.$uninstall()` to automatically interrupt and uninstall the Views, DOM, CSS, promise, queries, timers, and event listeners.**\
+Then call `myComponent.$install()` to reinstall your component.
 
 * [Installation](ref-import.md)
 * [Documentation](ref-index.md) / [Traits](ref-index.md#traits-component-features) / [Classes](ref-index.md#classes-internal-library)
@@ -24,7 +23,7 @@ jFactory components are able to:
 ## Supported libraries
 
 <img align="left" height="40" src="https://vuejs.org/images/logo.png"> 
-<img align="left" height="40" src="https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg">
+<img height="40" src="https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg">
 
 jFactory supports **Vue.js** and **React**, allowing components to automatically **uninstall** and **reinstall** their views.
 
