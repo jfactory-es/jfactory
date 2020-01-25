@@ -4,7 +4,7 @@
 
 ### Import by \<script\> 
 
-This is not the recommended usage, but for immediate testing or web projects that doesn't compile a js bundle, you can use the UMD module from a CDN:
+This is not the recommended usage, but for immediate testing or web projects that don't compile a js bundle, you can use the UMD module from a CDN:
 
 First load the dependencies (jQuery and lodash), by example :
 ```html
