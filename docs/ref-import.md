@@ -19,11 +19,11 @@ Then load jFactory:
 
 ```html
 development:
-<script src="https://cdn.jsdelivr.net/npm/jfactory/dist/jFactory-devel.umd.js">
+<script src="https://cdn.jsdelivr.net/npm/jfactory@latest/dist/jFactory-devel.umd.js">
 </script>
 
 production:
-<script src="https://cdn.jsdelivr.net/npm/jfactory/dist/jFactory.umd.js">
+<script src="https://cdn.jsdelivr.net/npm/jfactory@latest/dist/jFactory.umd.js">
 </script> 
 ```
 And initialize it:
