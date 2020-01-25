@@ -38,7 +38,7 @@ await myComponent.$state("myState", "1234")
 ## Usages
 <!--
 ```javascript
-import { jFactory } from "jfactory-es";
+import { jFactory } from "jfactory";
 
 let myComponent = jFactory("myComponent", {
     onEnable() {

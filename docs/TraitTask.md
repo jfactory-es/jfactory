@@ -66,7 +66,7 @@ Returns: [`JFactoryPromise`](JFactoryPromise.md)
 ## Usages
 <!--
 ```javascript
-import { jFactory } from "jfactory-es";
+import { jFactory } from "jfactory";
 
 let myComponent = jFactory("myComponent", {
     onInstall() {

@@ -111,11 +111,11 @@ jFactory is designed from [ES6 Classes](ref-index.md#classes-internal-library):
 
 ## Implementation
 [![GitHub version](https://img.shields.io/github/package-json/v/jfactory-es/jfactory.svg?label=git)](https://github.com/jfactory-es/jfactory)
-[![npm version](https://img.shields.io/npm/v/jfactory-es.svg)](https://www.npmjs.com/package/jfactory-es)
+[![npm version](https://img.shields.io/npm/v/jfactory.svg)](https://www.npmjs.com/package/jfactory)
 [![Tests](https://github.com/jfactory-es/jfactory/workflows/Node%20CI/badge.svg)](#implementation)
 <!--
 [![](https://img.shields.io/github/issues/jfactory-es/jfactory.svg?style=flat)](#implementation)
-[![](https://img.shields.io/snyk/vulnerabilities/npm/jfactory-es.svg)](#implementation) 
+[![](https://img.shields.io/snyk/vulnerabilities/npm/jfactory.svg)](#implementation) 
 -->
 
 - Supports Vue.js and React

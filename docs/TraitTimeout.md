@@ -50,7 +50,7 @@ Expires and removes any timer previously created by `$timeout()` if their [Remov
 ## Usages
 <!--
 ```javascript
-import { jFactory } from "jfactory-es";
+import { jFactory } from "jfactory";
 
 let myComponent = jFactory("myComponent", {
     onInstall() {

@@ -54,7 +54,7 @@ They can be asynchronous (async function or returns a promise).
 Supported Service State Handlers:
  
 ```javascript
-import { jFactory } from "jfactory-es";
+import { jFactory } from "jfactory";
 
 let myComponent = jFactory('myComponent', {
     onInstall() {
@@ -80,7 +80,7 @@ myComponent.$uninstall();
 You shouldn't need this, but additionally to the Service State Handlers, observable State Events are fired when states are changed. However, keep in mind that the `$on()` event observer (like most of other jFactory methods) cannot be called if the component is not `enabled`, except during PHASE_INSTALL or PHASE_ENABLE. So you cannot listen to the install event that way.
                     
 ```javascript
-import { jFactory } from "jfactory-es";
+import { jFactory } from "jfactory";
 
 let myComponent = jFactory('myComponent', {
     onInstall() {

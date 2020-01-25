@@ -45,7 +45,7 @@ myComponent.$logErr("error:", errorObject)
 
 <!--
 ```javascript
-import { jFactory } from "jfactory-es";
+import { jFactory } from "jfactory";
 
 let myComponent = jFactory("myComponent", {
     onInstall() {

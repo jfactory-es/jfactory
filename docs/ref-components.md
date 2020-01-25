@@ -17,7 +17,7 @@ The shortcut `jFactory(name, ...sources)` creates a component using the class `J
 This is suitable for Object Literal declarations, when you don't need Object Inheritance:
 
 ```javascript
-import { jFactory } from "jfactory-es";
+import { jFactory } from "jfactory";
 
 let myComponent = jFactory('myComponentName', {
     myProperty: 123,
@@ -30,7 +30,7 @@ let myComponent = jFactory('myComponentName', {
 You can create your Class component by inheriting from JFactoryComponent
 
 ```javascript
-import {jFactory, JFactoryComponent} from "jfactory-es";
+import {jFactory, JFactoryComponent} from "jfactory";
 
 class MyComponentClass extends JFactoryComponent {
     constructor(name) {
@@ -50,7 +50,7 @@ Alternatively, JFactoryTraits can transform any Class to a jFactory Component Cl
 Here is an example with a custom Component Base Class, and a custom shortcut that produce the same behavior as `jFactory()` :
 
 ```javascript
-import {jFactory, jFactoryTraits} from "jfactory-es";
+import {jFactory, jFactoryTraits} from "jfactory";
 
 class MyCustomComponentBase {
     constructor(name) {
@@ -89,7 +89,7 @@ let myComponent2 = createComponent('Component2', {
 Also works with inheritance:
 
 ```javascript
-import {jFactory, jFactoryTraits} from "jfactory-es";
+import {jFactory, jFactoryTraits} from "jfactory";
 
 class ComponentTypeA {
     constructor(name, value) {

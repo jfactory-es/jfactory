@@ -19,11 +19,11 @@ Then load jFactory:
 
 ```html
 development:
-<script src="https://cdn.jsdelivr.net/npm/jfactory-es/dist/jFactory-devel.umd.js">
+<script src="https://cdn.jsdelivr.net/npm/jfactory/dist/jFactory-devel.umd.js">
 </script>
 
 production:
-<script src="https://cdn.jsdelivr.net/npm/jfactory-es/dist/jFactory.umd.js">
+<script src="https://cdn.jsdelivr.net/npm/jfactory/dist/jFactory.umd.js">
 </script> 
 ```
 And initialize it:
@@ -37,11 +37,11 @@ NPM is the recommended installation. jFactory should be imported into your appli
 Dependencies are automatically imported by the module but you can [change this behavior](#external-dependencies).
 
 ```
-npm add jfactory-es
+npm add jfactory
 ```
 
 ```javascript
-import { jFactory } from "jfactory-es" // NPM ES6 automatic import
+import { jFactory } from "jfactory" // NPM ES6 automatic import
 ```
 ### Developper mode
 
@@ -60,22 +60,22 @@ If the automatic import doesn't work, or does not switch to developer mode when 
 
 ```javascript
 // ES6 import
-import { jFactory } from "jfactory-es/dist/jFactory-devel.mjs" // development
-import { jFactory } from "jfactory-es/dist/jFactory.mjs" // production
+import { jFactory } from "jfactory/dist/jFactory-devel.mjs" // development
+import { jFactory } from "jfactory/dist/jFactory.mjs" // production
 
 // CommonJS import
-const { jFactory } = require('jfactory-es/dist/jFactory-devel.cjs') // development
-const { jFactory } = require('jfactory-es/dist/jFactory.cjs') // production
+const { jFactory } = require('jfactory/dist/jFactory-devel.cjs') // development
+const { jFactory } = require('jfactory/dist/jFactory.cjs') // production
 ```
 
 #### NPM Automatic import  
 ```javascript
-import { jFactory } from "jfactory-es" 
+import { jFactory } from "jfactory" 
 // or
-const { jFactory } = require("jfactory-es")  
+const { jFactory } = require("jfactory")  
 ```
 
-`jfactory-es` conditionally loads a cjs module using require(). 
+`jfactory` conditionally loads a cjs module using require(). 
 So it should works only on cjs compatible environment (including node and webpack). It requires
 a `process.env.NODE_ENV` to automatically switch between `production` and `development`. 
 
