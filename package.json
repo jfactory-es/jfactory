@@ -1,5 +1,5 @@
 {
-  "name": "jfactory-es",
+  "name": "jfactory",
   "version": "1.3.0",
   "description": "Easily compartmentalize your JavaScript application into components. Track, stop, and delete anything initialized into them, including promise chains, requests, listeners, views, DOM and CSS.",
   "keywords": [
