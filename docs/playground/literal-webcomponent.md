@@ -61,7 +61,7 @@ class ClockComponent extends HTMLElement {
 
         // Load a css and register it as "clockCss"
         // see https://github.com/jfactory-es/jfactory/blob/master/docs/TraitCSS.md
-        await this.$cssFetch("clockCss", "assets/clock.css", this.shadowRoot);
+        await this.$cssFetch("clockCss", "//cdn.jsdelivr.net/gh/jfactory-es/jfactory-starterkit/assets/clock.css", this.shadowRoot);
 
         // Register a DOM target as "clockDom" and append it to "body"
         // see https://github.com/jfactory-es/jfactory/blob/master/docs/TraitDOM.md
