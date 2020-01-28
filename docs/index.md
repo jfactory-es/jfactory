@@ -25,7 +25,6 @@ jFactory components are able to:
 <img align="left" height="40" src="./img/HTML5.png"> 
 
 jFactory also supports **Vue.js**, **React**, and **HTML5 WebComponents** allowing components to automatically **uninstall** and **reinstall** their views.
-
 See [Playground](playground/README.md).
 
 ## Overview
@@ -118,7 +117,7 @@ jFactory is designed from [ES6 Classes](ref-index.md#classes-internal-library):
 [![](https://img.shields.io/snyk/vulnerabilities/npm/jfactory.svg)](#implementation) 
 -->
 
-- Supports Vue.js and React
+- Supports Vue.js, React and HTML5 Web Components
 - Supports Promises, Listeners, Timers, Mutations, DOM, CSS   
 - Dependencies: jQuery, Lodash
 
