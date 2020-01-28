@@ -27,7 +27,7 @@ myComponent.$css('myStyle', "div {border: 1px solregistryId red}");
     >// => creates a style with id = css1
     >```
 
-### `$cssFetch(registryId {string}, url {string})`
+### `$cssFetch(registryId {string}, url {string} [, appendTo = "head"])`
 Returns: [`JFactoryPromise`](JFactoryPromise.md) resolved as a jQuery 
 
 Loads a CSS file by appending a `<link type="stylesheet" href=[url]>` into `<head>`
