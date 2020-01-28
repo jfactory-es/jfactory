@@ -19,7 +19,11 @@ import { jFactoryTraits } from "./jFactory-traits";
  */
 export class JFactoryCoreObject {
     constructor(name) {
-        jFactoryTraits(this, JFactoryCoreObject)
+        JFactoryCoreObject.inject(this, JFactoryCoreObject, name)
+    }
+
+    static inject(target, constructor, name) {
+        jFactoryTraits(target, constructor)
             .use(jFactory.TraitCore)
             .use(jFactory.TraitAbout, { name })
             .use(jFactory.TraitLog)
@@ -43,8 +47,11 @@ export class JFactoryCoreObject {
 export class JFactoryComponent extends JFactoryCoreObject {
     constructor(name) {
         super(name);
+        JFactoryComponent.inject(this, JFactoryComponent)
+    }
 
-        jFactoryTraits(this, JFactoryComponent)
+    static inject(target, constructor) {
+        jFactoryTraits(target, constructor)
             .use(jFactory.TraitFetch)
             .use(jFactory.TraitDOM)
             .use(jFactory.TraitCSS)
