@@ -370,6 +370,7 @@ export class TraitDOM {
             JFactoryExpect("id", id).typeString();
             JFactoryExpect("url", url).typeString();
             appendTo && JFactoryExpect("appendTo", appendTo).type(String, Object);
+            fetchOptions && JFactoryExpect("fetchOptions", fetchOptions).type(Object);
         }
 
         let domId;
@@ -477,7 +478,7 @@ export class TraitCSS {
         ).$value;
     }
 
-    $cssFetch(id, url) {
+    $cssFetch(id, url, appendTo = "head") {
         if (JFACTORY_DEV) {
             JFactoryExpect("id", id).typeString();
             JFactoryExpect("url", url).typeString();
@@ -505,7 +506,7 @@ export class TraitCSS {
             },
             resolve => dom = jQuery("<link>", { id: cssId ? id : "", rel: "stylesheet", type: "text/css" })
                 .addClass("jFactory-css")
-                .appendTo("head")
+                .appendTo(appendTo)
                 .on("load", () => {
                     resolve(dom)
                 }).attr("href", url)
