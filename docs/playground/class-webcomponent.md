@@ -1,6 +1,6 @@
-[jFactory](../index.md) > [Playground](./README.md) > Literal - Web Component  
+[jFactory](../index.md) > [Playground](./README.md) > Class - Web Component  
 
-# Literal - Web Component
+# Class - Web Component
 
 [Try it on CodePen](https://codepen.io/jfactory-es/pen/MWYdgoz?editors=1010)
 
