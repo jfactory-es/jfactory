@@ -1,3 +1,8 @@
+## 1.4.0 (Jan 28, 2020 )
+* feat: Better support for [Web Components](docs/playground/literal-webcomponent.md)
+* feat: Shortcuts for [Injecting the jFactory Traits into any Classes](docs/ref-components.md#create-a-component-base-class) 
+* feat: [TraitCSS](docs/TraitCSS.md).$cssFetch(): appendTo option with default to "head"  
+
 ## 1.3.0 (Jan 24, 2020 )
 * feat: [TraitLibReact](docs/TraitLibReact.md): added support to React
 
