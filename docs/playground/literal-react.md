@@ -16,7 +16,7 @@
     
     <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.15/lodash.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jfactory@latest/dist/jFactory-devel.umd.js"></script> 
+    <script src="https://cdn.jsdelivr.net/npm/jfactory@1.4.0/dist/jFactory-devel.umd.js"></script> 
     <script src="https://unpkg.com/react/umd/react.development.js"></script> 
     <script src="https://unpkg.com/react-dom/umd/react-dom.development.js"></script> 
 </head> 
@@ -30,10 +30,10 @@
       <a target="_blank" href="https://github.com/jfactory-es/jfactory/blob/master/docs/playground/README.md">Other demonstrations</a>
     </p>
 
-    <button id="install" onclick="clockComponent.$install()">install</button>
-    <button id="enable" onclick="clockComponent.$enable()">enable</button>
-    <button id="disable" onclick="clockComponent.$disable()">disable</button>
-    <button id="uninstall" onclick="clockComponent.$uninstall()">uninstall</button>
+    <button id="install" onclick="clock.$install()">install</button>
+    <button id="enable" onclick="clock.$enable()">enable</button>
+    <button id="disable" onclick="clock.$disable()">disable</button>
+    <button id="uninstall" onclick="clock.$uninstall()">uninstall</button>
 
     <template id="tpl-vanilla"><div class="clock"/></template>
 </body>
