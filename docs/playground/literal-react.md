@@ -49,7 +49,7 @@ window.clock = jFactory("clock", {
 
   async onInstall() {
     
-       class Clock extends Component {
+       class Clock extends React.Component {
             constructor(props) {
                 super(props);
                 this.state = { message: "" };
