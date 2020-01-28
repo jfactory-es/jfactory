@@ -59,7 +59,7 @@ class MyCustomComponentBase {
         JFactoryComponent.inject(this, MyCustomComponentBase);
 
         /*
-        Shortcuts to:        
+        Shortcut to:        
         jFactoryTraits(this, MyCustomComponentBase)
             // JFactoryCoreObject
             .use(jFactory.TraitCore)
