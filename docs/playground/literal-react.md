@@ -90,7 +90,6 @@ window.clock = jFactory("clock", {
   },
 
   onUninstall() {
-    this.$log("uninstall");
     // Everything installed by onInstall
     // is automatically stopped and removed
   },

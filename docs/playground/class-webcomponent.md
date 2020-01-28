@@ -57,8 +57,6 @@ class ClockComponent extends HTMLElement {
     }
 
     async onInstall() {
-        this.$log("install");
-
         // Load a css and register it as "clockCss"
         // see https://github.com/jfactory-es/jfactory/blob/master/docs/TraitCSS.md
         await this.$cssFetch("clockCss", "//cdn.jsdelivr.net/gh/jfactory-es/jfactory-starterkit/assets/clock.css", this.shadowRoot);
@@ -76,7 +74,6 @@ class ClockComponent extends HTMLElement {
     }
 
     async onEnable() {
-        this.$log("enable");
         this.updateView("Fetching...");
         this.date = await this.fetchDate();
         this.$interval("update", 1000, () => {
@@ -86,14 +83,12 @@ class ClockComponent extends HTMLElement {
     }
 
     onDisable() {
-        this.$log("disable");
         this.updateView("Disabled");
         // everything installed by and after onEnable
         // is automatically stopped and removed
     }
 
     onUninstall() {
-        this.$log("uninstall");
         // everything installed by onInstall
         // is automatically stopped and removed
     }
