@@ -19,7 +19,7 @@ jFactory components are able to:
 - improve the Promise chains (Awaitable, Completable, Cancelable and Expirable)
 - easily create/load CSS & DOM and clone from \<template> 
 
-## Supported API
+## Supported APIs
 <img align="left" height="40" src="https://vuejs.org/images/logo.png"> 
 <img align="left" height="40" src="https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg">
 <img align="left" height="40" src="https://github.com/jfactory-es/jfactory/blob/master/docs/img/HTML5.png"> 
