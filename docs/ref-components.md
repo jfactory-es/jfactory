@@ -27,7 +27,7 @@ let myComponent = jFactory('myComponentName', {
 
 ### Create a Component (inherit)
 
-You can create your Class component by inheriting from JFactoryComponent
+You can create your Class component by inheriting from JFactoryComponent (which inherits from JFactoryCoreObject)
 
 ```javascript
 import {jFactory, JFactoryComponent} from "jfactory";
@@ -45,7 +45,7 @@ myComponent1.$install(true);
 ### Create a Component (base class)
 
 Alternatively, JFactoryTraits can transform any Class to a jFactory Component Class 
-(including Classes that extends HTMLElement to create Web Components).
+(including Classes that extends HTMLElement to create [Web Components](playground/literal-webcomponent.md)).
 
 Here is an example with a custom Component Base Class, and a custom shortcut that produce the same behavior as `jFactory()` :
 
@@ -54,6 +54,12 @@ import {jFactory, jFactoryTraits} from "jfactory";
 
 class MyCustomComponentBase {
     constructor(name) {
+
+        JFactoryCoreObject.inject(this, MyCustomComponentBase, name);
+        JFactoryComponent.inject(this, MyCustomComponentBase);
+
+        /*
+        Shortcuts to:        
         jFactoryTraits(this, MyCustomComponentBase)
             // JFactoryCoreObject
             .use(jFactory.TraitCore)
@@ -70,6 +76,9 @@ class MyCustomComponentBase {
             .use(jFactory.TraitMutation)
             .use(jFactory.TraitTimeout)
             .use(jFactory.TraitInterval)
+            .use(jFactory.TraitLibVue)
+            .use(jFactory.TraitLibReact);
+        */
     }
 }
 
@@ -93,6 +102,9 @@ import {jFactory, jFactoryTraits} from "jfactory";
 
 class ComponentTypeA {
     constructor(name, value) {
+        JFactoryCoreObject.inject(this, ComponentTypeA, name);
+
+        /* shortcut to:
         jFactoryTraits(this, ComponentTypeA)
             .use(jFactory.TraitCore)
             .use(jFactory.TraitAbout, {name})
@@ -101,6 +113,7 @@ class ComponentTypeA {
             .use(jFactory.TraitState)
             .use(jFactory.TraitService)
             .use(jFactory.TraitTask);        
+        */
 
         this.myProperty = value;
     }
@@ -110,13 +123,19 @@ class ComponentTypeA {
 class ComponentTypeB extends ComponentTypeA {
     constructor(name, value) {
         super(name, value);
+        JFactoryComponent.inject(this, ComponentTypeB);
+
+        /* shortcut to:
         jFactoryTraits(this, ComponentTypeB)
             .use(jFactory.TraitFetch)
             .use(jFactory.TraitDOM)
             .use(jFactory.TraitCSS)
             .use(jFactory.TraitMutation)
             .use(jFactory.TraitTimeout)
-            .use(jFactory.TraitInterval);    
+            .use(jFactory.TraitInterval)
+            .use(jFactory.TraitLibVue)
+            .use(jFactory.TraitLibReact);
+        */    
     }
     sayHello() {alert('hello')}
 }

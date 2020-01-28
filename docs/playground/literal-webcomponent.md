@@ -1,6 +1,8 @@
-# The Inaccurate Clock Component - Vue
+[jFactory](../index.md) > [Playground](./README.md) > Literal - Web Component  
 
-[Try it on CodePen](https://codepen.io/jfactory-es/pen/GRgzMqx?editors=1010)
+# Literal - Web Component
+
+[Try it on CodePen](https://codepen.io/jfactory-es/pen/MWYdgoz?editors=1010)
 
 ```html
 <!DOCTYPE html>
@@ -37,7 +39,7 @@
 ```
 
 ```javascript
-const { jFactory } = jFactoryModule; // loaded as umd, see html.
+const { jFactory, JFactoryCoreObject } = jFactoryModule; // loaded as umd, see html.
 
 class ClockComponent extends HTMLElement {
 
@@ -45,7 +47,7 @@ class ClockComponent extends HTMLElement {
         super();
 
         // Inject jFactory Traits using shortcuts
-        // see https://github.com/jfactory-es/jfactory/blob/master/src/jFactory.mjs
+        // see https://github.com/jfactory-es/jfactory/blob/master/docs/ref-components.md
         JFactoryCoreObject.inject(this, ClockComponent, this.getAttribute("name"));
         JFactoryComponent.inject(this, ClockComponent);
 

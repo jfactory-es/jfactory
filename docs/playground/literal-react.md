@@ -1,4 +1,6 @@
-# The Inaccurate Clock Component - React
+[jFactory](../index.md) > [Playground](./README.md) > Literal - React  
+
+# Literal - React
 
 [Try it on CodePen](https://codepen.io/jfactory-es/pen/WNbmooa?editors=1010)
 

@@ -1,4 +1,6 @@
-# The Inaccurate Clock Component - Vanilla
+[jFactory](../index.md) > [Playground](./README.md) > Literal - Vanilla  
+
+# Literal - Vanilla
 
 [Try it on CodePen](https://codepen.io/jfactory-es/pen/KKwxaqr?editors=1010)
 

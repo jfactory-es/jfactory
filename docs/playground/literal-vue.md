@@ -1,4 +1,6 @@
-# The Inaccurate Clock Component - Vue
+[jFactory](../index.md) > [Playground](./README.md) > Literal - Vue  
+
+# Literal - Vue
 
 [Try it on CodePen](https://codepen.io/jfactory-es/pen/GRgzMqx?editors=1010)
 
