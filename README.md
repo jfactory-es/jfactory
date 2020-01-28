@@ -25,7 +25,6 @@ jFactory components are able to:
 <img align="left" height="40" src="https://github.com/jfactory-es/jfactory/blob/master/docs/img/HTML5.png"> 
 
 jFactory also supports **Vue.js**, **React**, and **HTML5 WebComponents** allowing components to automatically **uninstall** and **reinstall** their views.
-
 See [Playground](https://github.com/jfactory-es/jfactory/blob/master/docs/playground/README.md).
 
 ## Overview
