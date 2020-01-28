@@ -1,32 +1,32 @@
 # jFactory
-<img align="right" width="140" src="img/jFactory.png">jFactory is a free JavaScript library that allows you to easily compartmentalize your application into components. Thus, everything they initialize can be  tracked, stopped and removed automatically.
+<img align="right" width="140" src="img/jFactory.png">jFactory is an Open Source JavaScript library that allows you to easily compartmentalize your application into components. Thus, everything they initialize can be  tracked, stopped and removed automatically.
 
-**Simply call `myComponent.$uninstall()` to automatically interrupt and uninstall the Views, DOM, CSS, promise, requests, timers, and event listeners. Then call $install() to reload your component.**
+**Simply call `myComponent.$uninstall()` to automatically interrupt and uninstall the DOM, CSS, views, promises, requests, timers, observers and event listeners. Later, call $install() to reload your component.**
 
 * [Installation](ref-import.md)
 * [Documentation](ref-index.md) / [Traits](ref-index.md#traits-component-features) / [Classes](ref-index.md#classes-internal-library)
-* [CodePen](index-playground.md) /  [Starter Kit](https://github.com/jfactory-es/jfactory-starterkit)
+* [Playground](playground/README.md) /  [Starter Kit](https://github.com/jfactory-es/jfactory-starterkit)
 
 ## Abstract
 
 jFactory components are able to:
 
 - operate like a service (install, enable, disable, uninstall) 
-- automatically switch off subscribed views, dom, css, promise, requests, timers, and event listeners. 
-- automatically prevent all expired asynchronous calls (<!--callbacks, -->promise subtrees, event handlers...) 
+- automatically switch off subscribed dom, css, views, promise, requests, timers, observers and event listeners. 
+- automatically prevent all expired asynchronous calls (promise subtrees, event handlers...) 
 - automatically ensure that all the promise chains are completed at service state change
 - keep track in DevTools of all running subscriptions (listeners, timers, requests, promises, dom, css...)
 - improve the Promise chains (Awaitable, Completable, Cancelable and Expirable)
 - easily create/load CSS & DOM and clone from \<template> 
 
-## Supported libraries
-
+## Supported API
 <img align="left" height="40" src="https://vuejs.org/images/logo.png"> 
 <img height="40" src="https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg">
+<img height="40" src="./img/HTML5.png"> 
 
-jFactory supports **Vue.js** and **React**, allowing components to automatically **uninstall** and **reinstall** their views.
+jFactory also supports **Vue.js**, **React**, and **HTML5 WebComponents** allowing components to automatically **uninstall** and **reinstall** their views.
 
-See [Playground](index-playground.md).
+See [Playground](playground/README.md).
 
 ## Overview
 
@@ -55,7 +55,7 @@ await component.$enable();
 await component.$disable(); 
 await component.$uninstall();  
 ```
-[CodePen](index-playground.md) / [Starter Kit](https://github.com/jfactory-es/jfactory-starterkit)
+[Playground](playground/README.md) / [Starter Kit](https://github.com/jfactory-es/jfactory-starterkit)
 
 ## Is that complicated?
 

@@ -3,10 +3,8 @@
 # jFactory Reference Index
 
 #### Installation
-* [Importing jFactory](ref-import.md)
-* [External Dependencies](ref-import.md#external-dependencies)
-* [Starter Kit](https://github.com/jfactory-es/jfactory-starterkit)
-* [Overriding](ref-import.md#overriding)
+* [Importing jFactory](ref-import.md) / [External Dependencies](ref-import.md#external-dependencies) / [Overriding](ref-import.md#overriding)
+* [Playground](playground/README.md) /  [Starter Kit](https://github.com/jfactory-es/jfactory-starterkit)
 
 #### Concepts
 
@@ -18,7 +16,7 @@
 
 The Traits provides the methods, properties and registry injected into your components (everything that starts with "$"). 
 
-|                                   | Registery    | Injected methods                                                     |
+|                                   | Registry     | Injected methods                                                     |
 |-----------------------------------|--------------|----------------------------------------------------------------------|  
 | [TraitAbout](TraitAbout.md)       | `$.about`    |                                                                      |
 | [TraitCSS](TraitCSS.md)           |` $.css`      | `$css()` `$cssFetch()` `$cssRemove()` `$cssRemoveAll()`              |
@@ -26,8 +24,8 @@ The Traits provides the methods, properties and registry injected into your comp
 | [TraitEvents](TraitEvents.md)     | `$.listeners` `$.observers` | `$on()` `$off()` `$trigger()` `$triggerParallel()`    |
 | [TraitFetch](TraitFetch.md)       | `$.requests` | `$fetch()` `$fetchText()` `$fetchJSON()` `$fetchRemove()` `$fetchRemoveAll()` |
 | [TraitInterval](TraitInterval.md) | `$.timeints` | `$interval()` `$intervalRemove()` `$intervalRemoveAll()`             |
-| [TraitLibVue](TraitLibVue.md)     | `$.vue`      | `$vue()` `$vueRemove()` `$vueRemoveAll()`                            |
-| [TraitLibReact](TraitLibReact.md) | `$.react`    | `$react()` `$reactRemove()` `$reactRemoveAll()`                            |
+| <img height="16" src="https://vuejs.org/images/logo.png">[TraitLibVue](TraitLibVue.md)     | `$.vue`      | `$vue()` `$vueRemove()` `$vueRemoveAll()`                            |
+| <img height="16" src="https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg">[TraitLibReact](TraitLibReact.md) | `$.react`    | `$react()` `$reactRemove()` `$reactRemoveAll()`                            |
 | [TraitLog](TraitLog.md)           | `$.logger`   | `$log()` `$logWarn()` `$logErr()`                                    |
 | [TraitMutation](TraitMutation.md) | `$.mutations`| `$mutation()` `$mutationRemove()` `$mutationRemoveAll()`             |
 | [TraitService](TraitService.md)   | `$.service`  | `$install()` `$enable()` `$disable()` `$uninstall()`                 |

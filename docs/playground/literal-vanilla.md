@@ -23,13 +23,15 @@
        <a target="_blank" href="https://github.com/jfactory-es/jfactory">jFactory</a></p>
     <p>
       <a target="_blank" href="https://github.com/jfactory-es/jfactory/blob/master/docs/ref-index.md">Documentation</a>      
-      <a target="_blank" href="https://github.com/jfactory-es/jfactory/blob/master/docs/index-playground.md">Other demonstrations</a>
+      <a target="_blank" href="https://github.com/jfactory-es/jfactory/blob/master/docs/playground/README.md">Other demonstrations</a>
     </p>
 
     <button id="install" onclick="clockComponent.$install()">install</button>
     <button id="enable" onclick="clockComponent.$enable()">enable</button>
     <button id="disable" onclick="clockComponent.$disable()">disable</button>
     <button id="uninstall" onclick="clockComponent.$uninstall()">uninstall</button>
+
+    <template id="tpl-vanilla"><div class="clock"/></template>
 </body>
 </html>
 ```
@@ -37,13 +39,23 @@
 ```javascript
 const { jFactory } = jFactoryModule; // loaded as umd, see html.
 
-window.clockComponent = jFactory("myClockComponent", {
+window.clock = jFactory("clock", {
 
-    onInstall() {
-        this.view = this.$dom("#clock-view", "<div>").appendTo("body");
-        this.$cssFetch("#clock-css", "//cdn.jsdelivr.net/gh/jfactory-es/jfactory-starterkit/assets/app-clock.css")
-          .then(() => this.updateView("installed but not enabled"));
-    },
+    async onInstall() {
+        // Load a css and register it as "clockCss"
+        // see https://github.com/jfactory-es/jfactory/blob/master/docs/TraitCSS.md
+        await this.$cssFetch("clockCss", "//cdn.jsdelivr.net/gh/jfactory-es/jfactory-starterkit/assets/clock.css");
+
+        // Register a DOM target as "clockDom" and append it to "body"
+        // see https://github.com/jfactory-es/jfactory/blob/master/docs/TraitDOM.md
+        // Clone it from a declared <template> (see index.html file)
+        this.view = this.$dom("clockDom", "#tpl-vanilla", "body");
+        // or create it
+        // this.view = this.$dom("clockDom", "<div class='clock'/>", "body");
+        // or load it
+        // this.view = await this.$domFetch("clockDom", "//cdn.jsdelivr.net/gh/jfactory-es/jfactory-starterkit/assets/tpl-vanilla.html", "body",);
+
+        this.updateView("Installed but not enabled");    },
 
     async onEnable() {
         this.updateView("fetching...");
