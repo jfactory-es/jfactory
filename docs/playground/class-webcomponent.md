@@ -61,7 +61,7 @@ class ClockComponent extends HTMLElement {
         // see https://github.com/jfactory-es/jfactory/blob/master/docs/TraitCSS.md
         await this.$cssFetch("clockCss", "//cdn.jsdelivr.net/gh/jfactory-es/jfactory-starterkit/assets/clock.css", this.shadowRoot);
 
-        // Register a DOM target as "clockDom" and append it to "body"
+        // Register a DOM target as "clockDom" and append it to the shadowRoot
         // see https://github.com/jfactory-es/jfactory/blob/master/docs/TraitDOM.md
         // Clone it from a declared <template> (see index.html file)
         this.view = this.$dom("clockDom", "#tpl-vanilla", this.shadowRoot);
