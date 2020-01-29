@@ -58,7 +58,8 @@ window.clock = jFactory("clock", {
         // or load it
         // this.view = await this.$domFetch("clockDom", assets + "template.html", "body",);
 
-        this.updateView("Installed but not enabled");    },
+        this.updateView("Installed but not enabled");    
+    },
 
     async onEnable() {
         this.updateView("fetching...");

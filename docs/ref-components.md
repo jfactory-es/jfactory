@@ -30,7 +30,7 @@ let myComponent = jFactory('myComponentName', {
 You can create your Class component by inheriting from JFactoryComponent (which inherits from JFactoryCoreObject)
 
 ```javascript
-import {jFactory, JFactoryComponent} from "jfactory";
+import { JFactoryComponent } from "jfactory";
 
 class MyComponentClass extends JFactoryComponent {
     constructor(name) {
@@ -50,7 +50,7 @@ Alternatively, JFactoryTraits can transform any Class to a jFactory Component Cl
 Here is an example with a custom Component Base Class, and a custom shortcut that produce the same behavior as `jFactory()` :
 
 ```javascript
-import {jFactory, jFactoryTraits} from "jfactory";
+import { JFactoryCoreObject, JFactoryComponent } from "jfactory";
 
 class MyCustomComponentBase {
     constructor(name) {
@@ -98,7 +98,7 @@ let myComponent2 = createComponent('Component2', {
 Also works with inheritance:
 
 ```javascript
-import {jFactory, jFactoryTraits} from "jfactory";
+import { JFactoryCoreObject } from "jfactory";
 
 class ComponentTypeA {
     constructor(name, value) {
