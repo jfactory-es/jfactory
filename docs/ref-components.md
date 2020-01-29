@@ -98,7 +98,7 @@ let myComponent2 = createComponent('Component2', {
 Also works with inheritance:
 
 ```javascript
-import { JFactoryCoreObject } from "jfactory";
+import { JFactoryCoreObject, JFactoryComponent } from "jfactory";
 
 class ComponentTypeA {
     constructor(name, value) {
