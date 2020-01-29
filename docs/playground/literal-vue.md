@@ -34,29 +34,30 @@
     <button id="disable" onclick="clock.$disable()">disable</button>
     <button id="uninstall" onclick="clock.$uninstall()">uninstall</button>
 
-    <template id="tpl-vue"><div class="clock">{{message}}</div></template>
+    <template id="tpl-clock"><div class="clock">{{message}}</div></template>
 </body>
 </html>
 ```
 
 ```javascript
 const { jFactory } = jFactoryModule; // loaded as umd, see html.
+const assets = "//cdn.jsdelivr.net/gh/jfactory-es/jfactory-starterkit/kit/vue/assets/";
 
 window.clock = jFactory("clock", {
 
     async onInstall() {
         // Load a css and register it as "clockCss"
         // see https://github.com/jfactory-es/jfactory/blob/master/docs/TraitCSS.md
-        await this.$cssFetch("clockCss", "//cdn.jsdelivr.net/gh/jfactory-es/jfactory-starterkit/assets/clock.css");
+        await this.$cssFetch("clockCss", assets +  "clock.css");
 
         // Register a DOM target as "clockDom" with dom id "#clockDom" and append it to "body"
         // see https://github.com/jfactory-es/jfactory/blob/master/docs/TraitDOM.md
         // Clone it from a declared <template> (see index.html file)
-        this.$dom("#clockDom", "#tpl-vue", "body");
+        this.$dom("#clockDom", "#tpl-clock", "body");
         // or create it
         // this.$dom("#clockDom", '<div class="clock">{{message}}</div>', "body");
         // or load it
-        // await this.$domFetch("#clockDom", "//cdn.jsdelivr.net/gh/jfactory-es/jfactory-starterkit/assets/tpl-vue.html", "body",);
+        // await this.$domFetch("#clockDom", assets + "template.html", "body",);
 
         this.data = { message: "" };
         this.$vue("myVue", new Vue({el: "#clockDom", data: this.data}));

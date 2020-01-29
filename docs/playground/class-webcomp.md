@@ -33,13 +33,14 @@
     <button id="disable" onclick="clock.$disable()">disable</button>
     <button id="uninstall" onclick="clock.$uninstall()">uninstall</button>
 
-    <template id="tpl-vanilla"><div class="clock"/></template>
+    <template id="tpl-clock"><div class="clock"/></template>
 </body>
 </html>
 ```
 
 ```javascript
 const { jFactory, JFactoryCoreObject, JFactoryComponent } = jFactoryModule; // loaded as umd, see html.
+const assets = "//cdn.jsdelivr.net/gh/jfactory-es/jfactory-starterkit/kit/webcomp/assets/";
 
 class ClockComponent extends HTMLElement {
 
@@ -57,18 +58,18 @@ class ClockComponent extends HTMLElement {
     }
 
     async onInstall() {
-        // Load a css and register it as "clockCss"
+        // Load a css in the shadowRoot and register it as "clockCss" 
         // see https://github.com/jfactory-es/jfactory/blob/master/docs/TraitCSS.md
-        await this.$cssFetch("clockCss", "//cdn.jsdelivr.net/gh/jfactory-es/jfactory-starterkit/assets/clock.css", this.shadowRoot);
+        await this.$cssFetch("clockCss", assets + "clock.css", this.shadowRoot);
 
         // Register a DOM target as "clockDom" and append it to the shadowRoot
         // see https://github.com/jfactory-es/jfactory/blob/master/docs/TraitDOM.md
         // Clone it from a declared <template> (see index.html file)
-        this.view = this.$dom("clockDom", "#tpl-vanilla", this.shadowRoot);
+        this.view = this.$dom("clockDom", "#tpl-clock", this.shadowRoot);
         // or create it
         // this.view = this.$dom("clockDom", '<div class="clock"/>', this.shadowRoot);
         // or load it
-        // this.view = await this.$domFetch("clockDom", "../assets/tpl-vanilla.html", this.shadowRoot);
+        // this.view = await this.$domFetch("clockDom", assets + "template.html", this.shadowRoot);
 
         this.updateView("Installed but not enabled");
     }

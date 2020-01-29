@@ -14,4 +14,4 @@
 * [Literal Component - Vanilla](literal-vanilla.md)
 * [Literal Component - Vue](literal-vue.md)
 * [Literal Component - React](literal-react.md)
-* [Class Component - Web Component](class-webcomponent.md)
+* [Class Component - Web Component](class-webcomp.md)
