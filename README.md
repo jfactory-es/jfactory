@@ -22,7 +22,7 @@ jFactory components are able to:
 ## Supported APIs
 <img align="left" height="40" src="https://vuejs.org/images/logo.png"> 
 <img align="left" height="40" src="https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg">
-<img align="left" height="40" src="https://github.com/jfactory-es/jfactory/blob/master/docs/img/HTML5.png"> 
+<img align="left" height="40" src="https://jfactory-es.github.io/jfactory/img/HTML5.png"> 
 
 jFactory also supports **Vue.js**, **React**, and **HTML5 WebComponents** allowing components to automatically **uninstall** and **reinstall** their views.
 See [Playground](https://github.com/jfactory-es/jfactory/blob/master/docs/playground/README.md).
