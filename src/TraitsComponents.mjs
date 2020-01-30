@@ -347,7 +347,7 @@ export class TraitDOM {
         let dom = jQuery(jQueryArgument);
 
         if (dom[0].tagName === "TEMPLATE") {
-            dom = jQuery(document.importNode(dom[0].content, true).children)
+            dom = jQuery(document.importNode(dom[0].content, true).childNodes)
         }
 
         if (domId) {
