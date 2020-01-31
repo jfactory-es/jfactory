@@ -83,6 +83,10 @@ export class JFactoryPromise extends Promise {
             $isExpired: {
                 writable: true,
                 value: false
+            },
+            $isAborted: {
+                writable: true,
+                value: false
             }
         });
 
@@ -249,11 +253,11 @@ export class JFactoryPromise extends Promise {
 
         if (onFulfilled && typeof onFulfilled === "function") {
             wrappedFulfilled = function(r) {
-                // SPEC: "await" throws the errorExpired if expired
-                // Allows async function to try catch the awaited promise
-                // and allows stack call exit if not caught
-                if (type === "await" && newPromise.$isExpired === true && newPromise.$chain.errorExpired === r) {
-                    return onRejected(r)
+                // SPEC: "await" throws the errorExpired if $isAborted is true.
+                // Allows async function to try catch the awaited expired promise
+                // or, if not caught, breaks and ignore the rest of the async function.
+                if (type === "await" && newPromise.$isAborted) {
+                    return onRejected(newPromise.$chain.errorExpired)
                 }
                 if (!newPromise.$isSettled) {
                     return onFulfilled(r)
@@ -391,8 +395,9 @@ export class JFactoryPromise extends Promise {
     static forceExpire(promise, reason) {
         promise.$isExpired = true;
         if (!promise.$isSettled) {
+            promise.$isAborted = true;
             if (promise.$type !== "await" && promise.$type !== "$catchExpired") {
-                promise.__resolve__(reason)
+                promise.__resolve__(reason);
             }
         }
     }

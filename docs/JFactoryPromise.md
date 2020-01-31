@@ -26,6 +26,13 @@ let myPromise = new JFactoryPromise((resolve, reject) => {
 
 ## Promise Status
 
+#### $isAborted
+>Type: `boolean` Default: `false`
+>
+>Becomes `true` if the promise was aborted.
+>
+>See also [Chain Expiration](#chain-expiration).
+
 #### $isExpired
 >Type: `boolean` Default: `false`
 >
