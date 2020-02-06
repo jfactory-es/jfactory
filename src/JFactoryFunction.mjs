@@ -101,12 +101,12 @@ export class JFactoryFunctionComposer {
                     && result.constructor !== Promise) {
                     context.result = result // we can safely set the new result
                 } else {
-                    return result.then(
-                        setFunctionName([handler.name, "compositeAsyncHandler"].filter(Boolean).join(" "),
-                            function(value) {
-                                context.result = value;
-                                return JFactoryFunctionComposer.composite_iterator(scope, context, iteration, handlers)
-                            })
+                    return result.then(setFunctionName(
+                        [handler.name, "[compositeAsyncHandler]"].filter(Boolean).join(" "),
+                        function(value) {
+                            context.result = value;
+                            return JFactoryFunctionComposer.composite_iterator(scope, context, iteration, handlers)
+                        })
                     )
                 }
             } else {
@@ -225,10 +225,12 @@ export class JFactoryFunctionConditional {
     constructor(originalHandler) {
         this.originalHandler = originalHandler;
         this.composer = new JFactoryFunctionComposer;
-        this.composer.first("original", setFunctionName([originalHandler.name, "condition"]
-            .filter(Boolean).join(" "), function(context) {
-            return originalHandler.apply(this, context.parameters);
-        }));
+        this.composer.first("original", setFunctionName(
+            [originalHandler.name, "[condition]"].filter(Boolean).join(" "),
+            function(context) {
+                return originalHandler.apply(this, context.parameters);
+            })
+        );
     }
 
     compose() {
@@ -267,10 +269,12 @@ export class JFactoryFunctionWrappable {
     constructor(originalHandler) {
         this.originalHandler = originalHandler;
         this.composer = new JFactoryFunctionComposer;
-        this.composer.first("original", setFunctionName([originalHandler.name, "wrapped"]
-            .filter(Boolean).join(" "), function(context) {
-            return originalHandler.apply(this, context.parameters);
-        }));
+        this.composer.first("original", setFunctionName(
+            [originalHandler.name, "[wrapped]"].filter(Boolean).join(" "),
+            function(context) {
+                return originalHandler.apply(this, context.parameters);
+            })
+        );
     }
 
     compose() {
