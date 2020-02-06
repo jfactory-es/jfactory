@@ -347,10 +347,19 @@ export class TraitDOM {
         let dom = jQuery(jQueryArgument);
 
         if (dom[0].tagName === "TEMPLATE") {
-            dom = jQuery(document.importNode(dom[0].content, true).childNodes)
+            dom = jQuery(jQuery(dom[0]).html());
         }
 
         if (domId) {
+            if (JFACTORY_DEV) {
+                if (dom[0].nodeType !== Node.ELEMENT_NODE) {
+                    throw new jFactoryError.INVALID_VALUE({
+                        target: "$dom(#id)",
+                        given: dom,
+                        reason: "cannot set the dom id: the first element of the selection isn't an ELEMENT_NODE"
+                    })
+                }
+            }
             dom[0].id = id
         }
 
