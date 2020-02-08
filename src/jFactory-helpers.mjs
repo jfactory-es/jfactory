@@ -27,5 +27,8 @@ export const helper_get = _.get;
 export const helper_template = _.template;
 export const helper_camelCase = _.camelCase;
 
+export const helper_url_abs = url => {helper_url_abs.a.href = url; return helper_url_abs.a.href};
+helper_url_abs.a = document.createElement("a");
+
 export const NOOP = () => {};
 export const setFunctionName = (name, f) => Object.defineProperty(f, "name", { value: name });
