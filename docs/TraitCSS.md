@@ -27,11 +27,13 @@ myComponent.$css('myStyle', "div {border: 1px solregistryId red}");
     >// => creates a style with id = css1
     >```
 
-### `$cssFetch(registryId {string}, url {string} [, appendTo = "head"])`
+### `$cssFetch(registryId {string}, url {string} [, appendTo {jQuery argument} = "head"])`
 Returns: [`JFactoryPromise`](JFactoryPromise.md) resolved as a jQuery 
 
-Loads a CSS file by appending a `<link type="stylesheet" href=[url]>` into `<head>`
+Loads a CSS file by appending a `<link type="stylesheet" href=[url]>` into `appenTo` (jQuery argument, default "head")
 and returns a promise that can be awaited.
+ 
+ If a \<link> with the same url is already in document at the same `appendTo`, the existing element is shared. So you can safely recall $cssFetch(sameUrl) without side effects.
 
 >**Defers current Phase**: This method registers a Task that blocks the resolution of the current Phase (if any) until the whole Task chain (including subpromises) is resolved.
 

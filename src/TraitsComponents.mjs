@@ -15,7 +15,7 @@ import { JFactoryFetch } from "./JFactoryFetch";
 import { JFactoryPromise } from "./JFactoryPromise";
 import { JFactoryObject } from "./JFactoryObject";
 import { jFactoryTrace } from "./JFactoryTrace";
-import { helper_isPlainObject, jQuery } from "./jFactory-helpers";
+import { helper_isPlainObject, helper_url_abs, jQuery } from "./jFactory-helpers";
 
 // ---------------------------------------------------------------------------------------------------------------------
 // Trait Fetch
@@ -146,8 +146,8 @@ export class TraitTimeout {
             }
         );
 
-        this.$.timeouts.$registerAsync(id, '$timeout("' + id + '")', promise);
         promise.$chain.data.timer = timer;
+        this.$.timeouts.$registerAsync(id, '$timeout("' + id + '")', promise);
 
         promise.$chain.then(() => {
             if (this.$.timeouts.has(id)) {
@@ -481,7 +481,6 @@ export class TraitCSS {
         return this.$.css.$registerSync(id,
             jQuery("<style>")
                 .attr(cssId ? { id } : {})
-                .addClass("jFactory-css")
                 .html(styleBody)
                 .appendTo("head")
         ).$value;
@@ -503,26 +502,44 @@ export class TraitCSS {
             throw new jFactoryError.KEY_DUPLICATED({ target: "$cssFetch(id)", given: id })
         }
 
-        let dom;
-        let promise = new JFactoryPromise(
-            {
-                name: id,
-                config: {
-                    // promiseRejectIfExpired: true,
-                    chainAutoComplete: true
+        url = helper_url_abs(url);
+
+        let exist = jQuery(appendTo).find(`link[href="${url}"]`)[0];
+        if (exist) {
+            exist.dataset.usage = parseInt(exist.dataset.usage) + 1;
+            let dom = jQuery(exist);
+
+            let promise = JFactoryPromise.resolve(
+                {
+                    name: id,
+                    config: { chainAutoComplete: true },
+                    traceSource: jFactoryTrace.tracer.captureTraceSource("$cssFetch")
                 },
-                traceSource: jFactoryTrace.tracer.captureTraceSource("$cssFetch")
-            },
-            resolve => dom = jQuery("<link>", { id: cssId ? id : "", rel: "stylesheet", type: "text/css" })
-                .addClass("jFactory-css")
-                .appendTo(appendTo)
-                .on("load", () => {
-                    resolve(dom)
-                }).attr("href", url)
-        );
-        promise.$chain.data.dom = dom;
-        this.$.css.$registerAsync(id, '$cssFetch("' + id + '")', promise);
-        return promise
+                dom
+            );
+            promise.$chain.data.dom = dom;
+            this.$.css.$registerAsync(id, '$cssFetch("' + id + '")', promise);
+
+            return promise
+        } else {
+            let dom;
+            let promise = new JFactoryPromise(
+                {
+                    name: id,
+                    config: { chainAutoComplete: true },
+                    traceSource: jFactoryTrace.tracer.captureTraceSource("$cssFetch")
+                },
+                resolve => dom = jQuery("<link>",
+                    { id: cssId ? id : "", rel: "stylesheet", type: "text/css", "data-usage": "1" })
+                    .appendTo(appendTo)
+                    .on("load", () => resolve(dom))
+                    .attr("href", url)
+            );
+
+            promise.$chain.data.dom = dom;
+            this.$.css.$registerAsync(id, '$cssFetch("' + id + '")', promise);
+            return promise
+        }
     }
 
     $cssRemove(id, reason) {
@@ -541,9 +558,14 @@ export class TraitCSS {
         }
 
         let entry = this.$.css.get(id);
-        let value = entry.$value || entry.$chain && entry.$chain.data.dom;
+        let value = entry.$chain && entry.$chain.data.dom || entry.$value;
         if (value instanceof jQuery) {
-            value.remove()
+            let usage = parseInt(value[0].dataset.usage) - 1;
+            if (usage) {
+                value[0].dataset.usage = usage
+            } else {
+                value.remove()
+            }
         }
         if (entry instanceof JFactoryPromise) {
             entry.$chainAbort(reason || "$cssRemove()")
