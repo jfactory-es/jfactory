@@ -1,3 +1,9 @@
+## 1.5.0 (Feb 09, 2020)
+* feat: improved phase-switching queueing     
+* feat: [TraitCSS](docs/TraitCSS.md).$cssFetch(): don't duplicate rules with same url 
+* feat: [TraitDom](docs/TraitDOM.md).$dom(): support textnodes in \<template>
+* feat: [JFactoryPromise](docs/JFactoryPromise.md) improved abort and expire 
+
 ## 1.4.0 (Jan 28, 2020 )
 * feat: Better support for [Web Components](docs/playground/class-webcomp.md)
 * feat: Shortcuts for [Injecting the jFactory Traits into any Classes](docs/ref-components.md#create-a-component-base-class) 
@@ -8,8 +14,8 @@
 
 ## 1.2.0 (Jan 22, 2020 )
 * feat: [TraitLibVue](docs/TraitLibVue.md): added support to Vue.js
-* feat: [TraitDom](docs/TraitDOM.md).$dom(): added optional argument "appendTo"  
-* feat: [TraitDom](docs/TraitDOM.md).$dom(): support \<template\> cloning  
+* feat: [TraitDOM](docs/TraitDOM.md).$dom(): added optional argument "appendTo"  
+* feat: [TraitDOM](docs/TraitDOM.md).$dom(): support \<template> cloning  
 
 ## 1.1.0-beta.1 (Dec 17, 2019 )
 * fix: sourcemap for development bundles
