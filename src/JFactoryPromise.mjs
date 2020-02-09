@@ -118,7 +118,7 @@ export class JFactoryPromise extends Promise {
         const tryAutoComplete = () => {
             if (!this.$chain.isPending) {
                 try {
-                    this.$chainComplete("config.chainAutoComplete = true");
+                    this.$chainComplete("auto-completed");
                 } catch (e) {
                     // Case of error in "complete" callback
                     // We catch the exception because the promise is already fulfilled
@@ -253,22 +253,36 @@ export class JFactoryPromise extends Promise {
 
         if (onFulfilled && typeof onFulfilled === "function") {
             wrappedFulfilled = function(r) {
-                // SPEC: "await" throws the errorExpired if $isAborted is true.
-                // Allows async function to try catch the awaited expired promise
-                // or, if not caught, breaks and ignore the rest of the async function.
-                if (type === "await" && newPromise.$isAborted) {
-                    return onRejected(newPromise.$chain.errorExpired)
+                // "await" must always run the native handler
+                if (type === "await") {
+                    // SPEC: "await" throws the errorExpired if $isAborted is true.
+                    // Allows async function to try catch the awaited aborted promise
+                    // or, if not caught, breaks and ignore the rest of the async function.
+                    if (newPromise.$isAborted) {
+                        return onRejected(newPromise.$chain.errorExpired)
+                    } else {
+                        return onFulfilled(r)
+                    }
                 }
-                if (!newPromise.$isSettled) {
+                // otherwise don't call the handler if expired
+                if (!newPromise.$isExpired) {
+                    if (newPromise.$isSettled) {
+                        // eslint-disable-next-line no-debugger
+                        debugger
+                    }
                     return onFulfilled(r)
                 }
             }
         }
         if (onRejected && typeof onRejected === "function") {
             wrappedRejected = function(r) {
-                if (!newPromise.$isSettled) {
-                    return onRejected(r)
+                if (newPromise.$isSettled) {
+                    // eslint-disable-next-line no-debugger
+                    debugger
                 }
+                // if (!newPromise.$isSettled) {
+                return onRejected(r)
+                // }
             }
         }
 
@@ -315,7 +329,9 @@ export class JFactoryPromise extends Promise {
         if (this.$isExpired) {
             // case: p0.then(); chainAbort(); p1.then()
             // => the new promise must be expired
-            JFactoryPromise.forceExpire(newPromise, this.$chain.errorExpired)
+            // if parent promise is just expired, abort silently
+            // if parent promise is aborted, abort explicitly
+            JFactoryPromise.setExpired(newPromise, true, !this.$isAborted, this.$chain.errorExpired);
         }
 
         return newPromise
@@ -374,8 +390,9 @@ export class JFactoryPromise extends Promise {
     }
 
     // Completes an expires the whole chain before its normal end
+    // Sets the $isAborted to true on aborted promises
     $chainAbort(reason = "$chainAbort()") {
-        this.$chain.complete(reason);
+        this.$chain.complete(reason, true);
         return this
     }
 
@@ -383,7 +400,18 @@ export class JFactoryPromise extends Promise {
     // Only required if awaiting "myPromise.$chain"
     // when the autocomplete watcher is not used
     $chainComplete(reason = "$chainComplete()") {
-        this.$chain.complete(reason);
+        try {
+            this.$chain.complete(reason, false);
+        } catch (e) {
+            if (e instanceof jFactoryError.INVALID_CALL) {
+                throw new jFactoryError.INVALID_CALL({
+                    target: e.$data.target,
+                    reason: "Trying to complete a pending chain. Use $chainAbort() if you want to stop it."
+                });
+            } else {
+                throw e
+            }
+        }
         return this
     }
 
@@ -392,14 +420,19 @@ export class JFactoryPromise extends Promise {
         return this
     }
 
-    static forceExpire(promise, reason) {
-        promise.$isExpired = true;
+    static setExpired(promise, abort, silent, reason) {
         if (!promise.$isSettled) {
-            promise.$isAborted = true;
-            if (promise.$type !== "await" && promise.$type !== "$catchExpired") {
+            if (abort) {
+                promise.$isAborted = !silent;
                 promise.__resolve__(reason);
+            } else {
+                throw new jFactoryError.INVALID_CALL({
+                    target: promise,
+                    reason: "promise must be aborted or settled before setting it to expired."
+                });
             }
         }
+        promise.$isExpired = true;
     }
 }
 
@@ -436,7 +469,7 @@ export class JFactoryPromiseChain {
         return this
     }
 
-    complete(reason = "chain.complete()") {
+    complete(reason = "chain.complete()", abort ) {
         let chainRoot = this.chainRoot;
         if (!chainRoot.$isExpired) {
             let errorExpired = chainRoot.$chain.errorExpired = new jFactoryError.PROMISE_EXPIRED({
@@ -446,7 +479,7 @@ export class JFactoryPromiseChain {
 
             let map = this.chainMap;
             for (let item of map.keys()) {
-                JFactoryPromise.forceExpire(item, errorExpired);
+                JFactoryPromise.setExpired(item, abort, false, errorExpired);
             }
 
             Object.defineProperty(this, "isCompleted", { value: true });
