@@ -10,7 +10,7 @@ describe("Trait Fetch", function() {
 
     it("should fetch", async function() {
         let component = jFactory("component");
-        component.$install(true);
+        await component.$install(true);
         expect(await component.$fetch("n1", "asset.txt")).instanceof(Response);
         expect(await component.$fetchText("n2", "asset.txt")).equal("Hello world!");
         expect(await component.$fetchJSON("n3", "asset.json")).include({ data1: 123, data2: 456 });
@@ -19,7 +19,7 @@ describe("Trait Fetch", function() {
 
     it("should return JFactoryFetch", async function() {
         let component = jFactory("component");
-        component.$install(true);
+        await component.$install(true);
         expect(component.$fetch("n1", "asset.txt")).instanceof(JFactoryFetch);
         expect(component.$fetchText("n2", "asset.txt")).instanceof(JFactoryFetch);
         expect(component.$fetchJSON("n3", "asset.json")).instanceof(JFactoryFetch);
@@ -28,7 +28,7 @@ describe("Trait Fetch", function() {
 
     it("should task", async function() {
         let component = jFactory("component");
-        component.$install(true);
+        await component.$install(true);
         component.$fetch("n1", "asset.txt");
         component.$fetchText("n2", "asset.txt");
         component.$fetchJSON("n3", "asset.json");
@@ -60,7 +60,7 @@ describe("Trait Fetch", function() {
 
     it("should register", async function() {
         let component = jFactory("component");
-        component.$install(true);
+        await component.$install(true);
         component.$fetch("n1", "asset.txt");
         component.$fetchText("n2", "asset.txt");
         component.$fetchJSON("n3", "asset.json");
@@ -72,7 +72,7 @@ describe("Trait Fetch", function() {
 
     it("should unregister", async function() {
         let component = jFactory("component");
-        component.$install(true);
+        await component.$install(true);
         component.$fetch("n1", "asset.txt");
         component.$fetchText("n2", "asset.txt");
         component.$fetchJSON("n3", "asset.json");
@@ -87,7 +87,7 @@ describe("Trait Fetch", function() {
 
     it("should unregister all", async function() {
         let component = jFactory("component");
-        component.$install(true);
+        await component.$install(true);
         component.$fetch("n1", "asset.txt");
         component.$fetchText("n2", "asset.txt");
         component.$fetchJSON("n3", "asset.json");
@@ -100,7 +100,7 @@ describe("Trait Fetch", function() {
 
     it("should unregister on chain complete", async function() {
         let component = jFactory("component");
-        component.$install(true);
+        await component.$install(true);
         let n1 = component
             .$fetchText("n1", "asset.txt");
         let n11 = n1
@@ -114,7 +114,7 @@ describe("Trait Fetch", function() {
 
     it("should unregister task on chain complete", async function() {
         let component = jFactory("component");
-        component.$install(true);
+        await component.$install(true);
         let n1 = component
             .$fetchText("n1", "asset.txt");
         let n11 = n1
@@ -128,7 +128,7 @@ describe("Trait Fetch", function() {
 
     it("should chainAbort", async function() {
         let component = jFactory("component");
-        component.$install(true);
+        await component.$install(true);
         let n1 = component
             .$fetchText("n1", "asset.txt")
             .then(r => wait(1).then(() => r))

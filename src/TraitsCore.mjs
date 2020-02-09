@@ -38,9 +38,9 @@ export class TraitCore {
                 let task = owner.$task(taskName, promise.$chain);
 
                 // End of promise chain must complete the task
-                // task.$chainAutoComplete()
                 promise.$chain.then(() => { // synchronous then
-                    task.$chainComplete("task completed")
+                    // task.$chainComplete("task completed")
+                    task.$chainAutoComplete()
                 });
 
                 // Aborted task must abort the promise if still running
@@ -387,7 +387,14 @@ export class TraitService {
          */
         JFactoryObject.assign(this.$, "service", Object.create(null), JFactoryObject.descriptors.READONLY);
         this.$.service.phase = TraitService.PHASE.NONE;
-        this.$.service.phaseQueue = JFactoryPromiseSync.resolve();
+        this.$.service.phaseQueue = JFactoryPromise.resolve({ name: "phaseQueue" }, null);
+        this.$.service.phaseTask = null;
+        this.$.service.phaseMap = {
+            install: new Set(),
+            enable: new Set(),
+            disable: new Set(),
+            uninstall: new Set()
+        };
 
         // Set initial states but don't trigger events
         this.$state("installed", false, false);
@@ -419,11 +426,11 @@ export class TraitService {
         /** @name JFactoryCoreObject#onDisable */
         /** @name JFactoryCoreObject#onUninstall */
 
-        let resolvePromises = handler => {
+        let phaseResolve = handler => {
             if (this.$.tasks.size) {
                 this.$taskRemoveAll(this.$.service.phase)
             }
-            let promise = JFactoryPromiseSync.resolve(); // this.$taskPromiseAll(true);
+            let promise = JFactoryPromiseSync.resolve();
             if (handler) {
                 promise = promise
                     .then(() => handler.call(this))
@@ -431,132 +438,252 @@ export class TraitService {
             }
             return promise
                 .catch(e => {
-                    if (!(this.$.service.isPhaseKilling && e instanceof jFactoryError.PROMISE_EXPIRED)) {
+                    if (!(/*this.$.service.isPhaseKilling &&*/ e instanceof jFactoryError.PROMISE_EXPIRED)) {
                         this.$logErr("unhandled promise rejection in " + this.$.service.phase + ";",
                             ...e instanceof JFactoryError ? e : [e])
                     }
                 });
         };
 
-        kernel.on("install", () => resolvePromises(this.onInstall));
-        kernel.on("enable", () => resolvePromises(this.onEnable));
-        kernel.on("disable", () => resolvePromises(this.onDisable));
-        kernel.on("uninstall", () => resolvePromises(this.onUninstall));
+        kernel.on("install", () => phaseResolve(this.onInstall));
+        kernel.on("enable", () => phaseResolve(this.onEnable));
+        kernel.on("disable", () => phaseResolve(this.onDisable));
+        kernel.on("uninstall", () => phaseResolve(this.onUninstall));
 
         kernel.on("disable",   () => this.$off({ removal: TraitService.PHASE.DISABLE }));
         kernel.on("uninstall", () => this.$off({ removal: TraitService.PHASE.UNINSTALL }));
     }
 
     $install(enable) {
-        if (!this.$.service.phaseQueue.$isSettled) {
-            return this.$.service.phaseQueue
-                .then(() => this.$install())
-        }
-
-        // eslint-disable-next-line no-debugger
-        if (JFACTORY_DEV) {if (this.$.service.isPhaseKilling) {debugger}}
-
-        return this.$.service.phaseQueue = JFactoryPromiseSync.resolve()
+        let resolve;
+        const p = new JFactoryPromise(
+            { name: "install", config: { chainAutoComplete: true } },
+            _resolve => resolve = _resolve)
             .then(() => {
                 if (!this.$.states.installed) {
                     this.$.service.phase = TraitService.PHASE.INSTALL;
                     return this.$state("installed", true)
                 }
-            })
-            .then(() => {
-                if (enable && this.$.states.installed && !this.$.states.enabled) {
-                    this.$.service.phase = TraitService.PHASE.ENABLE;
-                    return this.$state("enabled", true)
-                }
-            })
-            .then(() => {
-                this.$.service.phase = TraitService.PHASE.NONE;
-            })
+            });
+
+        this.$.service.phaseMap.install.add(p);
+        p.$chain.then(() => {
+            this.$.service.phaseTask = null;
+            this.$.service.phaseMap.install.delete(p);
+            this.$.service.phase = TraitService.PHASE.NONE
+        });
+
+        this.$.service.phaseQueue = this.$.service.phaseQueue.then(() => {
+            this.$.service.phaseTask = p;
+            resolve();
+            return p.$chain
+        });
+
+        // register the enable
+        if (enable) {return this.$enable()}
+        return p
     }
 
     $enable() {
-        if (!this.$.service.phaseQueue.$isSettled) {
-            return this.$.service.phaseQueue
-                .then(() => this.$enable())
-        }
-
-        // eslint-disable-next-line no-debugger
-        if (JFACTORY_DEV) {if (this.$.service.isPhaseKilling) {debugger}}
-
-        return this.$.service.phaseQueue = JFactoryPromiseSync.resolve()
+        let resolve;
+        const p = new JFactoryPromise(
+            { name: "enable", config: { chainAutoComplete: true } },
+            _resolve => resolve = _resolve)
             .then(() => {
                 if (this.$.states.installed && !this.$.states.enabled) {
                     this.$.service.phase = TraitService.PHASE.ENABLE;
                     return this.$state("enabled", true)
                 }
-            })
-            .then(() => {
-                this.$.service.phase = TraitService.PHASE.NONE;
-            })
+            });
+
+        this.$.service.phaseMap.enable.add(p);
+        p.$chain.then(() => {
+            this.$.service.phaseTask = null;
+            this.$.service.phaseMap.enable.delete(p);
+            this.$.service.phase = TraitService.PHASE.NONE
+        });
+
+        this.$.service.phaseQueue = this.$.service.phaseQueue.then(() => {
+            this.$.service.phaseTask = p;
+            resolve();
+            return p.$chain
+        });
+        return p
     }
 
     $disable() {
-        if (!this.$.service.phaseQueue.$isSettled) {
-            return TraitService.phaseKill(this)
-                .then(() => this.$disable())
-        }
-
-        // eslint-disable-next-line no-debugger
-        if (JFACTORY_DEV) {if (this.$.service.isPhaseKilling) {debugger}}
-
-        return this.$.service.phaseQueue = JFactoryPromiseSync.resolve()
+        let resolve;
+        const p = new JFactoryPromise(
+            { name: "disable", config: { chainAutoComplete: true } },
+            _resolve => resolve = _resolve)
             .then(() => {
                 if (this.$.states.enabled) {
                     this.$.service.phase = TraitService.PHASE.DISABLE;
                     return this.$state("enabled", false)
                 }
-            })
-            .then(() => {
-                this.$.service.phase = TraitService.PHASE.NONE;
-            })
+            });
+
+        this.$.service.phaseMap.disable.add(p);
+        p.$chain.then(() => {
+            this.$.service.phaseTask = null;
+            this.$.service.phaseMap.disable.delete(p);
+            this.$.service.phase = TraitService.PHASE.NONE
+        });
+
+        // if (this.$.service.phase === TraitService.PHASE.DISABLE) {
+        //     // phase kill
+        // }
+
+        // expires all stacked enable
+        for (let [key, val] of this.$.service.phaseMap.enable.entries()) {
+            if (val === this.$.service.phaseTask) {
+                TraitService.phaseKill(this);
+            }
+            val.$chainAbort();
+            this.$.service.phaseMap.enable.delete(key)
+        }
+
+        this.$.service.phaseQueue = this.$.service.phaseQueue.then(() => {
+            this.$.service.phaseTask = p;
+            resolve();
+            return p.$chain
+        });
+        return p
     }
 
     $uninstall() {
-        if (!this.$.service.phaseQueue.$isSettled) {
-            return TraitService.phaseKill(this)
-                .then(() => this.$uninstall())
-        }
-
-        // eslint-disable-next-line no-debugger
-        if (JFACTORY_DEV) {if (this.$.service.isPhaseKilling) {debugger}}
-
-        return this.$.service.phaseQueue = JFactoryPromiseSync.resolve()
-            .then(() => {
-                if (this.$.states.enabled) {
-                    return this.$disable()
-                }
-            })
+        let resolve;
+        const p = new JFactoryPromise(
+            { name: "uninstall", config: { chainAutoComplete: true } },
+            _resolve => resolve = _resolve)
             .then(() => {
                 if (this.$.states.installed) {
                     this.$.service.phase = TraitService.PHASE.UNINSTALL;
                     return this.$state("installed", false)
                 }
-            })
-            .then(() => {
-                this.$.service.phase = TraitService.PHASE.NONE;
             });
+
+        this.$.service.phaseMap.uninstall.add(p);
+        p.$chain.then(() => {
+            this.$.service.phaseTask = null;
+            this.$.service.phaseMap.uninstall.delete(p);
+            this.$.service.phase = TraitService.PHASE.NONE
+        });
+
+        // if (this.$.service.phase === TraitService.PHASE.DISABLE) {
+        //     // wait then
+        //     // phase kill
+        // }
+        //
+        // if (this.$.service.phase === TraitService.PHASE.INSTALL) {
+        //     // phase kill
+        // }
+
+        // expires all stacked install
+        for (let [key, val] of this.$.service.phaseMap.install.entries()) {
+            if (val === this.$.service.phaseTask) {
+                TraitService.phaseKill(this);
+            }
+            val.$chainAbort();
+            this.$.service.phaseMap.install.delete(key)
+        }
+
+        // queue disable before uninstall
+        this.$disable();
+
+        this.$.service.phaseQueue = this.$.service.phaseQueue.then(() => {
+            this.$.service.phaseTask = p;
+            resolve();
+            return p.$chain
+        });
+        return p
     }
 
     static phaseKill(component) {
-        return new Promise(resolve => {
-            if (!component.$.service.phaseQueue.$isSettled) {
-                component.$.service.isPhaseKilling = true;
-                // component.$logWarn("phase kill [" + component.$.service.phase + "]...");
-                if (component.$.tasks.size) {
-                    component.$taskRemoveAll(TraitService.getContextualRemovePhase(component), true);
-                }
-                setTimeout(() => resolve(TraitService.phaseKill(component)), 50)
-            } else {
-                component.$.service.isPhaseKilling = false;
-                resolve()
-            }
-        })
+        // component.$.service.isPhaseKilling = true;
+        if (component.$.tasks.size) {
+            component.$taskRemoveAll(TraitService.getContextualRemovePhase(component));
+        }
+        component.$.service.phase = TraitService.PHASE.NONE;
     }
+
+
+
+    // $install(enable) {
+    //     const _install = enable => {
+    //         return this.$.service.phaseQueue = new JFactoryPromise({ name: "phaseQueue" }, resolve => {
+    //             if (!this.$.states.installed) {
+    //                 this.$.service.phase = TraitService.PHASE.INSTALL;
+    //                 resolve(this.$state("installed", true))
+    //             } else {resolve()}
+    //         })
+    //             .then(() => {
+    //                 if (enable && !this.$.states.enabled) {
+    //                     this.$.service.phase = TraitService.PHASE.ENABLE;
+    //                     return this.$state("enabled", true)
+    //                 }
+    //             })
+    //             .then(() => this.$.service.phase = TraitService.PHASE.NONE);
+    //     };
+    //     if (this.$.service.phaseQueue.$chain.isPending) {
+    //         return this.$.service.phaseQueue.then(() => _install(enable))
+    //     }
+    //     return _install(enable)
+    // }
+    //
+    // $enable() {
+    //     const _enable = () => {
+    //         return this.$.service.phaseQueue = new JFactoryPromise({ name: "phaseQueue" }, resolve => {
+    //             if (this.$.states.installed && !this.$.states.enabled) {
+    //                 this.$.service.phase = TraitService.PHASE.ENABLE;
+    //                 resolve(this.$state("enabled", true))
+    //             } else {resolve()}
+    //         })
+    //             .then(() => this.$.service.phase = TraitService.PHASE.NONE);
+    //     };
+    //     if (this.$.service.phaseQueue.$chain.isPending) {
+    //         return this.$.service.phaseQueue.then(() => _enable())
+    //     }
+    //     return _enable()
+    // }
+    //
+    // $disable() {
+    //     const _disable = () => {
+    //         return this.$.service.phaseQueue = new JFactoryPromise({ name: "phaseQueue" }, resolve => {
+    //             if (this.$.states.enabled) {
+    //                 this.$.service.phase = TraitService.PHASE.DISABLE;
+    //                 resolve(this.$state("enabled", false))
+    //             } else {resolve()}
+    //         })
+    //             .then(() => this.$.service.phase = TraitService.PHASE.NONE);
+    //     };
+    //     if (this.$.service.phaseQueue.$chain.isPending) {
+    //         return this.$.service.phaseQueue.then(() => _disable())
+    //     }
+    //     return _disable()
+    // }
+    //
+    // $uninstall() {
+    //     const _uninstall = () => {
+    //         return this.$.service.phaseQueue = new JFactoryPromise({ name: "phaseQueue" }, resolve => {
+    //             if (this.$.states.enabled) {
+    //                 this.$.service.phase = TraitService.PHASE.DISABLE;
+    //                 resolve(this.$state("enabled", false))
+    //             } else {resolve()}
+    //         })
+    //             .then(() => {
+    //                 if (this.$.states.installed) {
+    //                     this.$.service.phase = TraitService.PHASE.UNINSTALL;
+    //                     return this.$state("installed", false)
+    //                 }
+    //             })
+    //             .then(() => this.$.service.phase = TraitService.PHASE.NONE);
+    //     };
+    //     if (this.$.service.phaseQueue.$chain.isPending) {
+    //         return this.$.service.phaseQueue.then(() => _uninstall())
+    //     }
+    //     return _uninstall()
+    // }
 
     static getContextualRemovePhase(jFactoryCoreObject) {
         return TraitService.PHASE_REVERT[jFactoryCoreObject.$.service.phase]

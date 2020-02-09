@@ -11,7 +11,7 @@ describe("Trait Tasks", function() {
     it("should task", async function() {
         let result = false;
         let component = jFactory("component");
-        component.$install(true);
+        await component.$install(true);
         await component.$task("n1", wait(10).then(() => result = true));
         expect(result).equal(true);
         component.$uninstall();
@@ -19,7 +19,7 @@ describe("Trait Tasks", function() {
 
     it("should return JFactoryPromise", async function() {
         let component = jFactory("component");
-        component.$install(true);
+        await component.$install(true);
         expect(component.$task("n1", wait(10))).instanceof(JFactoryPromise);
         component.$uninstall();
     });
@@ -46,7 +46,7 @@ describe("Trait Tasks", function() {
 
     it("should register", async function() {
         let component = jFactory("component");
-        component.$install(true);
+        await component.$install(true);
         component.$task("n1", wait(10));
         expect(component.$.tasks.has("n1")).equal(true);
         component.$uninstall();
@@ -54,7 +54,7 @@ describe("Trait Tasks", function() {
 
     it("should unregister", async function() {
         let component = jFactory("component");
-        component.$install(true);
+        await component.$install(true);
         component.$task("n1", wait(10));
         component.$taskRemove("n1");
         expect(component.$.tasks.has("n1")).equal(false);
@@ -63,7 +63,7 @@ describe("Trait Tasks", function() {
 
     it("should unregister all", async function() {
         let component = jFactory("component");
-        component.$install(true);
+        await component.$install(true);
         component.$task("n1", wait(10));
         component.$taskRemoveAll(jFactory.PHASE.DISABLE);
         expect(component.$.tasks.has("n1")).equal(false);
@@ -71,36 +71,30 @@ describe("Trait Tasks", function() {
     });
 
     it("should phaseRemove", async function() {
-        let p;
+        let f = () => {};
         let component = jFactory("component", {
-            onInstall() {this.$task("p1", wait(0))},
-            onEnable() {this.$task("p2", wait(0))},
-            onDisable() {this.$task("p3", wait(0))},
-            onUninstall() {this.$task("p4", wait(0))}
+            onInstall() {this.p1 = this.$task("p1", wait(0))},
+            onEnable() {this.p2 = this.$task("p2", wait(0))},
+            onDisable() {this.p3 = this.$task("p3", wait(0))},
+            onUninstall() {this.p4 = this.$task("p4", wait(0))}
         });
 
-        p = component.$install();
-        expect(component.$.tasks.get("p1").$phaseRemove).equal(jFactory.PHASE.UNINSTALL);
-        await p;
-
-        p = component.$enable();
-        expect(component.$.tasks.get("p2").$phaseRemove).equal(jFactory.PHASE.DISABLE);
-        await p;
-
-        p = component.$disable();
-        expect(component.$.tasks.get("p3").$phaseRemove).equal(jFactory.PHASE.ENABLE);
-        await p;
-
-        p = component.$uninstall();
-        expect(component.$.tasks.get("p4").$phaseRemove).equal(jFactory.PHASE.INSTALL);
-        await p;
+        await component.$install(true);
+        await component.$uninstall();
+        expect(component.p1.$phaseRemove).equal(jFactory.PHASE.UNINSTALL);
+        expect(component.p2.$phaseRemove).equal(jFactory.PHASE.DISABLE);
+        expect(component.p3.$phaseRemove).equal(jFactory.PHASE.ENABLE);
+        expect(component.p4.$phaseRemove).equal(jFactory.PHASE.INSTALL);
     });
 
     it("should clean up", async function() {
         let result = true;
         let component = jFactory("component");
-        component.$install(true);
-        component.$task("n1", wait(10)).then(() => result = false);
+        await component.$install(true);
+        component.$task("n1", wait(1)).then(() => {
+            debugger
+            result = false
+        });
         component.$taskRemove("n1");
         await wait(10);
         expect(result).equal(true);
@@ -109,7 +103,7 @@ describe("Trait Tasks", function() {
 
     it("should unregister on chain complete", async function() {
         let component = jFactory("component");
-        component.$install(true);
+        await component.$install(true);
         let n1 = component
             .$task("n1", wait(10));
         let n11 = n1
@@ -123,7 +117,7 @@ describe("Trait Tasks", function() {
 
     it("should chainAbort", async function() {
         let component = jFactory("component");
-        component.$install(true);
+        await component.$install(true);
         let n1 = component
             .$task("n1", wait(10))
             .then(r => wait(1).then(() => r))

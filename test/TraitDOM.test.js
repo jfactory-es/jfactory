@@ -15,7 +15,7 @@ describe("Trait DOM", function() {
 
     it("should dom", async function() {
         let component = jFactory("component");
-        component.$install(true);
+        await component.$install(true);
         expect(component.$dom("n1", "<p><div>")[1]).instanceof(HTMLDivElement); // jQuery string selector
         expect(component.$dom("n2", $("<p><div>"))[1]).instanceof(HTMLDivElement); // jQuery selection
         expect(component.$dom("n3", document.createElement("div"))[0]).instanceof(HTMLDivElement); // HTMLElement
@@ -26,14 +26,14 @@ describe("Trait DOM", function() {
 
     it("should domFetch", async function() {
         let component = jFactory("component");
-        component.$install(true);
+        await component.$install(true);
         expect((await component.$domFetch("n1", "asset.html"))[0]).instanceof(HTMLParagraphElement);
         component.$uninstall();
     });
 
     it("should return jQuery", async function() {
         let component = jFactory("component");
-        component.$install(true);
+        await component.$install(true);
         expect(component.$dom("n1", "<p><div>")).instanceof($); // jQuery string selector
         expect(component.$dom("n2", $("<p><div>"))).instanceof($); // jQuery selection
         expect(component.$dom("n3", document.createElement("div"))).instanceof($); // HTMLElement
@@ -45,7 +45,7 @@ describe("Trait DOM", function() {
 
     it("should task", async function() {
         let component = jFactory("component");
-        component.$install(true);
+        await component.$install(true);
         component.$domFetch("n1", "asset.html");
         expect(component.$.tasks.has('$domFetch("n1")')).equal(true);
         component.$uninstall();
@@ -73,7 +73,7 @@ describe("Trait DOM", function() {
 
     it("should register", async function() {
         let component = jFactory("component");
-        component.$install(true);
+        await component.$install(true);
         component.$dom("n1", "<div>");
         component.$domFetch("n2", "asset.html");
         expect(component.$.dom.has("n1")).equal(true);
@@ -83,7 +83,7 @@ describe("Trait DOM", function() {
 
     it("should unregister", async function() {
         let component = jFactory("component");
-        component.$install(true);
+        await component.$install(true);
         component.$dom("n1", '<div class="jFactory-test">').appendTo("body");
         await component.$domFetch("n2", "asset.html").then(r => r.appendTo("body"));
         expect($(".jFactory-test").length).equal(2);
@@ -97,7 +97,7 @@ describe("Trait DOM", function() {
 
     it("should unregister all", async function() {
         let component = jFactory("component");
-        component.$install(true);
+        await component.$install(true);
         component.$dom("n1", '<div class="jFactory-test">').appendTo("body");
         await component.$domFetch("n2", "asset.html").then(r => r.appendTo("body"));
         expect($(".jFactory-test").length).equal(2);
@@ -110,7 +110,7 @@ describe("Trait DOM", function() {
 
     it("should clean up", async function() {
         let component = jFactory("component");
-        component.$install(true);
+        await component.$install(true);
         component.$dom("n1", '<div class="jFactory-test">').appendTo("body");
         component.$domFetch("n2", "asset.html").then(r => r.appendTo("body")); // no await
         expect($(".jFactory-test").length).equal(1);
@@ -123,7 +123,7 @@ describe("Trait DOM", function() {
 
     it("should not unregister on chain complete", async function() {
         let component = jFactory("component");
-        component.$install(true);
+        await component.$install(true);
         let n1 = component
             .$domFetch("n1", "asset.html");
         let n11 = n1
@@ -137,7 +137,7 @@ describe("Trait DOM", function() {
 
     it("should unregister task on chain complete", async function() {
         let component = jFactory("component");
-        component.$install(true);
+        await component.$install(true);
         let n1 = component
             .$domFetch("n1", "asset.html");
         let n11 = n1
@@ -151,7 +151,7 @@ describe("Trait DOM", function() {
 
     it("should chainAbort", async function() {
         let component = jFactory("component");
-        component.$install(true);
+        await component.$install(true);
         let n1 = component
             .$domFetch("n1", "asset.html")
             .then(r => wait(1).then(() => r))
@@ -170,7 +170,7 @@ describe("Trait DOM", function() {
 
     it("should set dom id", async function() {
         let component = jFactory("component");
-        component.$install(true);
+        await component.$install(true);
 
         // don't set id if not prefixed with "#"
         component.$dom("dom1", "<div id='myId' class='jFactory-test'>").appendTo("body");

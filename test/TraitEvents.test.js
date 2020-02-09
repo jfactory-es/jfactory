@@ -16,7 +16,7 @@ describe("TraitEvents", function() {
         let event2;
 
         let component = jFactory("component");
-        component.$install(true);
+        await component.$install(true);
 
         component.$on("customEvent1", (event, data) => {
             event1 += data.a + 1;
@@ -42,7 +42,7 @@ describe("TraitEvents", function() {
         let event1;
 
         let component = jFactory("component");
-        component.$install(true);
+        await component.$install(true);
         component.$on("customEvent1.ns0.ns1", (event, data) => {
             event1 += data.a;
         });
@@ -84,7 +84,7 @@ describe("TraitEvents", function() {
         let event1;
 
         let component = jFactory("component");
-        component.$install(true);
+        await component.$install(true);
         component.$on("customEvent1 customEvent2", () => {
             event1++;
         });
@@ -101,7 +101,7 @@ describe("TraitEvents", function() {
         let event1;
 
         let component = jFactory("component");
-        component.$install(true);
+        await component.$install(true);
         component.$on("customEvent1.ns1 customEvent2.ns2", () => {
             event1++;
         });
@@ -134,7 +134,7 @@ describe("TraitEvents", function() {
         let event1;
 
         let component = jFactory("component");
-        component.$install(true);
+        await component.$install(true);
         component.$on("customEvent.ns1 customEvent.ns2", () => {
             event1++;
         });
@@ -160,7 +160,7 @@ describe("TraitEvents", function() {
         let event2;
 
         let component = jFactory("component");
-        component.$install(true);
+        await component.$install(true);
 
         event1 = event2 = 0;
         component.$off();
@@ -212,7 +212,7 @@ describe("TraitEvents", function() {
 
         let h1 = () => event1++;
         let component = jFactory("component");
-        component.$install(true);
+        await component.$install(true);
 
         event1 = 0;
         component.$off();

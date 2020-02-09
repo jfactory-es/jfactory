@@ -106,6 +106,6 @@ myComponent.$task("myPromise", resolve => setTimeout(resolve, 10))
     .then(()=>myComponent.$log("hello?")); // not called because a $disable() is called below
 
 // remove and expires pending promises that expire at PHASE_DISABLE
-myComponent.$disable();
+await myComponent.$disable();
 ```
 -->

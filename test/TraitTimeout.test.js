@@ -10,7 +10,7 @@ describe("Trait Timeout", function() {
 
     it("should timeout", async function() {
         let component = jFactory("component");
-        component.$install(true);
+        await component.$install(true);
         let n1 = component.$timeout("n1", 30, () => {}).then(() => n1 = true);
         let n2 = component.$timeout("n2", 30).then(() => n2 = true);
         await wait(0);
@@ -24,7 +24,7 @@ describe("Trait Timeout", function() {
 
     it("should return JFactoryPromise", async function() {
         let component = jFactory("component");
-        component.$install(true);
+        await component.$install(true);
         expect(component.$timeout("n1", 30, () => {})).instanceof(JFactoryPromise);
         expect(component.$timeout("n2", 30)).instanceof(JFactoryPromise);
         component.$uninstall();
@@ -32,7 +32,7 @@ describe("Trait Timeout", function() {
 
     it("should task", async function() {
         let component = jFactory("component");
-        component.$install(true);
+        await component.$install(true);
         expect(component.$timeout("n1", 30, () => {})).instanceof(JFactoryPromise);
         expect(component.$timeout("n2", 30)).instanceof(JFactoryPromise);
         expect(component.$.tasks.has('$timeout("n1")')).equal(true);
@@ -62,7 +62,7 @@ describe("Trait Timeout", function() {
 
     it("should register", async function() {
         let component = jFactory("component");
-        component.$install(true);
+        await component.$install(true);
         component.$timeout("n1", 30, () => {});
         component.$timeout("n2", 30);
         expect(component.$.timeouts.has("n1")).equal(true);
@@ -72,7 +72,7 @@ describe("Trait Timeout", function() {
 
     it("should unregister", async function() {
         let component = jFactory("component");
-        component.$install(true);
+        await component.$install(true);
         component.$timeout("n1", 30, () => {});
         component.$timeout("n2", 30);
         component.$timeoutRemove("n1");
@@ -84,7 +84,7 @@ describe("Trait Timeout", function() {
 
     it("should unregister all", async function() {
         let component = jFactory("component");
-        component.$install(true);
+        await component.$install(true);
         component.$timeout("n1", 30, () => {});
         component.$timeout("n2", 30);
         component.$timeoutRemoveAll(jFactory.PHASE.DISABLE);
@@ -96,7 +96,7 @@ describe("Trait Timeout", function() {
     it("should clean up", async function() {
         let pass = true;
         let component = jFactory("component");
-        component.$install(true);
+        await component.$install(true);
         component.$timeout("n1", 1, () => pass = false);
         component.$timeoutRemove("n1");
         await wait(20);
@@ -106,7 +106,7 @@ describe("Trait Timeout", function() {
 
     it("should unregister on chain complete", async function() {
         let component = jFactory("component");
-        component.$install(true);
+        await component.$install(true);
         let n1 = component
             .$timeout("n1", 30);
         let n11 = n1
@@ -120,7 +120,7 @@ describe("Trait Timeout", function() {
 
     it("should unregister task on chain complete", async function() {
         let component = jFactory("component");
-        component.$install(true);
+        await component.$install(true);
         let n1 = component
             .$timeout("n1", 30);
         let n11 = n1
@@ -134,7 +134,7 @@ describe("Trait Timeout", function() {
 
     it("should chainAbort", async function() {
         let component = jFactory("component");
-        component.$install(true);
+        await component.$install(true);
         let n1 = component
             .$timeout("n1", 30)
             .then(r => wait(1).then(() => r))

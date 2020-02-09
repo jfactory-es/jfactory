@@ -21,7 +21,7 @@ Typically, the `PHASE_INSTALL` is intended for preloading component data and ins
 
 ### Service State Switchers
 
-It's suggested to use these switchers with `await` to prevent side effects. See also [Switching Synchronously](#switching-synchronously).
+You should use these switchers with `await` to prevent side effects. <!-- See also [Switching Synchronously](#switching-synchronously).-->
 
 ```javascript
 await myComponent.$install();
@@ -34,6 +34,7 @@ await myComponent.$uninstall();
 `$install(true)` is a shortcut of  `await $install()` then `await $enable()`. \
 `$uninstall()` implicitly calls `await $disable()` before uninstalling.
 
+<!--
 #### Switching Synchronously
 
 >**It is strongly discouraged to use the switchers synchronously, as you may invalidate the following conditions by upgrading your project, causing side effects.** 
@@ -43,7 +44,7 @@ The [Service State Switchers](#service-state-switchers) can be called synchronou
 - The service State Handler is synchronous, doesn't return a promise and doesn't initiate Tasks.
   
 Debug tip: If these conditions are met, the switcher will return a resolved JFactoryPromiseSync, with a property $isSettled = true; 
-
+-->
 ### Service State Handlers
 
 Service State Handlers are optional component handlers called on [Service State Changes](TraitService-Phases.md). 
@@ -71,8 +72,8 @@ let myComponent = jFactory('myComponent', {
     }
 });
 
-myComponent.$install(true); // shortcut for install() then enable()
-myComponent.$uninstall();
+await myComponent.$install(true); // shortcut for install() then enable()
+await myComponent.$uninstall();
 ```
 
 ### Service State Events
@@ -105,8 +106,8 @@ let myComponent = jFactory('myComponent', {
     }
 });
 
-myComponent.$install(true);
-myComponent.$uninstall();
+await myComponent.$install(true);
+await myComponent.$uninstall();
 ```
 
 Result:

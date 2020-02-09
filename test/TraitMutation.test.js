@@ -21,7 +21,7 @@ describe("Trait Mutation", function() {
         let dom1 = $("#dom1");
         let result = null, p = $("<p>")[0];
         let component = jFactory("component");
-        component.$install(true);
+        await component.$install(true);
         component.$mutation("n1", dom1[0], { childList: true }, mutations => result = mutations);
         dom1.append(p).children().remove();
         await wait(0); // MutationObserver callbacks are called asynchronously
@@ -32,7 +32,7 @@ describe("Trait Mutation", function() {
 
     it("should register", async function() {
         let component = jFactory("component");
-        component.$install(true);
+        await component.$install(true);
         component.$mutation("n1", document, { childList: true }, () => {});
         expect(component.$.mutations.has("n1")).equal(true);
         component.$uninstall();
@@ -40,7 +40,7 @@ describe("Trait Mutation", function() {
 
     it("should unregister", async function() {
         let component = jFactory("component");
-        component.$install(true);
+        await component.$install(true);
         component.$mutation("n1", document, { childList: true }, () => {});
         component.$mutationRemove("n1");
         expect(component.$.mutations.has("n1")).equal(false);
@@ -49,7 +49,7 @@ describe("Trait Mutation", function() {
 
     it("should unregister all", async function() {
         let component = jFactory("component");
-        component.$install(true);
+        await component.$install(true);
         component.$mutation("n1", document, { childList: true }, () => {});
         component.$mutationRemoveAll(jFactory.PHASE.DISABLE);
         expect(component.$.mutations.has("n1")).equal(false);
@@ -60,7 +60,7 @@ describe("Trait Mutation", function() {
         let dom1 = $("#dom1");
         let result = null, p = $("<p>")[0];
         let component = jFactory("component");
-        component.$install(true);
+        await component.$install(true);
         component.$mutation("n1", dom1[0], { childList: true }, mutations => result = mutations);
         component.$mutationRemove("n1");
         dom1.append(p).children().remove();

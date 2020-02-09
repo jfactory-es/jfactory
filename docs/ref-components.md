@@ -39,7 +39,7 @@ class MyComponentClass extends JFactoryComponent {
 }
 
 let myComponent1 = new MyComponentClass('Component1', 123);
-myComponent1.$install(true);
+await myComponent1.$install(true);
 ```
 
 ### Create a Component (base class)
