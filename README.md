@@ -1,18 +1,24 @@
 # jFactory
-<img align="right" width="140" src="https://jfactory-es.github.io/jfactory/img/jFactory.png">jFactory is an Open Source JavaScript library that allows you to easily compartmentalize your application into components. Thus, everything they initialize can be  tracked, stopped and removed automatically.
+<img align="right" width="140" src="https://jfactory-es.github.io/jfactory/img/jFactory.png">jFactory is an Open Source JavaScript library that allows you to easily compartmentalize your application into components. 
+Thus, **everything they initialize can be monitored, stopped and removed automatically.**
 
-**Simply call `myComponent.$uninstall()` to automatically interrupt and uninstall the DOM, CSS, views, promises, requests, timers, observers and event listeners. Later, call $install() to reload your component.**
+**Why?** Imagine a feature in your application that uses views, css, event listeners, requests and asynchronous processes. 
+jFactory groups all this together into a component object that provides the methods `$install(), $enable(), $disable() and $uninstall()`. Now, you can safely stop, remove or restart the component, making your asynchronous application easier to control and clean.  
 
-* [Installation](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-import.md)
+<!--
+jFactory is easy to learn and offers useful features for developing single-page applications.
+-->
+
+* [Playground](https://github.com/jfactory-es/jfactory/blob/master/docs/playground/README.md) 
+* [Installation](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-import.md) / [Starter Kit](https://github.com/jfactory-es/jfactory-starterkit)
 * [Documentation](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-index.md) / [Traits](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-index.md#traits-component-features) / [Classes](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-index.md#classes-internal-library)
-* [Playground](https://github.com/jfactory-es/jfactory/blob/master/docs/playground/README.md) /  [Starter Kit](https://github.com/jfactory-es/jfactory-starterkit)
 
 ## Abstract
 
 jFactory components are able to:
 
 - operate like a service (install, enable, disable, uninstall) 
-- automatically switch off subscribed dom, css, views, promise, requests, timers, observers and event listeners. 
+- automatically switch off subscribed css, dom, event listeners, observers, timers, requests, promise chains and views. 
 - automatically prevent all expired asynchronous calls (promise subtrees, event handlers...) 
 - automatically ensure that all the promise chains are completed at service state change
 - keep track in DevTools of all running subscriptions (listeners, timers, requests, promises, dom, css...)
