@@ -42,7 +42,7 @@
 
 ```jsx harmony
 const { jFactory } = jFactoryModule; // loaded as umd, see html.
-const assets = "//cdn.jsdelivr.net/gh/jfactory-es/jfactory-starterkit/kit/react/assets/";
+const assets = "//cdn.jsdelivr.net/gh/jfactory-es/jfactory-starterkit@latest/kit/react/assets/";
 
 jFactory.ReactDOM = ReactDOM;
 

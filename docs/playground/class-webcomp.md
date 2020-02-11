@@ -40,7 +40,7 @@
 
 ```javascript
 const { jFactory, JFactoryCoreObject, JFactoryComponent } = jFactoryModule; // loaded as umd, see html.
-const assets = "//cdn.jsdelivr.net/gh/jfactory-es/jfactory-starterkit/kit/webcomp/assets/";
+const assets = "//cdn.jsdelivr.net/gh/jfactory-es/jfactory-starterkit@latest/kit/webcomp/assets/";
 
 class ClockComponent extends HTMLElement {
 

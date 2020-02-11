@@ -40,7 +40,7 @@
 
 ```javascript
 const { jFactory } = jFactoryModule; // loaded as umd, see html.
-const assets = "//cdn.jsdelivr.net/gh/jfactory-es/jfactory-starterkit/kit/vanilla/assets/";
+const assets = "//cdn.jsdelivr.net/gh/jfactory-es/jfactory-starterkit@latest/kit/vanilla/assets/";
 
 window.clock = jFactory("clock", {
 

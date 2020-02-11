@@ -41,7 +41,7 @@
 
 ```javascript
 const { jFactory } = jFactoryModule; // loaded as umd, see html.
-const assets = "//cdn.jsdelivr.net/gh/jfactory-es/jfactory-starterkit/kit/vue/assets/";
+const assets = "//cdn.jsdelivr.net/gh/jfactory-es/jfactory-starterkit@latest/kit/vue/assets/";
 
 window.clock = jFactory("clock", {
 
