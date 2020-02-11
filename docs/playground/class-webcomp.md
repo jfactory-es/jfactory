@@ -16,7 +16,7 @@
     
     <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.15/lodash.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jfactory@1.4.0/dist/jFactory-devel.umd.js"></script> 
+    <script src="https://cdn.jsdelivr.net/npm/jfactory@1.5.0/dist/jFactory-devel.umd.js"></script> 
 </head> 
 <body>
     <h1>The Inaccurate Clock Component - Web Component</h1>
