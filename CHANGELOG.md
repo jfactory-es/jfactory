@@ -1,4 +1,4 @@
-## 1.5.0 (Feb 09, 2020)
+## 1.5.0 (Feb 11, 2020)
 * feat: improved phase-switching queueing     
 * feat: [TraitCSS](docs/TraitCSS.md).$cssFetch(): don't duplicate rules with same url 
 * feat: [TraitDom](docs/TraitDOM.md).$dom(): support textnodes in \<template>
