@@ -19,11 +19,18 @@
     <script src="https://cdn.jsdelivr.net/npm/jfactory@1.5.0/dist/jFactory-devel.umd.js"></script> 
 </head> 
 <body>
-     <div id="root">
+  
+    <div id="root">
         <button id="root-bt-install">Install Main Component</button>
         <button id="root-bt-uninstall">Uninstall Main Component</button>
     </div>
-
+    
+    <div style="font-size:0.9em;font-family: sans-serif;">  
+        <p>Here is how to control components from a master component. You can create as many instances of "Clock" as you want, stop them individually, or ask the parent component to disable/enable them all.</p>
+        <p>Since the master component is unique, it is created from a literal object, while Clock components are created from a JavaScript class.</p>
+        <p>Clock components load css, manipulate dom, install listeners, perform queries, and use timers and promises. Everything is stopped and removed automatically on demand by <a target="_blank" href="https://github.com/jfactory-es/jfactory">jFactory</a>, making the application easier to control and clean.</p>
+    </div>
+    
     <template id="tpl-main">
         <div id="main">
             <div id="main-title">Main Component</div>
@@ -33,7 +40,7 @@
             <div id="main-clocks"></div>
         </div>
     </template>
-
+    
     <template id="tpl-clock">
         <div class="clock">
             <div class="clock-view"></div>
