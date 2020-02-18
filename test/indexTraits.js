@@ -1,3 +1,4 @@
+require("./TraitCore.test");
 require("./TraitEvents.test");
 require("./TraitService.test");
 require("./TraitTask.test");
