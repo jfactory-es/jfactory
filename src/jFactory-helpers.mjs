@@ -8,10 +8,6 @@ import $ from "jquery";
 // ---------------------------------------------------------------------------------------------------------------------
 // Centralize helpers and externals in one module
 // ---------------------------------------------------------------------------------------------------------------------
-// The jFactory bundler should exclude external imports to let the project deals with external libraries,
-// allowing customized imports (CDN scripts, optimized compiled imports, overrides...)
-// See: rollup: "output.globals" and "external"; webpack: "externals"
-// ---------------------------------------------------------------------------------------------------------------------
 // Status: Beta
 // ---------------------------------------------------------------------------------------------------------------------
 
@@ -27,8 +23,7 @@ export const helper_get = _.get;
 export const helper_template = _.template;
 export const helper_camelCase = _.camelCase;
 
+export const NOOP = () => {};
+export const helper_setFunctionName = (name, f) => Object.defineProperty(f, "name", { value: name });
 export const helper_url_abs = url => {helper_url_abs.a.href = url; return helper_url_abs.a.href};
 helper_url_abs.a = document.createElement("a");
-
-export const NOOP = () => {};
-export const setFunctionName = (name, f) => Object.defineProperty(f, "name", { value: name });

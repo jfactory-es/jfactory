@@ -31,7 +31,6 @@ export * from "./JFactoryTraits";
 export * from "./TraitsCore";
 export * from "./TraitsComponents";
 
-// noinspection JSUnresolvedVariable
 if (typeof jFactoryOverride === "undefined" || !jFactoryOverride) {
     jFactoryLoader.init();
 }

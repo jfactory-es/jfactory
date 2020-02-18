@@ -3,7 +3,7 @@
 import { JFACTORY_DEV, jFactoryConfig } from "./jFactory-env";
 import { JFactoryExpect } from "./JFactoryExpect";
 import { jFactoryError } from "./JFactoryError";
-import { setFunctionName } from "./jFactory-helpers";
+import { helper_setFunctionName } from "./jFactory-helpers";
 
 // ---------------------------------------------------------------------------------------------------------------------
 // JFactoryFunctionComposer
@@ -101,7 +101,7 @@ export class JFactoryFunctionComposer {
                     && result.constructor !== Promise) {
                     context.result = result // we can safely set the new result
                 } else {
-                    return result.then(setFunctionName(
+                    return result.then(helper_setFunctionName(
                         [handler.name, "[compositeAsyncHandler]"].filter(Boolean).join(" "),
                         function(value) {
                             context.result = value;
@@ -225,7 +225,7 @@ export class JFactoryFunctionConditional {
     constructor(originalHandler) {
         this.originalHandler = originalHandler;
         this.composer = new JFactoryFunctionComposer;
-        this.composer.first("original", setFunctionName(
+        this.composer.first("original", helper_setFunctionName(
             [originalHandler.name, "[condition]"].filter(Boolean).join(" "),
             function(context) {
                 return originalHandler.apply(this, context.parameters);
@@ -269,7 +269,7 @@ export class JFactoryFunctionWrappable {
     constructor(originalHandler) {
         this.originalHandler = originalHandler;
         this.composer = new JFactoryFunctionComposer;
-        this.composer.first("original", setFunctionName(
+        this.composer.first("original", helper_setFunctionName(
             [originalHandler.name, "[wrapped]"].filter(Boolean).join(" "),
             function(context) {
                 return originalHandler.apply(this, context.parameters);
