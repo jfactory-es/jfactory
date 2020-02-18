@@ -62,7 +62,7 @@ await component.$uninstall();
 ```
 [Playground](https://github.com/jfactory-es/jfactory/blob/master/docs/playground/README.md) / [Starter Kit](https://github.com/jfactory-es/jfactory-starterkit)
 
-## Is that complicated?
+## Is it complicated?
 
 jFactory is an easy-to-learn library based on jQuery. Unlike a framework, it does not impose an application architecture: you are free to use only what you want without restriction. 
 
