@@ -10,7 +10,7 @@ Registers Promises wrapped by [`JFactoryPromise`](JFactoryPromise.md) objects th
 
 * During a [Phase Change](TraitService-Phases.md), `$taskRemoveAll(<New Phase>)` is called, which stops and removes all Tasks with a [Remove Phase](TraitService-Phases.md#remove-phase) equal to the new [Phase](TraitService-Phases.md).
 
-* Before completing, a Phase awaits the [Completion](JFactoryPromise.md#chain-completion--cancellation) of all the Tasks registered in `myComponent.$.tasks`, including promises registered during the current [Service State Handler](TraitService-States.md#service-state-handlers).
+* Before completing, a Phase awaits the [Completion](JFactoryPromise.md#chain-completion--abortion) of all the Tasks registered in `myComponent.$.tasks`, including promises registered during the current [Service State Handler](TraitService-States.md#service-state-handlers).
 
 * The jFactory methods create Tasks when they operate asynchronously.
 

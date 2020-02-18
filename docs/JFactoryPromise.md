@@ -14,8 +14,8 @@ let myPromise = new JFactoryPromise((resolve, reject) => {
 ``` 
 * [Status](#promise-status)
 * [Chain](#promise-chain)
-* [Chain Completion](#chain-completion--cancellation)
-* [Chain Cancellation](#chain-completion--cancellation)
+* [Chain Completion](#chain-completion--abortion)
+* [Chain Abortion](#chain-completion--abortion)
 * [Chain Expiration](#chain-expiration)
 * [Chain Awaitable](#chain-awaitable)
 * [Shared Properties](#shared-properties)
@@ -112,7 +112,7 @@ but keep in mind that enumerable primitives properties will be copied by value, 
 >Returns: `this (JFactoryPromise)`
 >
 >An alias of `$chainComplete()` used in an 
->interruption context to [Complete](#chain-completion--cancellation) the chain and [Expire](#chain-expiration) all the promises before the end.
+>interruption context to [Complete](#chain-completion--abortion) the chain and [Expire](#chain-expiration) all the promises before the end.
 >
 >```js
 >promise.$chainAbort("aborted by user");
@@ -123,7 +123,7 @@ but keep in mind that enumerable primitives properties will be copied by value, 
 ### `$chainComplete([reason = "$chainComplete()"])`
 >Returns: `this (JFactoryPromise)`
 >
->Manually [Completes](#chain-completion--cancellation) the chain and [Expires](#chain-expiration) all the promises of the chain.  
+>Manually [Completes](#chain-completion--abortion) the chain and [Expires](#chain-expiration) all the promises of the chain.  
 >You don't need to use this method if you are not [awaiting the whole Chain](#chain-awaitable).  
 >
 >```js
@@ -141,7 +141,7 @@ but keep in mind that enumerable primitives properties will be copied by value, 
 >
 >**Caution**: [See AutoComplete Restrictions](#autocomplete-restriction).
 >
->Automatically [Completes](#chain-completion--cancellation) the chain as soon as all its promises are fulfilled.  
+>Automatically [Completes](#chain-completion--abortion) the chain as soon as all its promises are fulfilled.  
 >You don't need to use this method if you are not [awaiting the whole chain](#chain-awaitable).  
 >A completed chain is also fully [Expired](#chain-expiration).
 >
@@ -239,9 +239,9 @@ In the case of a tree with many subbranches, it becomes complicated. That's why 
 >True if the chain contains a pending promise. 
 
 #### isCompleted
->True if the chain is explicitly [marked as completed](#chain-completion--cancellation).
+>True if the chain is explicitly [marked as completed](#chain-completion--abortion).
 
-## Chain Completion / Cancellation
+## Chain Completion / Abortion
 
 By definition, a Promise Chain is Completed when all its subpromises are settled (fulfilled or rejected), or when the chain is aborted.  
 You don't need to (auto)Complete the chain if you are not [awaiting the whole chain](#chain-awaitable).
@@ -270,14 +270,14 @@ because the chain is completed as soon as all its registered promises are settle
 
 ## Chain Expiration
 
-When a chain is [Completed](#chain-completion--cancellation), all the (new and old) promises of the chain are expired:   
+When a chain is [Completed](#chain-completion--abortion), all the (new and old) promises of the chain are expired:   
 * All handlers installed by `then()` and `catch()` are ignored.
 * The following [`$catchExpired()`](#catchexpiredonabort) handlers will be called.
 
 ## Chain Awaitable 
 
 The whole [Promise Chain](#promise-chain) can be awaited through the property `$chain`
- and resolved synchronously when the chain is [marked as Completed](#chain-completion--cancellation): 
+ and resolved synchronously when the chain is [marked as Completed](#chain-completion--abortion): 
 
 `await myPromise.$chain`
 

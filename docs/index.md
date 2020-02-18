@@ -22,7 +22,7 @@ jFactory components are able to:
 - automatically prevent all expired asynchronous calls (promise subtrees, event handlers...) 
 - automatically ensure that all the promise chains are completed at service state change
 - keep track in DevTools of all running subscriptions (listeners, timers, requests, promises, dom, css...)
-- improve the Promise chains (Awaitable, Completable, Cancelable and Expirable)
+- improve the Promise chains (Awaitable, Completable, Abortable and Expirable)
 - easily create/load CSS & DOM and clone from \<template> 
 
 ## Supported APIs
@@ -76,7 +76,7 @@ All the [methods are listed here](ref-index.md#traits-component-features).
 
 - [Remove Phase](TraitService-Phases.md#remove-phase): jFactory will automatically stop and remove the subscriptions (listeners, promises, timers, fetch, dom...) registered during an opposite state change (install/uninstall, enable/disable)
 
-- [Promise Chains](JFactoryPromise.md): jFactory uses extended native Promises that makes the whole Chain[ Awaitable](JFactoryPromise.md#chain-awaitable), [Completable](JFactoryPromise.md#chain-completion--cancellation), [Cancelable](JFactoryPromise.md#chain-completion--cancellation) and [Expirable](JFactoryPromise.md#chain-expiration).
+- [Promise Chains](JFactoryPromise.md): jFactory uses extended native Promises that makes the whole Chain[ Awaitable](JFactoryPromise.md#chain-awaitable), [Completable](JFactoryPromise.md#chain-completion--abortion), [Abortable](JFactoryPromise.md#chain-completion--abortion) and [Expirable](JFactoryPromise.md#chain-expiration).
 
 - [Traits](ref-components.md#create-a-component-base-class): Components are Objects created from Classes dynamically extended by JFactoryTraits. 
 

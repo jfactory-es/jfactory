@@ -7,7 +7,7 @@ Changing the [Service State](TraitService-States.md) creates an awaitable intern
 * Init Phases: `PHASE_INSTALL`, `PHASE_ENABLE`  
 * Remove Phases: `PHASE_UNINSTALL` `PHASE_DISABLE`  
 
-Phase changes of the same group (Init or Remove) are queued, but starting an opposite Phase cancels the current one.
+Phase changes of the same group (Init or Remove) are queued, but starting an opposite Phase aborts the current one.
 
 Phases are controlled by the [Service State Switchers](TraitService-States.md#service-state-switchers).
 

@@ -6,7 +6,7 @@
 
 
 Registers [`fetch()`](https://developer.mozilla.org/docs/Web/API/Fetch_API) requests that will be automatically stopped and removed at [Remove Phase](TraitService-Phases.md#remove-phase).
-This uses [`JFactoryFetch`](JFactoryFetch.md) which inherits from [`JFactoryPromise`](JFactoryPromise.md), allowing [Request Cancellation](JFactoryPromise.md#chain-completion--cancellation) and [Promise Chain Expiration](JFactoryPromise.md#chain-expiration).  
+This uses [`JFactoryFetch`](JFactoryFetch.md) which inherits from [`JFactoryPromise`](JFactoryPromise.md), allowing [Request Abortion](JFactoryPromise.md#chain-completion--abortion) and [Promise Chain Expiration](JFactoryPromise.md#chain-expiration).  
 
 ## Registry
 `myComponent.$.requests`
