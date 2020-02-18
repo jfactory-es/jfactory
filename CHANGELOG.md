@@ -1,3 +1,6 @@
+## 1.6.0 
+* feat: wilcard "?" to subscribe with a generated unique id     
+
 ## 1.5.0 (Feb 11, 2020)
 * feat: improved phase-switching queueing     
 * feat: [TraitCSS](docs/TraitCSS.md).$cssFetch(): don't duplicate rules with same url 
