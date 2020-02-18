@@ -26,6 +26,10 @@ export class TraitCore {
         const owner = this;
 
         class SubMap extends Map {
+            constructor(...args) {
+                super(...args);
+                Object.defineProperty(this, "id_autoinc", { value: 0, writable: true });
+            }
             $registerSync(key, value) {
                 let sub = Object.defineProperties({}, {
                     $value: { value },
@@ -53,6 +57,14 @@ export class TraitCore {
                 Object.defineProperty(promise, "$phaseRemove", { value: task.$phaseRemove });
                 this.set(key, promise);
                 return task
+            }
+
+            $id_resolve(str) {
+                if (str.indexOf("?") >= 0) {
+                    let id = ++this.id_autoinc;
+                    str = str.replace(/\?/g, id)
+                }
+                return str
             }
         }
 
@@ -117,19 +129,12 @@ export class TraitLog {
 export class TraitTask {
 
     trait_constructor() {
-        // const kernel = this.$[TraitCore.SYMBOL_PRIVATE].events.kernel;
-        // kernel.on("disable", () => {
-        //     if (this.$.tasks.size) {debugger}
-        //     // this.$taskRemoveAll(TraitService.PHASE.DISABLE)
-        // });
-        // kernel.on("uninstall", () => {
-        //     if (this.$.tasks.size) {debugger}
-        //     // this.$taskRemoveAll(TraitService.PHASE.UNINSTALL)
-        // });
-        this.$.assign("tasks", new Map, JFactoryObject.descriptors.ENUMERABLE);
+        this.$.assign("tasks", this.$.createSubMap(), JFactoryObject.descriptors.ENUMERABLE);
     }
 
     $task(id, executorOrValue) {
+        id = this.$.tasks.$id_resolve(id);
+
         if (JFACTORY_DEV) {
             JFactoryExpect("$task(id)", id).typeString();
             JFactoryExpect("$task(executorOrValue)", executorOrValue).notUndefined();

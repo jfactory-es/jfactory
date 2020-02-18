@@ -30,6 +30,8 @@ export class TraitFetch {
     }
 
     $fetch(id, url, fetchOptions = {}) {
+        id = this.$.requests.$id_resolve(id);
+
         if (JFACTORY_DEV) {
             JFactoryExpect("$fetch(id)", id).typeString();
             JFactoryExpect("$fetch(url)", url).typeString();
@@ -118,6 +120,8 @@ export class TraitTimeout {
         // id
         // id, delay
         // id, delay, handler, ...args
+
+        id = this.$.timeouts.$id_resolve(id);
 
         if (JFACTORY_DEV) {
             JFactoryExpect("id", id).typeString();
@@ -209,6 +213,7 @@ export class TraitInterval {
     }
 
     $interval(id, delay, handler, ...args) {
+        id = this.$.timeints.$id_resolve(id);
         if (JFACTORY_DEV) {
             JFactoryExpect("id", id).typeString();
             JFactoryExpect("handler", handler).typeFunction();
@@ -267,6 +272,7 @@ export class TraitMutation {
     }
 
     $mutation(id, parent, config, handler) {
+        id = this.$.mutations.$id_resolve(id);
         if (JFACTORY_DEV) {
             JFactoryExpect("id", id).typeString();
             JFactoryExpect("parent", parent).type(HTMLElement, Document);
@@ -328,6 +334,8 @@ export class TraitDOM {
     }
 
     $dom(id, jQueryArgument, appendTo) {
+        id = this.$.dom.$id_resolve(id);
+
         if (JFACTORY_DEV) {
             JFactoryExpect("id", id).typeString();
             JFactoryExpect("jQueryArgument", jQueryArgument).type(String, Object);
@@ -374,6 +382,8 @@ export class TraitDOM {
         if (fetchOptions && !helper_isPlainObject(fetchOptions)) {
             [fetchOptions, appendTo] = [{}, fetchOptions]
         }
+
+        id = this.$.dom.$id_resolve(id);
 
         if (JFACTORY_DEV) {
             JFactoryExpect("id", id).typeString();
@@ -463,6 +473,8 @@ export class TraitCSS {
     }
 
     $css(id, styleBody) {
+        id = this.$.css.$id_resolve(id);
+
         if (JFACTORY_DEV) {
             JFactoryExpect("id", id).typeString();
             JFactoryExpect("css", styleBody).typeString();
@@ -487,6 +499,8 @@ export class TraitCSS {
     }
 
     $cssFetch(id, url, appendTo = "head") {
+        id = this.$.css.$id_resolve(id);
+
         if (JFACTORY_DEV) {
             JFactoryExpect("id", id).typeString();
             JFactoryExpect("url", url).typeString();
@@ -598,6 +612,8 @@ export class TraitLibVue {
     }
 
     $vue(id, vue) {
+        id = this.$.vue.$id_resolve(id);
+
         if (JFACTORY_DEV) {
             JFactoryExpect("id", id).typeString();
             JFactoryExpect("vue", vue).type(Object);
@@ -655,6 +671,8 @@ export class TraitLibReact {
     }
 
     $react(id, container, element, ...renderOtherArguments) {
+        id = this.$.react.$id_resolve(id);
+
         if (JFACTORY_DEV) {
             if (!jFactory.ReactDOM) {
                 throw new Error("jFactory.ReactDOM=ReactDOM must be set before using the React Trait");
