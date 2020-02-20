@@ -99,7 +99,7 @@ In addition to the [Promise Status](#promise-status):
 
 When using then() or catch(), the enumerable properties of the promise are copied to the new subpromise.
 This is useful to inherit methods and share objects through the chain, 
-but keep in mind that enumerable primitives properties will be copied by value, not by reference.  
+but keep in mind that primitives properties are copied by value, not by reference.  
  
 #### $chain (shared)
 >Type: `object`
@@ -111,8 +111,8 @@ but keep in mind that enumerable primitives properties will be copied by value, 
 ### `$chainAbort([reason = "$chainAbort()"])`
 >Returns: `this (JFactoryPromise)`
 >
->An alias of `$chainComplete()` used in an 
->interruption context to [Complete](#chain-completion--abortion) the chain and [Expire](#chain-expiration) all the promises before the end.
+>Aborts the pending promises of the whole chain.
+>[Completes](#chain-completion--abortion) the chain and [Expires](#chain-expiration) all the promises of the chain.  
 >
 >```js
 >promise.$chainAbort("aborted by user");
