@@ -1,4 +1,5 @@
-/* jFactory Env, Copyright (c) 2019, Stéphane Plazis, https://github.com/jfactory-es/jfactory/blob/master/LICENSE.txt */
+/* jFactory Env, Copyright (c) 2019, Stéphane Plazis,
+   https://github.com/jfactory-es/jfactory/blob/master/LICENSE.txt */
 
 const fs = require("fs");
 const colors = require("ansi-colors");
