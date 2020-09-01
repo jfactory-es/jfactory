@@ -1,6 +1,6 @@
 const { wait, expect } = require("../scripts/dev/test-utils");
 const $ = require("jquery");
-const Vue =require("vue/dist/vue.common");
+const Vue =require("vue/dist/vue.min");
 
 // ---------------------------------------------------------------------------------------------------------------------
 // TraitDOM Test

@@ -26,7 +26,7 @@ export const jFactoryLoader = {
 };
 
 export function jFactoryDev() {
-    console.log("jFactory is running in development mode.\nPerformances will be affected.");
+    console.log("jFactory is running in development mode; performances will be affected");
     for (let [name, entry] of Object.entries(jFactoryConfig.jFactoryDev.requireCompatibility)) {
         let pass;
         try {pass = Boolean(entry.test())} catch (ignore) {}
@@ -37,7 +37,7 @@ export function jFactoryDev() {
 }
 
 export function jFactoryInit() {
-    !jFactoryConfig.TraitLog && (JFACTORY_DEV || JFACTORY_CLI) && console.warn("jFactory: LOGS REMOVED");
+    !jFactoryConfig.TraitLog && (JFACTORY_DEV || JFACTORY_CLI) && console.warn("jFactory logs disabled");
 }
 
 JFACTORY_DEV && jFactoryLoader.onInit(jFactoryDev);
