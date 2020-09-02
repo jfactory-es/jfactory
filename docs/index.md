@@ -62,11 +62,12 @@ await component.$uninstall();
 ```
 [Playground](playground/README.md) / [Starter Kit](https://github.com/jfactory-es/jfactory-starterkit)
 
-## Is it complicated?
+## Learning
 
 jFactory is an easy-to-learn library based on jQuery. Unlike a framework, it does not impose an application architecture: you are free to use only what you want without restriction. 
 
-All the [methods are listed here](ref-index.md#traits-component-features).
+All the [methods are listed here](ref-index.md#traits-component-features). \
+See also the [Playground](playground/README.md) and the [Starter Kit](https://github.com/jfactory-es/jfactory-starterkit)
 
 ## Patterns
 
