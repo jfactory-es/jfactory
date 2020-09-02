@@ -5,7 +5,7 @@
 const { getEnv } = require("../env");
 const pkg = require("../../package.json");
 const { terser } = require("rollup-plugin-terser");
-const replace = require("rollup-plugin-replace");
+const replace = require("@rollup/plugin-replace");
 
 const BUNDLE = getEnv("BUNDLE") === true;
 const DEBUG = getEnv("DEBUG") === true; // true: more logs, beautify /dist output, force debugger & logs
