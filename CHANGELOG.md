@@ -1,12 +1,12 @@
-## 1.6.0 
+## 1.6.0 (Sept 04, 2020) 
 * feat: wilcard "?" to subscribe with a generated unique id
-     
+* build: dependencies refactored and updated
 
 ## 1.5.0 (Feb 11, 2020)
 * feat: improved phase-switching queueing     
 * feat: [TraitCSS](docs/TraitCSS.md).$cssFetch(): don't duplicate rules with same url 
 * feat: [TraitDom](docs/TraitDOM.md).$dom(): support textnodes in \<template>
-* feat: [JFactoryPromise](docs/JFactoryPromise.md) improved abort and expire 
+* ###### feat: [JFactoryPromise](docs/JFactoryPromise.md) improved abort and expire 
 
 ## 1.4.0 (Jan 28, 2020 )
 * feat: Better support for [Web Components](docs/playground/class-webcomp.md)
