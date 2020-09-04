@@ -1,5 +1,5 @@
 ## 1.6.0 (Sept 04, 2020) 
-* feat: wilcard "?" to subscribe with a generated unique id
+* feat: wildcard "?" to subscribe with a generated unique id
 * build: dependencies refactored and updated
 
 ## 1.5.0 (Feb 11, 2020)
