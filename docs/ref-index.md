@@ -3,7 +3,7 @@
 # jFactory Reference Index
 
 #### Installation
-* [Importing jFactory](ref-import.md) / [External Dependencies](ref-import.md#external-dependencies) / [Overriding](ref-import.md#overriding)
+* [Importing jFactory](ref-import.md) <!--/ [External Dependencies](ref-import.md#external-dependencies)--> / [Overriding](ref-import.md#overriding)
 * [Playground](playground/README.md) /  [Starter Kit](https://github.com/jfactory-es/jfactory-starterkit)
 
 #### Concepts
