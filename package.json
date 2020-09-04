@@ -1,6 +1,6 @@
 {
   "name": "jfactory",
-  "version": "1.6.0-alpha",
+  "version": "1.6.0-alpha.0",
   "description": "Easily compartmentalize your JavaScript application into components. Track, stop, and delete anything initialized into them, including promise chains, requests, listeners, views, DOM and CSS.",
   "keywords": [
     "vue",
@@ -64,7 +64,14 @@
     "vue": "^2.6.12",
     "webpack": "^4.44.1",
     "webpack-cli": "^3.3.12",
-    "webpack-dev-server": "^3.11.0"
+    "webpack-dev-server": "^3.11.0",
+    "jquery": "^3",
+    "lodash": "^4"
+  },
+  "dependencies": {},
+  "peerDependencies": {
+    "jquery": "^3",
+    "lodash": "^4"
   },
   "scripts": {
     "srv:raw": "BUNDLE=false NODE_ENV=development node scripts/wds.js",
@@ -77,12 +84,7 @@
     "lint": "node scripts/lint.js",
     "build": "node scripts/build.js"
   },
-  "dependencies": {
-    "jquery": "^3.4.1",
-    "lodash": "^4.17.15"
-  },
   "files": [
-    "dist/**",
-    "src/**"
+    "dist/**"
   ]
 }

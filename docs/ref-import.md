@@ -2,88 +2,80 @@
 
 # Importing jFactory
 
-### Import by \<script\> 
+### Import as \<script\> 
 
-This is not the recommended usage, but for immediate testing or web projects that don't compile a js bundle, you can use the UMD module from a CDN:
+This is not the recommended usage, but for immediate testing you can use the UMD module from a CDN:
 
-First load the dependencies (jQuery and lodash), by example :
+First load the dependencies lodash and jQuery:
 ```html
-<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.15/lodash.min.js"
-        integrity="sha256-VeNaFBVDhoX3H+gJ37DpT/nTuZTdjYro9yBruHjVmoQ="
+<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.20/lodash.min.js" 
+        integrity="sha256-ur/YlHMU96MxHEsy3fHGszZHas7NzH4RQlD4tDVvFhw=" 
         crossorigin="anonymous"></script>
-<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-        integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8="
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs="
         crossorigin="anonymous"></script>
 ```
 Then load jFactory:
 
 ```html
 development:
-<script src="https://cdn.jsdelivr.net/npm/jfactory@latest/dist/jFactory-devel.umd.js">
-</script>
+<script src="https://cdn.jsdelivr.net/npm/jfactory@latest/dist/jFactory-devel.umd.js"></script>
+
+or 
 
 production:
-<script src="https://cdn.jsdelivr.net/npm/jfactory@latest/dist/jFactory.umd.js">
-</script> 
+<script src="https://cdn.jsdelivr.net/npm/jfactory@latest/dist/jFactory.umd.js"></script> 
 ```
-And initialize it:
+Finally, initialize it:
 ```html
-const { jFactory } = jFactoryModule; // UMD import
+const { jFactory } = jFactoryModule; 
 ```
 
-### Import by NPM 
+### Import as NodeJS module (NPM) 
 
-NPM is the recommended installation. jFactory should be imported into your application using a bundler that supports [Tree Shaking](https://developer.mozilla.org/docs/Glossary/Tree_shaking), like [Webpack](https://webpack.js.org).
-Dependencies are automatically imported by the module but you can [change this behavior](#external-dependencies).
+This is the recommended installation in a Node environment.
 
 ```
+npm add lodash jquery 
 npm add jfactory
 ```
 
-```javascript
-import { jFactory } from "jfactory" // NPM ES6 automatic import
-```
-### Developper mode
+#### NodeJS manual import
 
-The developer module provides debug data and logs. 
-You must see a warning in the console when loaded. If not, see Manual import. 
-
-### See also
-
-* Starter kit: https://github.com/jfactory-es/jfactory-starterkit
-
-## Manual vs Automatic
-
-#### NPM Manual import
-
-If the automatic import doesn't work, or does not switch to developer mode when webpack ["mode"](https://webpack.js.org/configuration/mode/) equals "development", manually load one of these modules:
+You can manually import a specific build, using one of these lines:
 
 ```javascript
-// ES6 import
-import { jFactory } from "jfactory/dist/jFactory-devel.mjs" // development
-import { jFactory } from "jfactory/dist/jFactory.mjs" // production
-
-// CommonJS import
+// NodeJS CommonJS modules
 const { jFactory } = require('jfactory/dist/jFactory-devel.cjs') // development
 const { jFactory } = require('jfactory/dist/jFactory.cjs') // production
+
+// ES6 modules
+import { jFactory } from "jfactory/dist/jFactory-devel.mjs" // development
+import { jFactory } from "jfactory/dist/jFactory.mjs" // production
 ```
 
-#### NPM Automatic import  
+#### NodeJS automatic import  
+
 ```javascript
-import { jFactory } from "jfactory" 
+// NodeJS CommonJS syntax
+const { jFactory } = require("jfactory")   
 // or
-const { jFactory } = require("jfactory")  
+// ES6 syntax (see restriction below)
+import { jFactory } from "jfactory"  
 ```
 
-`jfactory` conditionally loads a cjs module using require(). 
-So it should works only on cjs compatible environment (including node and webpack). It requires
-a `process.env.NODE_ENV` to automatically switch between `production` and `development`. 
+This uses the `process.env.NODE_ENV` and [Tree Shaking](https://webpack.js.org/guides/tree-shaking/) to contextually 
+import the `production` or the `development` module at compile time.
+Note that webpack configures `NODE_ENV` with the value of its [`mode`](https://webpack.js.org/configuration/mode/) 
+option, so you shouldn't need to set it. 
 
-Note that webpack injects a NODE_ENV with a value equal to its [`mode`](https://webpack.js.org/configuration/mode/) option, so you shouldn't need to set
-it.
+**Restriction:** Because the "automatic import" is a CommonJS file, it may not work when imported from a pure es6 environment (.mjs file). 
+In this case, you may need to use the [manual import](#nodejs-manual-import) or a commonJS transpiler.  
+<!--
+_Additional note_: 
 
-> If you are using a developer server or CI, you may want to use the real NODE_ENV while keeping the value of "mode". This can be achieved 
-> with the plugin: [`new webpack.EnvironmentPlugin(['NODE_ENV'])`](https://webpack.js.org/plugins/environment-plugin/)
+> If you need to force a different "NODE_ENV" by ignoring the webpack "mode" option, this can be achieved 
+> with the [`EnvironmentPlugin`](https://webpack.js.org/plugins/environment-plugin/):
 >
 >```javascript
 >const webpack = require("webpack");
@@ -98,7 +90,16 @@ it.
 >  ],
 >} 
 >```
+-->
+### Development module
 
+The development version of the module (jFactory-devel.*) provides debug data and logs. 
+You must see a warning in the console when loaded. If not, see Manual import. 
+
+### See also
+
+* Starter kit: https://github.com/jfactory-es/jfactory-starterkit
+<!--
 ## External Dependencies
 
 jFactory imports `lodash` and `jQuery` from its own dependencies.
@@ -128,7 +129,7 @@ you can load them from a CDN:
         integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8="
         crossorigin="anonymous"></script>
 ```
-
+-->
 ## Overriding
 
 jFactory is designed to be easily patchable at runtime (allowing MonkeyPatch, hotfix, hooks, ...)
