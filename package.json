@@ -1,6 +1,6 @@
 {
   "name": "jfactory",
-  "version": "1.6.0-alpha.0",
+  "version": "1.6.0",
   "description": "Easily compartmentalize your JavaScript application into components. Track, stop, and delete anything initialized into them, including promise chains, requests, listeners, views, DOM and CSS.",
   "keywords": [
     "vue",
