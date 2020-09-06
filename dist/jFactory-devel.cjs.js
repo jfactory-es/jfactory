@@ -1,6 +1,6 @@
 "use strict";Object.defineProperty(exports,"__esModule",{value:!0});var e=require("lodash"),t=require("jquery");
 /*!
- * jFactory 1.7.0-alpha.0
+ * jFactory v1.7.0-alpha.0
  * https://github.com/jfactory-es/jfactory
  *
  * Copyright (c) 2019, Stéphane Plazis

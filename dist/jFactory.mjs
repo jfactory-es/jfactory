@@ -1,6 +1,6 @@
 import e from"lodash";import t from"jquery";
 /*!
- * jFactory 1.7.0-alpha.0
+ * jFactory v1.7.0-alpha.0
  * https://github.com/jfactory-es/jfactory
  *
  * Copyright (c) 2019, Stéphane Plazis

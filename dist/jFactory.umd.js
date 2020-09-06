@@ -1,6 +1,6 @@
 var e,t;e=this,t=function(e,t,s){"use strict";
 /*!
-     * jFactory 1.7.0-alpha.0
+     * jFactory v1.7.0-alpha.0
      * https://github.com/jfactory-es/jfactory
      *
      * Copyright (c) 2019, Stéphane Plazis

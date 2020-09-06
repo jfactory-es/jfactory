@@ -34,12 +34,14 @@ function initEnv(verbose = true) {
     DEBUG = process.env.DEBUG = false
   }
 
+  const pkg = require("../package.json");
   if (verbose) {
     let pad = 8;
-    console.log("Node".padEnd(pad, " ")   + process.version);
+    console.log("Ver".padEnd(8, " ")      + warnIfStr(pkg.version.includes("-"), "v" + pkg.version));
+    // console.log("Node".padEnd(pad, " ")   + process.version);
     console.log("Env".padEnd(pad, " ")    + warnIfStr(ENV !== "production", ENV));
     console.log("Bundle".padEnd(pad, " ") + warnIfBool(!BUNDLE, BUNDLE));
-    console.log("Debug".padEnd(pad, " ")  +  warnIfBool(DEBUG, DEBUG));
+    console.log("Debug".padEnd(pad, " ")  + warnIfBool(DEBUG, DEBUG));
     console.log("-".repeat(80));
   }
 }

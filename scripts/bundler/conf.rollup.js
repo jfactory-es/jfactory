@@ -3,12 +3,13 @@
 // -------------------------------
 
 const { getEnv } = require("../env");
-const pkg = require("../../package.json");
 const { terser } = require("rollup-plugin-terser");
 const replace = require("@rollup/plugin-replace");
+const pkg = require("../../package.json");
 
-const BUNDLE = getEnv("BUNDLE") === true;
 const DEBUG = getEnv("DEBUG") === true; // true: more logs, beautify /dist output, force debugger & logs
+const BUNDLE = getEnv("BUNDLE") === true;
+const VERSION = "v" + pkg.version;
 
 module.exports = [];
 
@@ -44,7 +45,7 @@ if (!BUNDLE) { // simplified build for development
     ...common,
     plugins: [
       replace({
-        COMPILER_VER: pkg.version,
+        COMPILER_VER: VERSION,
         COMPILER_DEV: true,
         COMPILER_DEBUG: DEBUG,
         COMPILER_CLI: undefined
@@ -54,12 +55,9 @@ if (!BUNDLE) { // simplified build for development
 
 } else { // full "dist" build
 
-  // Note: terser "module" option
-  // is automatically set by the plugin
-
   const plugins_dev = [
     replace({
-      COMPILER_VER: pkg.version,
+      COMPILER_VER: VERSION,
       COMPILER_DEV: true,
       COMPILER_DEBUG: DEBUG,
       COMPILER_CLI: undefined
@@ -83,7 +81,7 @@ if (!BUNDLE) { // simplified build for development
 
   const plugins_prod = [
     replace({
-      COMPILER_VER: pkg.version,
+      COMPILER_VER: VERSION,
       COMPILER_DEV: false,
       COMPILER_DEBUG: DEBUG,
       COMPILER_CLI: undefined
