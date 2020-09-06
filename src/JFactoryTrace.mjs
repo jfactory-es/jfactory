@@ -1,6 +1,6 @@
 /* jFactory, Copyright (c) 2019, Stéphane Plazis, https://github.com/jfactory-es/jfactory/blob/master/LICENSE.txt */
 
-import { jFactoryConfig } from "./jFactory-env";
+import { jFactoryConfig } from "./jFactory-config";
 import { jFactoryLoader } from "./jFactory-loader";
 import { NOOP } from "./jFactory-helpers";
 

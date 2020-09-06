@@ -1,6 +1,7 @@
 /* jFactory, Copyright (c) 2019, Stéphane Plazis, https://github.com/jfactory-es/jfactory/blob/master/LICENSE.txt */
 
-import { JFACTORY_DEV, jFactoryConfig } from "./jFactory-env";
+import { JFACTORY_DEV } from "./jFactory-env";
+import { jFactoryConfig } from "./jFactory-config";
 import { helper_get, helper_isNative, helper_lowerFirst, helper_template } from "./jFactory-helpers";
 import { jFactoryTrace } from "./JFactoryTrace";
 

@@ -11,6 +11,7 @@ import { jFactoryLoader } from "./jFactory-loader";
 
 export * from "./jFactory";
 export * from "./jFactory-env";
+export * from "./jFactory-config";
 
 export * from "./jFactory-traits";
 export * from "./jFactory-loader";

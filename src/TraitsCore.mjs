@@ -6,7 +6,8 @@
 // ---------------------------------------------------------------------------------------------------------------------
 // ---------------------------------------------------------------------------------------------------------------------
 
-import { JFACTORY_DEV, jFactoryConfig } from "./jFactory-env";
+import { JFACTORY_DEV } from "./jFactory-env";
+import { jFactoryConfig } from "./jFactory-config";
 import { jFactoryError, JFactoryError } from "./JFactoryError";
 import { jFactory } from "./jFactory";
 import { JFactoryExpect } from "./JFactoryExpect";
