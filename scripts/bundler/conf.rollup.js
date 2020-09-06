@@ -44,6 +44,7 @@ if (!BUNDLE) { // simplified build for development
     ...common,
     plugins: [
       replace({
+        COMPILER_VER: pkg.version,
         COMPILER_DEV: true,
         COMPILER_DEBUG: DEBUG,
         COMPILER_CLI: undefined
@@ -58,6 +59,7 @@ if (!BUNDLE) { // simplified build for development
 
   const plugins_dev = [
     replace({
+      COMPILER_VER: pkg.version,
       COMPILER_DEV: true,
       COMPILER_DEBUG: DEBUG,
       COMPILER_CLI: undefined
@@ -81,6 +83,7 @@ if (!BUNDLE) { // simplified build for development
 
   const plugins_prod = [
     replace({
+      COMPILER_VER: pkg.version,
       COMPILER_DEV: false,
       COMPILER_DEBUG: DEBUG,
       COMPILER_CLI: undefined
