@@ -25,5 +25,7 @@ export const helper_camelCase = _.camelCase;
 
 export const NOOP = () => {};
 export const helper_setFunctionName = (name, f) => Object.defineProperty(f, "name", { value: name });
-export const helper_url_abs = url => {helper_url_abs.a.href = url; return helper_url_abs.a.href};
-helper_url_abs.a = document.createElement("a");
+export const helper_url_abs = url => {
+    if (!("a" in helper_url_abs)) helper_url_abs.a = document.createElement("a"); // treeshake
+    helper_url_abs.a.href = url; return helper_url_abs.a.href
+};
