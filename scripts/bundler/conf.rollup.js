@@ -17,11 +17,12 @@ const config = {
   input: "src/index.mjs",
   external: ["lodash", "jquery"],
   treeshake: {
-    annotations: true,
-    moduleSideEffects: false,
-    propertyReadSideEffects: false,
-    tryCatchDeoptimization: false,
-    unknownGlobalSideEffects: false
+    // see https://rollupjs.org/guide/en/#treeshake
+    annotations: true, // allows  @__PURE__ or #__PURE__
+    moduleSideEffects: false, // unused module never has side-effects. Can be a list or function
+    propertyReadSideEffects: false, // reading a property of an object never has side-effect
+    tryCatchDeoptimization: false, // allows optimization inside try catch
+    unknownGlobalSideEffects: false // reading an unknown global never has side-effect
   }
 };
 
