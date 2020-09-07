@@ -1,3 +1,5 @@
+/* jFactory, Copyright (c) 2019, Stéphane Plazis, https://github.com/jfactory-es/jfactory/blob/master/LICENSE.txt */
+
 import { JFACTORY_DEV, JFACTORY_CLI, JFACTORY_DEBUG } from "./jFactory-env";
 
 // Mutable configuration

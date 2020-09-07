@@ -13,6 +13,10 @@ const VERSION = "v" + pkg.version;
 
 module.exports = [];
 
+let banner = require("fs")
+  .readFileSync("src/jFactory-header.mjs", "utf8")
+  .replace("COMPILER_VER", VERSION);
+
 let common = {
   external: ["lodash", "jquery"],
   treeshake: {
@@ -66,7 +70,9 @@ if (!BUNDLE) { // simplified build for development
     terser({
       toplevel: true,
       output: {
-        beautify: DEBUG
+        beautify: DEBUG,
+        comments: DEBUG,
+        preamble: DEBUG ? false : banner
       },
       keep_classnames: DEBUG,
       keep_fnames: DEBUG,
@@ -90,7 +96,9 @@ if (!BUNDLE) { // simplified build for development
     terser({
       toplevel: true,
       output: {
-        beautify: DEBUG
+        beautify: DEBUG,
+        comments: DEBUG,
+        preamble: DEBUG ? false : banner
       },
       keep_classnames: DEBUG,
       keep_fnames: DEBUG,
