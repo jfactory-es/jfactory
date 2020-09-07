@@ -7,17 +7,14 @@ const { terser } = require("rollup-plugin-terser");
 const replace = require("@rollup/plugin-replace");
 const pkg = require("../../package.json");
 
-const DEBUG = getEnv("DEBUG") === true; // true: more logs, beautify /dist output, force debugger & logs
+const DEBUG = getEnv("DEBUG") === true; // true: beautify output, more logs, allows debugger keyword
 const BUNDLE = getEnv("BUNDLE") === true;
 const VERSION = "v" + pkg.version;
 
 module.exports = [];
 
-let banner = require("fs")
-  .readFileSync("src/jFactory-header.mjs", "utf8")
-  .replace("COMPILER_VER", VERSION);
-
-let common = {
+const config = {
+  input: "src/index.mjs",
   external: ["lodash", "jquery"],
   treeshake: {
     annotations: true,
@@ -28,185 +25,155 @@ let common = {
   }
 };
 
-let common_output = {
+const config_output = {
   globals: {
     lodash: "_",
     jquery: "$"
+  },
+  interop: false,
+  banner: require("fs")
+    .readFileSync("src/jFactory-header.mjs", "utf8")
+    .replace("COMPILER_VER", VERSION)
+};
+
+const config_replace = {
+  COMPILER_VER: VERSION,
+  COMPILER_DEBUG: DEBUG,
+  COMPILER_CLI: undefined
+};
+
+const config_terser = {
+  toplevel: true,
+  output: {
+    beautify: DEBUG,
+    comments: DEBUG ? true : "some"
+  },
+  keep_classnames: DEBUG,
+  keep_fnames: DEBUG,
+  mangle: !DEBUG,
+  compress: {
+    ecma: 8,
+    drop_console: false,
+    drop_debugger: !DEBUG
   }
 };
 
 if (!BUNDLE) { // simplified build for development
 
   module.exports.push({
-    input: "src/index.mjs",
+    ...config,
     output: {
-      format: "cjs",
+      ...config_output,
       file: pkg.main,
-      interop: false,
-      sourcemap: "inline",
-      ...common_output
+      format: "cjs",
+      sourcemap: "inline"
     },
-    ...common,
     plugins: [
       replace({
-        COMPILER_VER: VERSION,
-        COMPILER_DEV: true,
-        COMPILER_DEBUG: DEBUG,
-        COMPILER_CLI: undefined
+        ...config_replace,
+        COMPILER_DEV: true
       })
     ]
   })
 
 } else { // full "dist" build
 
-  const plugins_dev = [
-    replace({
-      COMPILER_VER: VERSION,
-      COMPILER_DEV: true,
-      COMPILER_DEBUG: DEBUG,
-      COMPILER_CLI: undefined
-    }),
-
-    terser({
-      toplevel: true,
-      output: {
-        beautify: DEBUG,
-        comments: DEBUG,
-        preamble: DEBUG ? false : banner
-      },
-      keep_classnames: DEBUG,
-      keep_fnames: DEBUG,
-      mangle: !DEBUG,
-      compress: {
-        ecma: 8,
-        drop_console: false,
-        drop_debugger: !DEBUG
-      }
-    })
-  ];
-
   const plugins_prod = [
     replace({
-      COMPILER_VER: VERSION,
-      COMPILER_DEV: false,
-      COMPILER_DEBUG: DEBUG,
-      COMPILER_CLI: undefined
+      ...config_replace,
+      COMPILER_DEV: false
     }),
+    terser(config_terser)
+  ];
 
-    terser({
-      toplevel: true,
-      output: {
-        beautify: DEBUG,
-        comments: DEBUG,
-        preamble: DEBUG ? false : banner
-      },
-      keep_classnames: DEBUG,
-      keep_fnames: DEBUG,
-      mangle: !DEBUG,
-      compress: {
-        ecma: 8,
-        drop_console: false,
-        drop_debugger: !DEBUG
-      }
-    })
+  const plugins_dev = [
+    replace({
+      ...config_replace,
+      COMPILER_DEV: true
+    }),
+    terser(config_terser)
   ];
 
   module.exports.push(
 
-    // node env switch
-
-    {
+    { // loader
+      ...config,
       input: "scripts/bundler/dist-index.js",
       output: {
+        ...config_output,
         format: "cjs",
         file: pkg.main,
         interop: false
       }
     },
 
-    // production
-
-    {
-      input: "src/index.mjs",
+    { // prod cjs
+      ...config,
       output: {
+        ...config_output,
         format: "cjs",
         file: "dist/jFactory.cjs.js",
-        interop: false,
-        sourcemap: DEBUG ? "inline" : false,
-        ...common_output
+        sourcemap: DEBUG ? "inline" : false
       },
-      ...common,
       plugins: plugins_prod
     },
 
-    {
-      input: "src/index.mjs",
+    { // prod umd
+      ...config,
       output: {
+        ...config_output,
         format: "umd",
         name: "jFactoryModule",
         file: "dist/jFactory.umd.js",
-        interop: false,
-        sourcemap: DEBUG ? "inline" : false,
-        ...common_output
+        sourcemap: DEBUG ? "inline" : false
       },
-      ...common,
       plugins: plugins_prod
     },
 
-    {
-      input: "src/index.mjs",
+    { // prod mjs
+      ...config,
       output: {
+        ...config_output,
         format: "es",
         file: "dist/jFactory.mjs",
-        interop: false,
-        sourcemap: DEBUG ? "inline" : false,
-        ...common_output
+        sourcemap: DEBUG ? "inline" : false
       },
-      ...common,
       plugins: plugins_prod
-
     },
 
-    // development
-
-    {
-      input: "src/index.mjs",
+    { // dev cjs
+      ...config,
       output: {
+        ...config_output,
         format: "cjs",
         file: "dist/jFactory-devel.cjs.js",
-        interop: false,
-        sourcemap: "inline",
-        ...common_output
+        sourcemap: "inline"
       },
-      ...common,
       plugins: plugins_dev
     },
 
-    {
-      input: "src/index.mjs",
+    { // dev umd
+      ...config,
       output: {
+        ...config_output,
         format: "umd",
         name: "jFactoryModule",
         file: "dist/jFactory-devel.umd.js",
-        interop: false,
-        sourcemap: "inline",
-        ...common_output
+        sourcemap: "inline"
       },
-      ...common,
       plugins: plugins_dev
     },
 
-    {
-      input: "src/index.mjs",
+    { // dev mjs
+      ...config,
       output: {
+        ...config_output,
         format: "es",
         file: "dist/jFactory-devel.mjs",
-        interop: false,
-        sourcemap: "inline",
-        ...common_output
+        sourcemap: "inline"
       },
-      ...common,
       plugins: plugins_dev
     }
-  );
+
+  )
 }

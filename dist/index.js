@@ -1,3 +1,10 @@
+/*!
+ * jFactory v1.7.0-alpha.0
+ * https://github.com/jfactory-es/jfactory
+ *
+ * Copyright (c) 2019, Stéphane Plazis
+ * https://github.com/jfactory-es/jfactory/blob/master/LICENSE.txt
+ */
 'use strict';
 
 if (process.env.NODE_ENV === "development") {
