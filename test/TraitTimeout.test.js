@@ -4,7 +4,7 @@ const { wait, expect } = require("../scripts/dev/test-utils");
 // TraitTimeout Test
 // ---------------------------------------------------------------------------------------------------------------------
 
-const { jFactory, jFactoryError, JFactoryPromise } = require("../dist");
+const { jFactory, JFactoryPromise, JFACTORY_ERR_PROMISE_EXPIRED } = require("../dist");
 
 describe("Trait Timeout", function() {
 
@@ -145,7 +145,7 @@ describe("Trait Timeout", function() {
         try {
             await n1
         } catch (e) {
-            expect(e).instanceof(jFactoryError.PROMISE_EXPIRED);
+            expect(e).instanceof(JFACTORY_ERR_PROMISE_EXPIRED);
         }
         component.$uninstall();
     });

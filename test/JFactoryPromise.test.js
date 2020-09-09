@@ -4,7 +4,7 @@ const { expect } = require("../scripts/dev/test-utils");
 // JFactoryTraits
 // ---------------------------------------------------------------------------------------------------------------------
 
-const { JFactoryPromise, jFactoryError } = require("../dist");
+const { JFactoryPromise, JFACTORY_ERR_INVALID_CALL, JFACTORY_ERR_PROMISE_EXPIRED } = require("../dist");
 
 describe("JFactoryPromise", function() {
 
@@ -23,7 +23,7 @@ describe("JFactoryPromise", function() {
         expect(promise.$isAborted).equal(false);
         let fail = false;
         let a = await promise.then(() => fail = true);
-        expect(a).instanceof(jFactoryError.PROMISE_EXPIRED);
+        expect(a).instanceof(JFACTORY_ERR_PROMISE_EXPIRED);
         expect(fail).equal(false)
     });
 
@@ -41,7 +41,7 @@ describe("JFactoryPromise", function() {
         } catch (e) {
             error = e;
         }
-        expect(error).instanceof(jFactoryError.INVALID_CALL);
+        expect(error).instanceof(JFACTORY_ERR_INVALID_CALL);
 
         expect(promise.$isSettled).equal(false);
         expect(promise.$isExpired).equal(false);
@@ -92,7 +92,7 @@ describe("JFactoryPromise", function() {
         } catch (e) {
             error = e;
         }
-        expect(error).instanceof(jFactoryError.PROMISE_EXPIRED);
+        expect(error).instanceof(JFACTORY_ERR_PROMISE_EXPIRED);
     });
 
     it("[await expired] doesn't throw error", async function() {

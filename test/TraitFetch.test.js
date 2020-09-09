@@ -4,7 +4,7 @@ const { wait, expect } = require("../scripts/dev/test-utils");
 // TraitFetch Test
 // ---------------------------------------------------------------------------------------------------------------------
 
-const { jFactory, jFactoryError, JFactoryFetch, JFactoryPromise } = require("../dist");
+const { jFactory, JFactoryFetch, JFactoryPromise, JFACTORY_ERR_PROMISE_EXPIRED } = require("../dist");
 
 describe("Trait Fetch", function() {
 
@@ -138,7 +138,7 @@ describe("Trait Fetch", function() {
         try {
             await n1
         } catch (e) {
-            expect(e).instanceof(jFactoryError.PROMISE_EXPIRED);
+            expect(e).instanceof(JFACTORY_ERR_PROMISE_EXPIRED);
         }
         component.$uninstall();
     });

@@ -5,7 +5,7 @@ const $ = require("jquery");
 // TraitCSS Test
 // ---------------------------------------------------------------------------------------------------------------------
 
-const { jFactory, jFactoryError, JFactoryPromise } = require("../dist");
+const { jFactory, JFactoryPromise, JFACTORY_ERR_PROMISE_EXPIRED } = require("../dist");
 
 describe("Trait CSS", function() {
 
@@ -180,7 +180,7 @@ describe("Trait CSS", function() {
         try {
             await n1
         } catch (e) {
-            expect(e).instanceof(jFactoryError.PROMISE_EXPIRED);
+            expect(e).instanceof(JFACTORY_ERR_PROMISE_EXPIRED);
         }
         await component.$uninstall();
         expect($("#n1").length).equal(0);
