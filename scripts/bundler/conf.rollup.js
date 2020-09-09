@@ -6,6 +6,7 @@ const { getEnv } = require("../env");
 const { terser } = require("rollup-plugin-terser");
 const replace = require("@rollup/plugin-replace");
 const pkg = require("../../package.json");
+const fs = require("fs");
 
 const DEBUG = getEnv("DEBUG") === true; // true: beautify output, more logs, allows debugger keyword
 const BUNDLE = getEnv("BUNDLE") === true;
@@ -32,9 +33,7 @@ const config_output = {
     jquery: "$"
   },
   interop: false,
-  banner: require("fs")
-    .readFileSync("src/jFactory-header.mjs", "utf8")
-    .replace("COMPILER_VER", VERSION)
+  banner: fs.readFileSync("scripts/bundler/dist-header.mjs", "utf8").replace("COMPILER_VER", VERSION)
 };
 
 const config_replace = {
@@ -44,11 +43,11 @@ const config_replace = {
 };
 
 const config_terser = {
-  toplevel: true,
   output: {
     beautify: DEBUG,
     comments: DEBUG ? true : "some"
   },
+  toplevel: true,
   keep_classnames: DEBUG,
   keep_fnames: DEBUG,
   mangle: !DEBUG,
