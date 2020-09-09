@@ -6,9 +6,11 @@
 // ---------------------------------------------------------------------------------------------------------------------
 // ---------------------------------------------------------------------------------------------------------------------
 
-import { JFACTORY_DEV } from "./jFactory-env";
-import { jFactoryConfig } from "./jFactory-config";
-import { jFactoryError, JFactoryError } from "./JFactoryError";
+import { JFACTORY_DEV, JFACTORY_CFG_LOG } from "./jFactory-env";
+import {
+    JFACTORY_ERR_KEY_DUPLICATED, JFACTORY_ERR_KEY_MISSING,
+    JFACTORY_ERR_PROMISE_EXPIRED, JFactoryError
+} from "./JFactoryError";
 import { jFactory } from "./jFactory";
 import { JFactoryExpect } from "./JFactoryExpect";
 import { JFactoryAbout } from "./JFactoryAbout";
@@ -108,7 +110,7 @@ export class TraitLog {
     trait_constructor() {
         let config = Object.assign({
             label: this.$.about.name
-        }, jFactoryConfig.TraitLog || {
+        }, JFACTORY_CFG_LOG.enabled || {
             enabled: false
         });
 
@@ -139,7 +141,7 @@ export class TraitTask {
             JFactoryExpect("$task(id)", id).typeString();
             JFactoryExpect("$task(executorOrValue)", executorOrValue).notUndefined();
             if (this.$.tasks.has(id)) {
-                throw new jFactoryError.KEY_DUPLICATED({ target: "$task(id)", given: id })
+                throw new JFACTORY_ERR_KEY_DUPLICATED({ target: "$task(id)", given: id })
             }
         }
 
@@ -177,7 +179,7 @@ export class TraitTask {
             JFactoryExpect("$taskRemove(id)", id).typeString();
             reason && JFactoryExpect("$taskRemove(reason)", reason).typeString();
             if (!this.$.tasks.has(id)) {
-                throw new jFactoryError.KEY_MISSING({
+                throw new JFACTORY_ERR_KEY_MISSING({
                     target: "$taskRemove(id)",
                     given: id
                 })
@@ -443,7 +445,7 @@ export class TraitService {
             }
             return promise
                 .catch(e => {
-                    if (!(/*this.$.service.isPhaseKilling &&*/ e instanceof jFactoryError.PROMISE_EXPIRED)) {
+                    if (!(/*this.$.service.isPhaseKilling &&*/ e instanceof JFACTORY_ERR_PROMISE_EXPIRED)) {
                         this.$logErr("unhandled promise rejection in " + this.$.service.phase + ";",
                             ...e instanceof JFactoryError ? e : [e])
                     }

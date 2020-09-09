@@ -1,9 +1,8 @@
 /* jFactory, Copyright (c) 2019, Stéphane Plazis, https://github.com/jfactory-es/jfactory/blob/master/LICENSE.txt */
 
-import { JFACTORY_DEV } from "./jFactory-env";
-import { jFactoryConfig } from "./jFactory-config";
+import { JFACTORY_DEV, JFACTORY_CFG_LOG } from "./jFactory-env";
+import { JFACTORY_ERR_INVALID_CALL } from "./JFactoryError";
 import { JFactoryExpect } from "./JFactoryExpect";
-import { jFactoryError } from "./JFactoryError";
 import { helper_setFunctionName } from "./jFactory-helpers";
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -140,7 +139,7 @@ export class JFactoryFunctionExpirable {
         // cannot use a real accessor here (conditions can be scoped, so isExpired too)
         this.isExpired = scope => expired || isExpired.call(scope) || false;
         this.setExpired = value => expired = value ?
-            value instanceof Error ? value : new jFactoryError.INVALID_CALL({
+            value instanceof Error ? value : new JFACTORY_ERR_INVALID_CALL({
                 target: this.originalHandler,
                 reason: "manually expired"
             }) : Boolean(this.expiredCalls = 0);
@@ -156,7 +155,7 @@ export class JFactoryFunctionExpirable {
                         (context.canceled = true) &&
                         (result instanceof Error ?
                             result :
-                            new jFactoryError.INVALID_CALL({
+                            new JFACTORY_ERR_INVALID_CALL({
                                 target: expirable.originalHandler,
                                 reason: "conditionally expired",
                                 condition
@@ -192,8 +191,8 @@ export class JFactoryFunctionExpirable {
     onExpired(expired) {
         if (this.expiredCalls < JFactoryFunctionExpirable.MaxWarningExpiration) {
             this.expiredCalls++;
-            if (jFactoryConfig.TraitLog) {
-                console.warn(...new jFactoryError.INVALID_CALL({
+            if (JFACTORY_CFG_LOG.enabled) {
+                console.warn(...new JFACTORY_ERR_INVALID_CALL({
                     ...expired.$data,
                     reason: expired.$data.reason
                         + "; expiredCalls="

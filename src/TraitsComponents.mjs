@@ -8,7 +8,8 @@
 
 import { jFactory } from "./jFactory";
 import { JFACTORY_DEV } from "./jFactory-env";
-import { jFactoryError } from "./JFactoryError";
+import { JFACTORY_COMPAT_MutationObserver, jFactoryCompat_require } from "./jFactoryCompat";
+import { JFACTORY_ERR_INVALID_VALUE, JFACTORY_ERR_KEY_DUPLICATED, JFACTORY_ERR_KEY_MISSING } from "./JFactoryError";
 import { JFactoryExpect } from "./JFactoryExpect";
 import { TraitCore, TraitService } from "./TraitsCore";
 import { JFactoryFetch } from "./JFactoryFetch";
@@ -37,7 +38,7 @@ export class TraitFetch {
             JFactoryExpect("$fetch(url)", url).typeString();
             JFactoryExpect("$fetch(fetchOptions)", fetchOptions).typePlainObject();
             if (this.$.requests.has(id)) {
-                throw new jFactoryError.KEY_DUPLICATED({ target: "$fetch(id)", given: id })
+                throw new JFACTORY_ERR_KEY_DUPLICATED({ target: "$fetch(id)", given: id })
             }
         }
 
@@ -73,7 +74,7 @@ export class TraitFetch {
             JFactoryExpect("$fetchRemove(id)", id).typeString();
             reason && JFactoryExpect("$fetchRemove(reason)", reason).typeString();
             if (!this.$.requests.has(id)) {
-                throw new jFactoryError.KEY_MISSING({
+                throw new JFACTORY_ERR_KEY_MISSING({
                     target: "$fetchRemove(id)",
                     given: id
                 })
@@ -128,7 +129,7 @@ export class TraitTimeout {
             JFactoryExpect("delay", delay).typeNumber();
             JFactoryExpect("handler", handler).type(Function, null);
             if (this.$.timeouts.has(id)) {
-                throw new jFactoryError.KEY_DUPLICATED({ target: "$timeout(id)", given: id })
+                throw new JFACTORY_ERR_KEY_DUPLICATED({ target: "$timeout(id)", given: id })
             }
         }
 
@@ -167,7 +168,7 @@ export class TraitTimeout {
             JFactoryExpect("$timeoutRemove(id)", id).typeString();
             reason && JFactoryExpect("$timeoutRemove(reason)", reason).typeString();
             if (!this.$.timeouts.has(id)) {
-                throw new jFactoryError.KEY_MISSING({
+                throw new JFACTORY_ERR_KEY_MISSING({
                     target: "$timeoutRemove(id)",
                     given: id
                 })
@@ -219,7 +220,7 @@ export class TraitInterval {
             JFactoryExpect("handler", handler).typeFunction();
             JFactoryExpect("delay", delay).typeNumber();
             if (this.$.timeints.has(id)) {
-                throw new jFactoryError.KEY_DUPLICATED({ target: "$interval(id)", given: id })
+                throw new JFACTORY_ERR_KEY_DUPLICATED({ target: "$interval(id)", given: id })
             }
         }
         let timer = setInterval(handler, delay, ...args);
@@ -230,7 +231,7 @@ export class TraitInterval {
         if (JFACTORY_DEV) {
             JFactoryExpect("$intervalRemove(id)", id).typeString();
             if (!this.$.timeints.has(id)) {
-                throw new jFactoryError.KEY_MISSING({
+                throw new JFACTORY_ERR_KEY_MISSING({
                     target: "$intervalRemove(id)",
                     given: id
                 })
@@ -263,6 +264,10 @@ export class TraitInterval {
 // Trait Mutations
 // ---------------------------------------------------------------------------------------------------------------------
 
+if (JFACTORY_DEV) {
+    jFactoryCompat_require(JFACTORY_COMPAT_MutationObserver);
+}
+
 export class TraitMutation {
     trait_constructor() {
         const kernel = this.$[TraitCore.SYMBOL_PRIVATE].events.kernel;
@@ -279,7 +284,7 @@ export class TraitMutation {
             JFactoryExpect("config", config).typePlainObject();
             JFactoryExpect("handler", handler).typeFunction();
             if (this.$.mutations.has(id)) {
-                throw new jFactoryError.KEY_DUPLICATED({ target: "$mutation(id)", given: id })
+                throw new JFACTORY_ERR_KEY_DUPLICATED({ target: "$mutation(id)", given: id })
             }
         }
         let observer = new MutationObserver(handler);
@@ -292,7 +297,7 @@ export class TraitMutation {
             JFactoryExpect("$mutationRemove(id)", id).typeString();
             reason && JFactoryExpect("$mutationRemove(reason)", reason).typeString();
             if (!this.$.mutations.has(id)) {
-                throw new jFactoryError.KEY_MISSING({
+                throw new JFACTORY_ERR_KEY_MISSING({
                     target: "$mutationRemove(id)",
                     given: id
                 })
@@ -349,7 +354,7 @@ export class TraitDOM {
         }
 
         if (JFACTORY_DEV && this.$.dom.has(id)) {
-            throw new jFactoryError.KEY_DUPLICATED({ target: "$dom(id)", given: id })
+            throw new JFACTORY_ERR_KEY_DUPLICATED({ target: "$dom(id)", given: id })
         }
 
         let dom = jQuery(jQueryArgument);
@@ -361,7 +366,7 @@ export class TraitDOM {
         if (domId) {
             if (JFACTORY_DEV) {
                 if (dom[0].nodeType !== Node.ELEMENT_NODE) {
-                    throw new jFactoryError.INVALID_VALUE({
+                    throw new JFACTORY_ERR_INVALID_VALUE({
                         target: "$dom(#id)",
                         given: dom,
                         reason: "cannot set the dom id: the first element of the selection isn't an ELEMENT_NODE"
@@ -399,7 +404,7 @@ export class TraitDOM {
         }
 
         if (JFACTORY_DEV && this.$.dom.has(id)) {
-            throw new jFactoryError.KEY_DUPLICATED({ target: "$domFetch(id)", given: id })
+            throw new JFACTORY_ERR_KEY_DUPLICATED({ target: "$domFetch(id)", given: id })
         }
 
         let promise = this.$fetchText('$domFetch("' + id + '")', url, fetchOptions)
@@ -423,7 +428,7 @@ export class TraitDOM {
             JFactoryExpect("$domRemove(id)", id).typeString();
             reason && JFactoryExpect("$domRemove(reason)", reason).typeString();
             if (!this.$.dom.has(id)) {
-                throw new jFactoryError.KEY_MISSING({
+                throw new JFACTORY_ERR_KEY_MISSING({
                     target: "$domRemove(id)",
                     given: id
                 })
@@ -487,7 +492,7 @@ export class TraitCSS {
         }
 
         if (JFACTORY_DEV && this.$.css.has(id)) {
-            throw new jFactoryError.KEY_DUPLICATED({ target: "$css(id)", given: id })
+            throw new JFACTORY_ERR_KEY_DUPLICATED({ target: "$css(id)", given: id })
         }
 
         return this.$.css.$registerSync(id,
@@ -513,7 +518,7 @@ export class TraitCSS {
         }
 
         if (JFACTORY_DEV && this.$.css.has(id)) {
-            throw new jFactoryError.KEY_DUPLICATED({ target: "$cssFetch(id)", given: id })
+            throw new JFACTORY_ERR_KEY_DUPLICATED({ target: "$cssFetch(id)", given: id })
         }
 
         url = helper_url_abs(url);
@@ -561,7 +566,7 @@ export class TraitCSS {
             JFactoryExpect("$cssRemove(id)", id).typeString();
             reason && JFactoryExpect("$cssRemove(reason)", reason).typeString();
             if (!this.$.css.has(id)) {
-                throw new jFactoryError.KEY_MISSING({
+                throw new JFACTORY_ERR_KEY_MISSING({
                     target: "$cssRemove(id)",
                     given: id
                 })
@@ -620,7 +625,7 @@ export class TraitLibVue {
         }
 
         if (JFACTORY_DEV && this.$.vue.has(id)) {
-            throw new jFactoryError.KEY_DUPLICATED({ target: "$vue(id)", given: id })
+            throw new JFACTORY_ERR_KEY_DUPLICATED({ target: "$vue(id)", given: id })
         }
 
         return this.$.vue.$registerSync(id, vue).$value;
@@ -630,7 +635,7 @@ export class TraitLibVue {
         if (JFACTORY_DEV) {
             JFactoryExpect("$vueRemove(id)", id).typeString();
             if (!this.$.vue.has(id)) {
-                throw new jFactoryError.KEY_MISSING({
+                throw new JFACTORY_ERR_KEY_MISSING({
                     target: "$vueRemove(id)",
                     given: id
                 })
@@ -682,7 +687,7 @@ export class TraitLibReact {
         }
 
         if (JFACTORY_DEV && this.$.react.has(id)) {
-            throw new jFactoryError.KEY_DUPLICATED({ target: "$react(id)", given: id })
+            throw new JFACTORY_ERR_KEY_DUPLICATED({ target: "$react(id)", given: id })
         }
 
         container = jQuery(container)[0];
@@ -694,7 +699,7 @@ export class TraitLibReact {
         if (JFACTORY_DEV) {
             JFactoryExpect("$reactRemove(id)", id).typeString();
             if (!this.$.react.has(id)) {
-                throw new jFactoryError.KEY_MISSING({
+                throw new JFACTORY_ERR_KEY_MISSING({
                     target: "$reactRemove(id)",
                     given: id
                 })

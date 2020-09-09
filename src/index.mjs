@@ -7,14 +7,11 @@
 // Almost everything is exported; The resulting modules should be imported by a bundler that supports Tree Shacking.
 // ---------------------------------------------------------------------------------------------------------------------
 
-import { jFactoryLoader } from "./jFactory-loader";
-
 export * from "./jFactory";
+export * from "./jFactory-bootstrap";
 export * from "./jFactory-env";
-export * from "./jFactory-config";
-
+export * from "./jFactory-helpers";
 export * from "./jFactory-traits";
-export * from "./jFactory-loader";
 
 export * from "./JFactoryAbout";
 export * from "./JFactoryError";
@@ -29,9 +26,13 @@ export * from "./JFactoryTime";
 export * from "./JFactoryTrace";
 export * from "./JFactoryTraits";
 
+export * from "./jFactoryCompat";
+export * from "./jFactoryLoader";
+
 export * from "./TraitsCore";
 export * from "./TraitsComponents";
 
+import { jFactoryBootstrap } from "./jFactory-bootstrap";
 if (typeof jFactoryOverride === "undefined" || !jFactoryOverride) {
-    jFactoryLoader.init();
+    jFactoryBootstrap();
 }

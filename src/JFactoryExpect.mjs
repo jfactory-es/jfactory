@@ -1,8 +1,8 @@
 /* jFactory, Copyright (c) 2019, Stéphane Plazis, https://github.com/jfactory-es/jfactory/blob/master/LICENSE.txt */
 
-import { jFactoryError } from "./JFactoryError";
+import { JFACTORY_ERR_INVALID_VALUE } from "./JFactoryError";
 import { helper_isNumber, helper_isPlainObject, helper_isString } from "./jFactory-helpers";
-import { jFactoryLoader } from "./jFactory-loader";
+import { jFactoryLoader_onInit } from "./jFactoryLoader";
 
 // ---------------------------------------------------------------------------------------------------------------------
 // JFactoryExpect
@@ -25,7 +25,7 @@ export function JFactoryExpect(label, value) {
 }
 
 const error = function jFactoryThrow(label, value, message) {
-    throw new jFactoryError.INVALID_VALUE({
+    throw new JFACTORY_ERR_INVALID_VALUE({
         target: label,
         reason: message,
         given: value
@@ -420,7 +420,7 @@ const staticMethods = {
     }
 };
 
-jFactoryLoader.onInit(function() {
+jFactoryLoader_onInit(function() {
     Object.assign(JFactoryExpect, staticMethods);
     // Generate members from static methods
     for (const name of Object.getOwnPropertyNames(staticMethods)) {

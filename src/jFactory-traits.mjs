@@ -1,6 +1,6 @@
 /* jFactory, Copyright (c) 2019, Stéphane Plazis, https://github.com/jfactory-es/jfactory/blob/master/LICENSE.txt */
 
-import { jFactoryError } from "./JFactoryError";
+import { JFACTORY_ERR_INVALID_CALL } from "./JFactoryError";
 import { JFactoryTraits } from "./JFactoryTraits";
 import { jFactoryFunctionWrappable } from "./JFactoryFunction";
 
@@ -32,7 +32,7 @@ export function jFactoryTraits(callerInstance, callerConstructor) {
                             propertyDescriptor.value = jFactoryFunctionWrappable(value)
                                 .beforeAll(function() {
                                     if (!this.$.states.enabled && this.$.service.phase === "PHASE_NONE") {
-                                        let e = new jFactoryError.INVALID_CALL({
+                                        let e = new JFACTORY_ERR_INVALID_CALL({
                                             owner: this,
                                             target: value,
                                             reason: "component disabled"

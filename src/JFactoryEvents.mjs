@@ -1,10 +1,10 @@
 /* jFactory, Copyright (c) 2019, Stéphane Plazis, https://github.com/jfactory-es/jfactory/blob/master/LICENSE.txt */
 
 import { JFACTORY_DEV } from "./jFactory-env";
+import { JFACTORY_ERR_INVALID_VALUE } from "./JFactoryError";
 import { JFactoryExpect } from "./JFactoryExpect";
 import { JFactoryPromiseSync } from "./JFactoryPromise";
 import { JFactoryFunctionComposer } from "./JFactoryFunction";
-import { jFactoryError } from "./JFactoryError";
 import { jQuery, helper_isPlainObject } from "./jFactory-helpers";
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -99,7 +99,7 @@ export class JFactoryEvents {
             if (handler) {
                 handler = this.handlers.get(handler);
                 if (!handler) {
-                    throw new jFactoryError.INVALID_VALUE({
+                    throw new JFACTORY_ERR_INVALID_VALUE({
                         target: "handler",
                         reason: "not registered",
                         given: handler
@@ -478,7 +478,7 @@ export class JFactoryEventSelector {
         for (let namespace of namespaces) {
             if (JFACTORY_DEV) {
                 if (!/^[\w:]+$/.test(namespace)) {
-                    throw new jFactoryError.INVALID_VALUE({
+                    throw new JFACTORY_ERR_INVALID_VALUE({
                         target: "namespace",
                         reason: "must be alphanumeric, underscore and colon characters",
                         given: namespace
@@ -495,7 +495,7 @@ export class JFactoryEventSelector {
     addNamespace(namespace) {
         if (JFACTORY_DEV) {
             if (!/^[\w:]+$/.test(namespace)) {
-                throw new jFactoryError.INVALID_VALUE({
+                throw new JFACTORY_ERR_INVALID_VALUE({
                     target: "namespace",
                     reason: "must be alphanumeric, underscore and colon characters",
                     given: namespace
@@ -508,7 +508,7 @@ export class JFactoryEventSelector {
     deleteNamespace(namespace) {
         if (JFACTORY_DEV) {
             if (!/^[\w:]+$/.test(namespace)) {
-                throw new jFactoryError.INVALID_VALUE({
+                throw new JFACTORY_ERR_INVALID_VALUE({
                     target: "namespace",
                     reason: "must be alphanumeric, underscore and colon characters",
                     given: namespace
@@ -552,7 +552,7 @@ if (JFACTORY_DEV) {
         }
 
         if (!/^[\w:]+$/.test(event)) {
-            throw new jFactoryError.INVALID_VALUE({
+            throw new JFACTORY_ERR_INVALID_VALUE({
                 target: "JFactoryEvents.validateEvent(event)",
                 reason: "must be alphanumeric, underscore and colon characters",
                 given: event
@@ -571,7 +571,7 @@ if (JFACTORY_DEV) {
         }
 
         if (!/^[\w:.]+$/.test(namespace)) {
-            throw new jFactoryError.INVALID_VALUE({
+            throw new JFACTORY_ERR_INVALID_VALUE({
                 target: "JFactoryEvents.validateNamespace(namespace)",
                 reason: "must be alphanumeric, underscore, dot and colon characters",
                 given: namespace

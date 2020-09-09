@@ -1,7 +1,7 @@
 /* jFactory, Copyright (c) 2019, Stéphane Plazis, https://github.com/jfactory-es/jfactory/blob/master/LICENSE.txt */
 
-import { jFactoryConfig } from "./jFactory-config";
-import { jFactoryLoader } from "./jFactory-loader";
+import { JFACTORY_CFG_JFactoryTrace } from "./jFactory-env";
+import { jFactoryLoader_onInit } from "./jFactoryLoader";
 import { NOOP } from "./jFactory-helpers";
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -138,8 +138,8 @@ export class JFactoryTrace_LIB_STACKTRACE extends JFactoryTrace_NOFILTER {
 
 export const jFactoryTrace = {};
 
-jFactoryLoader.onInit(function() {
-    let config = jFactoryConfig.JFactoryTrace;
+jFactoryLoader_onInit(function() {
+    let config = JFACTORY_CFG_JFactoryTrace;
     if (config && config.use !== false) {
         let constructor;
         constructor = typeof config.use === "function" ?

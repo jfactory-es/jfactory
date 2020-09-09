@@ -1,10 +1,16 @@
 /* jFactory, Copyright (c) 2019, Stéphane Plazis, https://github.com/jfactory-es/jfactory/blob/master/LICENSE.txt */
 
 import { JFACTORY_DEV } from "./jFactory-env";
+import { JFACTORY_ERR_INVALID_CALL, JFACTORY_ERR_PROMISE_EXPIRED } from "./JFactoryError";
 import { JFactoryExpect } from "./JFactoryExpect";
-import { jFactoryError } from "./JFactoryError";
 import { jFactoryTrace } from "./JFactoryTrace";
-import { jQuery, helper_isNative } from "./jFactory-helpers";
+import { helper_isNative, jQuery } from "./jFactory-helpers";
+import {
+    JFACTORY_COMPAT_AbortController,
+    JFACTORY_COMPAT_fetch,
+    JFACTORY_COMPAT_Request,
+    jFactoryCompat_require
+} from "./jFactoryCompat";
 
 // ---------------------------------------------------------------------------------------------------------------------
 // JFactoryPromise
@@ -403,8 +409,8 @@ export class JFactoryPromise extends Promise {
         try {
             this.$chain.complete(reason, false);
         } catch (e) {
-            if (e instanceof jFactoryError.INVALID_CALL) {
-                throw new jFactoryError.INVALID_CALL({
+            if (e instanceof JFACTORY_ERR_INVALID_CALL) {
+                throw new JFACTORY_ERR_INVALID_CALL({
                     target: e.$data.target,
                     reason: "Trying to complete a pending chain. Use $chainAbort() if you want to stop it."
                 });
@@ -426,7 +432,7 @@ export class JFactoryPromise extends Promise {
                 promise.$isAborted = !silent;
                 promise.__resolve__(reason);
             } else {
-                throw new jFactoryError.INVALID_CALL({
+                throw new JFACTORY_ERR_INVALID_CALL({
                     target: promise,
                     reason: "promise must be aborted or settled before setting it to expired."
                 });
@@ -472,7 +478,7 @@ export class JFactoryPromiseChain {
     complete(reason = "chain.complete()", abort ) {
         let chainRoot = this.chainRoot;
         if (!chainRoot.$isExpired) {
-            let errorExpired = chainRoot.$chain.errorExpired = new jFactoryError.PROMISE_EXPIRED({
+            let errorExpired = chainRoot.$chain.errorExpired = new JFACTORY_ERR_PROMISE_EXPIRED({
                 target: chainRoot,
                 reason
             });
@@ -616,3 +622,9 @@ export class JFactoryPromiseSync extends Promise {
         }
     }
 }
+
+jFactoryCompat_require(
+    JFACTORY_COMPAT_fetch,
+    JFACTORY_COMPAT_Request,
+    JFACTORY_COMPAT_AbortController
+);

@@ -1,7 +1,6 @@
 /* jFactory, Copyright (c) 2019, Stéphane Plazis, https://github.com/jfactory-es/jfactory/blob/master/LICENSE.txt */
 
-import { JFACTORY_DEV } from "./jFactory-env";
-import { jFactoryConfig } from "./jFactory-config";
+import { JFACTORY_CFG_JFactoryError } from "./jFactory-env";
 import { helper_get, helper_isNative, helper_lowerFirst, helper_template } from "./jFactory-helpers";
 import { jFactoryTrace } from "./JFactoryTrace";
 
@@ -29,7 +28,7 @@ export class JFactoryError extends Error {
     }
 
     static getId(object) {
-        return object[(jFactoryConfig.JFactoryError.keys || JFactoryError.DEFAULT_KEYS).find(key => {
+        return object[(JFACTORY_CFG_JFactoryError.keys || JFactoryError.DEFAULT_KEYS).find(key => {
             let val = helper_get(object, key);
             return val || val === 0
         })]
@@ -98,6 +97,19 @@ export class JFactoryError extends Error {
         }
         return helper_lowerFirst(helper_template(templateMessage.join("; "))(JFactoryError.toPrintableData(data)));
     }
+
+    static factory(type, template) {
+        let ret = class extends JFactoryError {
+            constructor(data, traceSource) {
+                super(template, data);
+                jFactoryTrace.tracer.attachTrace(this.$data, traceSource);
+            }
+        };
+        // Chrome automatically resolves sourcemap when logging errors
+        // but only if the error name starts with "Error"
+        ret.prototype.name = "Error JFACTORY_ERR_" + type;
+        return ret
+    }
 }
 
 JFactoryError.JSON_MAX = 40;
@@ -105,36 +117,18 @@ JFactoryError.DEFAULT_KEYS = ["name", "id"];
 JFactoryError.RE_PLACEHOLDER = /\${([^}]+)}/g;
 
 // ---------------------------------------------------------------------------------------------------------------------
-// jFactoryError
+// JFACTORY_ERR_*
 // ---------------------------------------------------------------------------------------------------------------------
 // Status: Beta
 // ---------------------------------------------------------------------------------------------------------------------
 
-export let jFactoryError = new Proxy(JFactoryError, {
-    set: function(target, property, value) {
-        let { template } = value;
+const E = JFactoryError.factory;
 
-        if (JFACTORY_DEV && target[property]) {
-            throw new Error("already declared");
-        }
-
-        target[property] = class extends JFactoryError {
-            constructor(data, traceSource) {
-                super(template, data);
-                jFactoryTrace.tracer.attachTrace(this.$data, traceSource);
-            }
-        };
-        // Caution: Chrome automatically resolves sourcemap when logging errors
-        // but only if the error name starts with "Error"
-        target[property].prototype.name = "Error jFactoryError." + property;
-
-        return true
-    }
-});
-
-jFactoryError.INVALID_VALUE = { template: "invalid value for ${target}; Reason: ${reason}; Given: ${given}" };
-jFactoryError.INVALID_CALL = { template: "invalid call ${target}; Reason: ${reason}; Owner: ${owner}" };
-jFactoryError.PROMISE_EXPIRED = { template: "expired promise ${target}; Reason: ${reason}" };
-jFactoryError.REQUEST_ERROR = { template: "error requesting ${target}; Reason: ${reason}; Owner: ${owner}" };
-jFactoryError.KEY_DUPLICATED = { template: "duplicated key for ${target}; Given: ${given}" };
-jFactoryError.KEY_MISSING = { template: "missing key for ${target}; Given: ${given}" };
+/* eslint-disable max-len */
+export const JFACTORY_ERR_INVALID_VALUE = /*#__PURE__*/E("INVALID_VALUE", "invalid value for ${target}; Reason: ${reason}; Given: ${given}");
+export const JFACTORY_ERR_INVALID_CALL = /*#__PURE__*/E("INVALID_CALL", "invalid call ${target}; Reason: ${reason}; Owner: ${owner}");
+export const JFACTORY_ERR_PROMISE_EXPIRED = /*#__PURE__*/E("PROMISE_EXPIRED", "expired promise ${target}; Reason: ${reason}");
+export const JFACTORY_ERR_REQUEST_ERROR = /*#__PURE__*/E("REQUEST_ERROR", "error requesting ${target}; Reason: ${reason}; Owner: ${owner}");
+export const JFACTORY_ERR_KEY_DUPLICATED = /*#__PURE__*/E("KEY_DUPLICATED", "duplicated key for ${target}; Given: ${given}");
+export const JFACTORY_ERR_KEY_MISSING = /*#__PURE__*/E("KEY_MISSING", "missing key for ${target}; Given: ${given}");
+/* eslint-enable max-len */

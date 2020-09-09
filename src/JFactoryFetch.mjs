@@ -1,7 +1,7 @@
 /* jFactory, Copyright (c) 2019, Stéphane Plazis, https://github.com/jfactory-es/jfactory/blob/master/LICENSE.txt */
 
+import { JFACTORY_ERR_REQUEST_ERROR } from "./JFactoryError";
 import { JFactoryPromise } from "./JFactoryPromise";
-import { jFactoryError } from "./JFactoryError";
 
 // ---------------------------------------------------------------------------------------------------------------------
 // JFactoryFetch
@@ -43,7 +43,7 @@ export class JFactoryFetch extends JFactoryPromise {
                 }
 
                 promise = promise.catch(reason => {
-                    throw new jFactoryError.REQUEST_ERROR({
+                    throw new JFACTORY_ERR_REQUEST_ERROR({
                         reason: reason.message || reason,
                         target: this.$chain.fetchResponse && this.$chain.fetchResponse.url || url,
                         owner: this,
