@@ -1,3 +1,6 @@
+## 1.7.0 (Sept 09, 2020)
+* build: improved tree shaking
+
 ## 1.6.0 (Sept 04, 2020) 
 * feat: wildcard "?" to subscribe with a generated unique id
 * build: dependencies refactored and updated
