@@ -134,7 +134,12 @@ you can load them from a CDN:
 
 jFactory is designed to be easily patchable at runtime (allowing MonkeyPatch, hotfix, hooks, ...)
 
-To safely rewrite the library at runtime (including changing the default configuration), define a temporary global variable `jFactoryOverride = true` before loading anything from jFactory, then call `jFactoryLoader.init()` when your overrides are done.
+To safely rewrite the library at runtime (including changing the default configuration), define a temporary global variable `jFactoryOverride = true` before loading anything from jFactory, then call `jFactoryBootstrap()` when your overrides are done.
+```javascript
+jFactoryOverride = true;
+const { jFactoryBootstrap } = require("jFactory");
+jFactoryBootstrap();
+```
 
 #### Overriding in ES6
 

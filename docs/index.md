@@ -105,7 +105,7 @@ jFactory is designed from [ES6 Classes](ref-index.md#classes-internal-library):
 - Injected methods and properties are prefixed to avoid conflicts 
 - Most names are prefixed by affiliation for easier code completion
 - All registrations must be named, to reinforce debugging 
-- Most of the library is overridable (no inaccessible private function)
+- Most of the library is overridable
 - Designed for debugging and inspections
 
 ###### Modular JavaScript
