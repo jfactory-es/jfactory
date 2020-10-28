@@ -13,6 +13,7 @@ module.exports =  {
   // devtool: "eval",
   // devtool: "hidden-source-map",
   // devtool: "nosources-source-map",
+  // devtool: "eval-source-map",
 
   entry: {
     testsuite: "./test/index.js"
@@ -42,7 +43,7 @@ module.exports =  {
   },
 
   node: {
-    fs: "empty" // fix require("fs") errors
+    // fs: "empty" // fix require("fs") errors
   },
 
   plugins: [

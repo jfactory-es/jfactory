@@ -1,5 +1,5 @@
 /*!
- * jFactory v1.7.0
+ * jFactory v1.7.1
  * https://github.com/jfactory-es/jfactory
  *
  * Copyright (c) 2019, Stéphane Plazis
