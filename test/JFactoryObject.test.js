@@ -20,6 +20,5 @@ describe("JFactoryObject", function() {
         JFactoryObject.assign(o, source, JFactoryObject.descriptors.CONFIGURABLE_WRITABLE_ENUMERABLE);
         expect(o.toString).not.equal(polluted)
         expect(({}).toString).not.equal(polluted)
-        console.log(o.prototype)
     })
 })
