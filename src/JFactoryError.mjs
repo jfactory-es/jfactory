@@ -99,12 +99,15 @@ export class JFactoryError extends Error {
     }
 
     static factory(type, template) {
-        let ret = class extends JFactoryError {
-            constructor(data, traceSource) {
-                super(template, data);
-                jFactoryTrace.tracer.attachTrace(this.$data, traceSource);
+        let ret = {
+            [type]: class extends JFactoryError {
+                constructor(data, traceSource) {
+                    super(template, data);
+                    jFactoryTrace.tracer.attachTrace(this.$data, traceSource);
+                }
             }
-        };
+        }[type];
+
         // Chrome automatically resolves sourcemap when logging errors
         // but only if the error name starts with "Error"
         ret.prototype.name = "Error JFACTORY_ERR_" + type;

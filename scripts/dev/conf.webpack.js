@@ -8,6 +8,9 @@ const webpack = require("webpack");
 module.exports =  {
   mode: "development",
 
+  // prevents sourceURL=webpack://
+  devtool: "inline-source-map",
+
   // devtool: "inline-source-map",
   // devtool: "cheap-eval-source-map",
   // devtool: "eval",
@@ -34,7 +37,12 @@ module.exports =  {
   module: {
     rules: [
       {
-        // use: 'mocha-loader?reporter=',
+        // imports source map (for "bundle" build)
+        test: /\.(js|mjs)$/,
+        enforce: "pre",
+        use: ["source-map-loader"]
+      },
+      {
         use: "mocha-loader",
         test: /.test\.js$/,
         exclude: /node_modules/

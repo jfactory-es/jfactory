@@ -8,9 +8,12 @@ const replace = require("@rollup/plugin-replace");
 const pkg = require("../../package.json");
 const fs = require("fs");
 
-const DEBUG = getEnv("DEBUG") === true; // true: beautify output, more logs, allows debugger keyword
+const DEBUG = getEnv("DEBUG") === true; // true: dev mode. beautify output, more logs, allows debugger keyword
 const BUNDLE = getEnv("BUNDLE") === true;
 const VERSION = "v" + pkg.version;
+
+const SOURCEMAP = true; // .map
+// const SOURCEMAP = "inline";
 
 module.exports = [];
 
@@ -21,9 +24,9 @@ const config = {
     // see https://rollupjs.org/guide/en/#treeshake
     annotations: true, // allows  @__PURE__ or #__PURE__
     moduleSideEffects: false, // unused module never has side-effects. Can be a list or function
-    propertyReadSideEffects: false, // reading a property of an object never has side-effect
-    tryCatchDeoptimization: false, // allows optimization inside try catch
-    unknownGlobalSideEffects: false // reading an unknown global never has side-effect
+    unknownGlobalSideEffects: false, // reading an unknown global never has side-effect
+    propertyReadSideEffects: false, // reading a property of an object has side-effect
+    tryCatchDeoptimization: false // disable optimization inside try catch
   }
 };
 
@@ -47,15 +50,27 @@ const config_terser = {
     beautify: DEBUG,
     comments: DEBUG ? true : "some"
   },
-  toplevel: true,
   keep_classnames: DEBUG,
   keep_fnames: DEBUG,
   mangle: !DEBUG,
+  toplevel: true,
   compress: {
-    ecma: 8,
+    ecma: 2020,
     drop_console: false,
     drop_debugger: !DEBUG
   }
+};
+
+const config_terser_devel = {
+  ...config_terser,
+  // output: {
+  //   ...config_terser.output
+  // },
+  // compress: {
+  //   ...config_terser.compress
+  // },
+  keep_classnames: true,
+  keep_fnames: true
 };
 
 if (!BUNDLE) { // simplified build for development
@@ -66,7 +81,7 @@ if (!BUNDLE) { // simplified build for development
       ...config_output,
       file: pkg.main,
       format: "cjs",
-      sourcemap: "inline"
+      sourcemap: SOURCEMAP
     },
     plugins: [
       replace({
@@ -91,7 +106,7 @@ if (!BUNDLE) { // simplified build for development
       ...config_replace,
       COMPILER_DEV: true
     }),
-    terser(config_terser)
+    terser(config_terser_devel)
   ];
 
   module.exports.push(
@@ -113,7 +128,7 @@ if (!BUNDLE) { // simplified build for development
         ...config_output,
         format: "cjs",
         file: "dist/jFactory.cjs.js",
-        sourcemap: DEBUG ? "inline" : false
+        sourcemap: DEBUG ? SOURCEMAP : false
       },
       plugins: plugins_prod
     },
@@ -125,7 +140,7 @@ if (!BUNDLE) { // simplified build for development
         format: "umd",
         name: "jFactoryModule",
         file: "dist/jFactory.umd.js",
-        sourcemap: DEBUG ? "inline" : false
+        sourcemap: DEBUG ? SOURCEMAP : false
       },
       plugins: plugins_prod
     },
@@ -136,7 +151,7 @@ if (!BUNDLE) { // simplified build for development
         ...config_output,
         format: "es",
         file: "dist/jFactory.mjs",
-        sourcemap: DEBUG ? "inline" : false
+        sourcemap: DEBUG ? SOURCEMAP : false
       },
       plugins: plugins_prod
     },
@@ -147,7 +162,7 @@ if (!BUNDLE) { // simplified build for development
         ...config_output,
         format: "cjs",
         file: "dist/jFactory-devel.cjs.js",
-        sourcemap: "inline"
+        sourcemap: SOURCEMAP
       },
       plugins: plugins_dev
     },
@@ -159,7 +174,7 @@ if (!BUNDLE) { // simplified build for development
         format: "umd",
         name: "jFactoryModule",
         file: "dist/jFactory-devel.umd.js",
-        sourcemap: "inline"
+        sourcemap: SOURCEMAP
       },
       plugins: plugins_dev
     },
@@ -170,7 +185,7 @@ if (!BUNDLE) { // simplified build for development
         ...config_output,
         format: "es",
         file: "dist/jFactory-devel.mjs",
-        sourcemap: "inline"
+        sourcemap: SOURCEMAP
       },
       plugins: plugins_dev
     }
