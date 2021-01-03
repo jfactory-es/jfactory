@@ -30,6 +30,9 @@
     "library",
     "framework"
   ],
+  "engines": {
+    "node": ">=14.0.0"
+  },
   "homepage": "https://github.com/jfactory-es/jfactory#readme",
   "bugs": "https://github.com/jfactory-es/jfactory/issues",
   "repository": {
@@ -62,6 +65,7 @@
     "react-dom": "^17.0.1",
     "rollup": "^2.35.1",
     "rollup-plugin-terser": "^7.0.2",
+    "semver": "^7.3.4",
     "sinon": "^9.2.2",
     "source-map-loader": "^2.0.0",
     "stacktrace-js": "^2.0.2",
