@@ -4,13 +4,20 @@
 
 [Properties](#properties) / [Methods](#methods) / [Options](#options) / [Usages](#usages)
 
-Provides an extended Promise that supports an awaitable and expirable promise tree, status, explorable chain map, shared data, debug data and trace.
+Improved Promise where the whole promise tree can be awaited and canceled, with status, explorable chain map, shared data, debug data and trace.
 
 ```javascript
 import { JFactoryPromise } from "jfactory" 
 let myPromise = new JFactoryPromise((resolve, reject) => {
     resolve('ok')
-});
+})
+let a = myPromise.then(...).then(...);
+let b = myPromise.then(...).then(...);
+await myPromise.$chain; // wait for all promises
+a = a.then(/* not called, chain aborted at next line */)
+myPromise.$chainAbort("canceled !")
+b = b.then(/* not called, chain aborted at previous line */)
+
 ``` 
 * [Status](#promise-status)
 * [Chain](#promise-chain)
@@ -93,7 +100,7 @@ In addition to the [Promise Status](#promise-status):
 >Type: `string`
 >
 >The method used to create the promise.
->Can be `then` `await` `catch` `catchExpired` or `promise` 
+>Can be `then` `await` `catch` `$thenExpired` or `promise` 
 
 ### Shared Properties
 
@@ -147,27 +154,27 @@ but keep in mind that primitives properties are copied by value, not by referenc
 >
 >Note: It's a shortcut that sets `myPromise.$chain.chainConfig.chainAutoComplete` to `true`.  
 
-### `$catchExpired(onAbort)`
+### `$thenIfExpired(handler)`
 >Returns: `this (JFactoryPromise)`
 >
->Call the `onAbort()` when trying to await the chain after expiration.
+>Like `then()`, but the handler is called only if the chain is expired. 
 >
 >```js
 >let promise = JFactoryPromise.resolve()
->   .then(()=>{})
->   .$catchExpired(reason => {
->       console.log('expired', reason)
+>   .then(()=>{/* not called because aborted below */})
+>   .$thenIfExpired(errorExpired => {
+>       console.error(errorExpired);
+>       console.error(errorExpired.$data.reason) // aborted!
 >   });
 >
 >promise.$chainAbort("aborted!");
->await promise; 
 >```
-
+<!--
 ### `$toPromise()`
 > Returns: `Promise`
 >
 >Convert the JFactoryPromise to a native Promise.
-
+-->
 ### `static JFactoryPromise.resolve([options][, value])`
 > Returns `JFactoryPromise`
 >
@@ -179,6 +186,13 @@ but keep in mind that primitives properties are copied by value, not by referenc
 >JFactoryPromise.resolve({name: "myPromise", config: {
 >    chainAutoComplete: true
 >}}, 123);
+>
+>// Caution, if using options, the second argument is required
+>
+>JFactoryPromise.resolve({name: "myPromise", config: {
+>    chainAutoComplete: true
+>}}, undefined);
+>```
 
 ### `static JFactoryPromise.reject([options][, reason])`
 > Returns `JFactoryPromise`
@@ -190,6 +204,12 @@ but keep in mind that primitives properties are copied by value, not by referenc
 >JFactoryPromise.reject({name: "myPromise", config: {
 >    chainAutoComplete: true
 >}}, new Error("..."));
+>
+>// Caution, if using options, the second argument is required
+>
+>JFactoryPromise.reject({name: "myPromise", config: {
+>    chainAutoComplete: true
+>}}, undefined);
 >```
 
 ## Options
@@ -272,7 +292,7 @@ because the chain is completed as soon as all its registered promises are settle
 
 When a chain is [Completed](#chain-completion--abortion), all the (new and old) promises of the chain are expired:   
 * All handlers installed by `then()` and `catch()` are ignored.
-* The following [`$catchExpired()`](#catchexpiredonabort) handlers will be called.
+* The handlers installed by [`$thenIfExpired()`](#$thenIfExpired) are reachable
 
 ## Chain Awaitable 
 
