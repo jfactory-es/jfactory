@@ -12,7 +12,7 @@ const DEBUG = getEnv("DEBUG") === true; // true: dev mode. beautify output, more
 const BUNDLE = getEnv("BUNDLE") === true;
 const VERSION = "v" + pkg.version;
 
-const SOURCEMAP = true; // .map
+const SOURCEMAP = true; // *.map
 // const SOURCEMAP = "inline";
 
 module.exports = [];
@@ -36,13 +36,13 @@ const config_output = {
     jquery: "$"
   },
   interop: false,
-  banner: fs.readFileSync("scripts/bundler/dist-header.mjs", "utf8").replace("COMPILER_VER", VERSION)
+  banner: fs.readFileSync("scripts/bundler/dist-header.mjs", "utf8").replace("(custom build)", VERSION)
 };
 
 const config_replace = {
-  COMPILER_VER: VERSION,
-  COMPILER_DEBUG: DEBUG,
-  COMPILER_CLI: undefined
+  "(custom build)": VERSION,
+  'env("JFACTORY_ENV_DEBUG")': DEBUG,
+  delimiters: ["", ""]
 };
 
 const config_terser = {
@@ -53,8 +53,8 @@ const config_terser = {
   keep_classnames: DEBUG,
   keep_fnames: DEBUG,
   mangle: !DEBUG,
-  toplevel: true,
-  compress: {
+  toplevel: !DEBUG,
+  compress: !DEBUG && {
     ecma: 2020,
     drop_console: false,
     drop_debugger: !DEBUG
@@ -86,7 +86,7 @@ if (!BUNDLE) { // simplified build for development
     plugins: [
       replace({
         ...config_replace,
-        COMPILER_DEV: true
+        'env("JFACTORY_ENV_DEV")': true
       })
     ]
   })
@@ -96,7 +96,7 @@ if (!BUNDLE) { // simplified build for development
   const plugins_prod = [
     replace({
       ...config_replace,
-      COMPILER_DEV: false
+      'env("JFACTORY_ENV_DEV")': false
     }),
     terser(config_terser)
   ];
@@ -104,7 +104,7 @@ if (!BUNDLE) { // simplified build for development
   const plugins_dev = [
     replace({
       ...config_replace,
-      COMPILER_DEV: true
+      'env("JFACTORY_ENV_DEV")': true
     }),
     terser(config_terser_devel)
   ];

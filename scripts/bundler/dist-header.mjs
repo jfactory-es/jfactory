@@ -1,5 +1,5 @@
 /*!
- * jFactory COMPILER_VER
+ * jFactory (custom build)
  * https://github.com/jfactory-es/jfactory
  *
  * Copyright (c) 2019, Stéphane Plazis
