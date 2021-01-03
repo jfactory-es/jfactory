@@ -1,6 +1,9 @@
 ## 1.7.4 (Jan 03, 2021)
 * feat: JfactoryFetch: added compatibility test
 * feat: [JFactoryPromise](docs/JFactoryPromise.md): removed lodash and jquery dependencies
+* refactor: JFactoryTrace: complete redesign
+* refactor: env, config, compat, bootstrap, libs
+* build: check node version
 * build: dev-server 4 support (disabled by default)
 
 ## 1.7.0 (Sept 09, 2020)
