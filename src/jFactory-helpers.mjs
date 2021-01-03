@@ -13,7 +13,6 @@ import $ from "jquery";
 
 export const jQuery = $;
 
-export const helper_isNative = _.isNative;
 export const helper_isString = _.isString;
 export const helper_isNumber = _.isNumber;
 export const helper_isPlainObject = _.isPlainObject;
@@ -27,3 +26,39 @@ export const NOOP = () => {};
 export const helper_setFunctionName = (name, f) => Object.defineProperty(f, "name", { value: name });
 const helper_url_abs_a = /*#__PURE__*/document.createElement("a");
 export const helper_url_abs = url => { helper_url_abs_a.href = url; return helper_url_abs_a.href }
+
+export const helper_isNative = function(f) {
+    return typeof f === "function" && Function.prototype.toString.call(f).indexOf("[native code]") !== -1
+}
+
+export const helper_Deferred = () => new Deferred;
+
+function Deferred(){
+    this._done = [];
+    this._fail = [];
+}
+Deferred.prototype = {
+    execute: function(list, args){
+        for (let h of list){
+            h(...args)
+        }
+        this.fulfilled = true
+    },
+    resolve: function(){
+        this.execute(this._done, arguments);
+    },
+    reject: function(){
+        this.execute(this._fail, arguments);
+    },
+
+    done: function(callback){
+        if (this.fulfilled) {
+            callback()
+        } else {
+            this._done.push(callback);
+        }
+    },
+    fail: function(callback){
+        this._fail.push(callback);
+    }
+}

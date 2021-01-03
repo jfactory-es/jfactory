@@ -4,20 +4,12 @@ import { JFACTORY_DEV } from "./jFactory-env";
 import { JFACTORY_ERR_INVALID_CALL, JFACTORY_ERR_PROMISE_EXPIRED } from "./JFactoryError";
 import { JFactoryExpect } from "./JFactoryExpect";
 import { jFactoryTrace } from "./JFactoryTrace";
-import { helper_isNative, jQuery } from "./jFactory-helpers";
-import {
-    JFACTORY_COMPAT_AbortController,
-    JFACTORY_COMPAT_fetch,
-    JFACTORY_COMPAT_Request,
-    jFactoryCompat_require
-} from "./jFactoryCompat";
+import { helper_isNative, helper_Deferred } from "./jFactory-helpers";
 
 // ---------------------------------------------------------------------------------------------------------------------
-// JFactoryPromise
+// JFactoryPromise 1.7
 // ---------------------------------------------------------------------------------------------------------------------
-// Provides awaitable, expirable, debuggable promise chains
-// ---------------------------------------------------------------------------------------------------------------------
-// Status: Experimental Draft
+// Status: Beta
 // ---------------------------------------------------------------------------------------------------------------------
 
 // #limitation# async functions always use the native Promise constructor even if native Promise class is overridden
@@ -135,7 +127,7 @@ export class JFactoryPromise extends Promise {
         };
 
         const onResolve = value => {
-            // console.log('onResolve',this.$dev_name);
+            // console.trace("onResolve", this.$dev_name);
             if (!this.$isSettled) {
                 // 2.3.1. If promise and x refer to the same object, reject promise with a TypeError as the reason.
                 if (value === this) {
@@ -144,7 +136,7 @@ export class JFactoryPromise extends Promise {
                 }
 
                 let then;
-                if (value !== null && (typeof value == "object" || typeof x == "function")) {
+                if (value !== null && (typeof value == "object" || typeof value == "function")) {
                     // 2.3.3.2. If retrieving the property x.then results in a thrown exception e,
                     // reject promise with e as the reason.
                     try {
@@ -173,6 +165,7 @@ export class JFactoryPromise extends Promise {
                     };
 
                     try {
+                        // 2.3.3.3: If `then` is a function, call it as x.then(resolvePromise, rejectPromise)
                         then.call(value, resolvePromise, rejectPromise);
                     } catch (e) { // 2.3.3.3.4. If calling then throws an exception e,
                         // 2.3.3.3.4.1. If resolvePromise or rejectPromise have been called, ignore it.
@@ -195,7 +188,7 @@ export class JFactoryPromise extends Promise {
         };
 
         const onReject = reason => {
-            // console.log('onReject',this.$dev_name);
+            // console.log("onReject", this.$dev_name);
             if (!this.$isSettled) {
                 this.$isRejected = true;
                 this.$isFulfilled = false;
@@ -247,6 +240,7 @@ export class JFactoryPromise extends Promise {
         try {
             executor(onResolve, onReject);
         } catch (e) {
+            // console.error("exception in executor", this.$dev_name);
             onReject(e)
         }
     }
@@ -255,7 +249,15 @@ export class JFactoryPromise extends Promise {
         let wrappedFulfilled;
         let wrappedRejected;
         let newPromise;
-        let isNative = helper_isNative(onFulfilled) && !onFulfilled.name.startsWith("bound ");
+
+        // Caution: "await" detection is not reliable.
+        // Passing native functions for both onFulfilled and onRejected will
+        // result to "await" type and may cause side effects
+        let type = forceType || (
+            helper_isNative(onFulfilled) && !onFulfilled.name.startsWith("bound ") &&
+            helper_isNative(onRejected) && !onRejected.name.startsWith("bound ")
+                ? "await" : onFulfilled === undefined ? "catch" : "then"
+        );
 
         if (onFulfilled && typeof onFulfilled === "function") {
             wrappedFulfilled = function(r) {
@@ -286,16 +288,18 @@ export class JFactoryPromise extends Promise {
                     // eslint-disable-next-line no-debugger
                     debugger
                 }
-                // if (!newPromise.$isSettled) {
                 return onRejected(r)
-                // }
             }
         }
 
-        let type = forceType || (isNative ? "await" : onFulfilled === undefined ? "catch" : "then");
         newPromise = Object.assign(super.then(wrappedFulfilled, wrappedRejected), this);
         moduleGenId.uid--; // reverse because not a new chain
         newPromise.$type = type;
+
+        Object.defineProperties(newPromise, {
+            __onFulfilled__: { value: onFulfilled },
+            __onRejected__: { value: onRejected }
+        });
 
         if (JFACTORY_DEV) {
             newPromise.$dev_position = this.$chain.chainMap.size;
@@ -324,9 +328,7 @@ export class JFactoryPromise extends Promise {
                         + newPromise.$dev_position
                         + "]"
                 },
-                $dev_path: { value: new JFactoryPromisePath(this.$dev_path, newPromise) },
-                $dev_onFulfilled: { value: onFulfilled },
-                $dev_onRejected: { value: onRejected }
+                $dev_path: { value: new JFactoryPromisePath(this.$dev_path, newPromise) }
             });
         }
 
@@ -337,20 +339,12 @@ export class JFactoryPromise extends Promise {
             // => the new promise must be expired
             // if parent promise is just expired, abort silently
             // if parent promise is aborted, abort explicitly
-            JFactoryPromise.setExpired(newPromise, true, !this.$isAborted, this.$chain.errorExpired);
+
+            // JFactoryPromise.setExpired(newPromise, true, !this.$isAborted, this.$chain.errorExpired);
+            JFactoryPromise.setExpired(newPromise, this.$isAborted, true);
         }
 
         return newPromise
-    }
-
-    $catchExpired(onExpired) {
-        return this.then(r => {
-            if (this.$chain.chainRoot.$isExpired) {
-                return onExpired(r)
-            } else {
-                return r
-            }
-        }, undefined, "$catchExpired")
     }
 
     static resolve(optionalArgs, value) {
@@ -391,8 +385,39 @@ export class JFactoryPromise extends Promise {
         });
     }
 
-    $toPromise() {
-        return Promise.resolve(this)
+    // $toPromise(rejectIfExpired = true) {
+    //     return new Promise((resolve, reject) => {
+    //         let promise = this.then(resolve, e => {
+    //             debugger
+    //             reject(e)
+    //         });
+    //         if (rejectIfExpired) {
+    //             promise.$thenIfExpired(reject)
+    //         }
+    //     })
+    // }
+
+    // $toNewChain(abortIfExpired = true) {
+    //     let newChain;
+    //     return newChain = new JFactoryPromise((resolve, reject) => {
+    //         let promise = this.then(resolve, e => {
+    //             debugger
+    //             reject(e)
+    //         });
+    //         if (abortIfExpired) {
+    //             promise.$thenIfExpired(function(e){
+    //                 newChain.$chainAbort(e)
+    //             })
+    //         }
+    //     });
+    // }
+
+    // A "then" where the handler is called only if the chain is expired
+    // it's not a catch (a catchExpired concept should cancel the expiration)
+    $thenIfExpired(onExpired) {
+        return this.then(r => this.$chain.chainRoot.$isExpired ? onExpired(r) : r,
+            undefined, "$thenIfExpired"
+        )
     }
 
     // Completes an expires the whole chain before its normal end
@@ -402,22 +427,17 @@ export class JFactoryPromise extends Promise {
         return this
     }
 
-    // Manually completes an expires the whole chain
+    // Manually completes and expires the whole chain
     // Only required if awaiting "myPromise.$chain"
     // when the autocomplete watcher is not used
     $chainComplete(reason = "$chainComplete()") {
-        try {
-            this.$chain.complete(reason, false);
-        } catch (e) {
-            if (e instanceof JFACTORY_ERR_INVALID_CALL) {
-                throw new JFACTORY_ERR_INVALID_CALL({
-                    target: e.$data.target,
-                    reason: "Trying to complete a pending chain. Use $chainAbort() if you want to stop it."
-                });
-            } else {
-                throw e
-            }
+        if (this.$chain.isPending) {
+            throw new JFACTORY_ERR_INVALID_CALL({
+                target: this,
+                reason: "Trying to complete a pending chain. Use $chainAbort() if you want to stop it."
+            });
         }
+        this.$chain.complete(reason, false);
         return this
     }
 
@@ -426,19 +446,24 @@ export class JFactoryPromise extends Promise {
         return this
     }
 
-    static setExpired(promise, abort, silent, reason) {
-        if (!promise.$isSettled) {
-            if (abort) {
-                promise.$isAborted = !silent;
-                promise.__resolve__(reason);
-            } else {
-                throw new JFACTORY_ERR_INVALID_CALL({
-                    target: promise,
-                    reason: "promise must be aborted or settled before setting it to expired."
-                });
-            }
-        }
+    static setExpired(promise, abort, silent /*, reason*/) {
         promise.$isExpired = true;
+        if (!promise.$isSettled) {
+            if (promise.$type === "$thenIfExpired") {
+                promise.__onFulfilled__(promise.$chain.chainRoot.$chain.errorExpired)
+            }
+            else if (abort) {
+                promise.$isAborted = true;/*!silent;*/
+            } else {
+                if (!silent) {
+                    throw new JFACTORY_ERR_INVALID_CALL({
+                        target: promise,
+                        reason: "promise must be aborted or settled before setting it to expired."
+                    })
+                }
+            }
+            promise.__resolve__(/*reason*/);
+        }
     }
 }
 
@@ -461,8 +486,7 @@ export class JFactoryPromiseChain {
             chainMap: { value: new Map },
             isCompleted: { value: false, configurable: true },
             data: { value: {} },
-            // eslint-disable-next-line new-cap
-            __deferred__: { value: jQuery.Deferred() }
+            __deferred__: { value: helper_Deferred() }
         })
     }
 
@@ -475,17 +499,17 @@ export class JFactoryPromiseChain {
         return this
     }
 
-    complete(reason = "chain.complete()", abort ) {
+    complete(reason = "chain.complete()", abort) {
         let chainRoot = this.chainRoot;
         if (!chainRoot.$isExpired) {
-            let errorExpired = chainRoot.$chain.errorExpired = new JFACTORY_ERR_PROMISE_EXPIRED({
+            /*let errorExpired = */chainRoot.$chain.errorExpired = new JFACTORY_ERR_PROMISE_EXPIRED({
                 target: chainRoot,
                 reason
             });
 
             let map = this.chainMap;
             for (let item of map.keys()) {
-                JFactoryPromise.setExpired(item, abort, false, errorExpired);
+                JFactoryPromise.setExpired(item, abort/*, false, errorExpired*/);
             }
 
             Object.defineProperty(this, "isCompleted", { value: true });
@@ -622,9 +646,3 @@ export class JFactoryPromiseSync extends Promise {
         }
     }
 }
-
-jFactoryCompat_require(
-    JFACTORY_COMPAT_fetch,
-    JFACTORY_COMPAT_Request,
-    JFACTORY_COMPAT_AbortController
-);
