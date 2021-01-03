@@ -1,11 +1,13 @@
-/* jFactory, Copyright (c) 2019, Stéphane Plazis, https://github.com/jfactory-es/jfactory/blob/master/LICENSE.txt */
+/* jFactory, Copyright (c) 2019-2021, Stéphane Plazis, https://github.com/jfactory-es/jfactory */
 
-import { JFACTORY_CFG_JFactoryTrace } from "./jFactory-env";
-import { jFactoryLoader_onInit } from "./jFactoryLoader";
-import { NOOP } from "./jFactory-helpers";
+import { JFACTORY_DEV } from "./jFactory-env.mjs";
+import { JFACTORY_TRACE } from "./jFactory-env.mjs";
+import { NOOP, helper_useragent } from "./jFactory-helpers.mjs";
+import { jFactoryCfg } from "./jFactory-env.mjs";
+import { jFactoryBootstrap_onBoot } from "./jFactory-bootstrap.mjs";
 
 // ---------------------------------------------------------------------------------------------------------------------
-// JFactoryTrace
+// JFactoryTrace 1.7
 // ---------------------------------------------------------------------------------------------------------------------
 // Status: Beta
 // ---------------------------------------------------------------------------------------------------------------------
@@ -20,113 +22,80 @@ import { NOOP } from "./jFactory-helpers";
 // https://github.com/novocaine/sourcemapped-stacktrace
 // ---------------------------------------------------------------------------------------------------------------------
 
-export class JFactoryTrace_NOFILTER {
+export class JFactoryTrace {
 
-    constructor({ label, stackTraceLimit, keys, libOptions } = {}) {
-        this.label = label || "The stack has been printed in the console";
-        this.stackTraceLimit = stackTraceLimit || Infinity;
-        this.keys = keys || ["stackLog", "stackSource"];
-        this.libOptions = libOptions || {}
-    }
-
-    captureTraceSource(omitAboveFunctionName, omitSelf) {
+    constructor(omitAboveFunctionName = "JFactoryTrace", omitSelf = true, stackTraceLimit = Infinity) {
         let _stackTraceLimit;
-        if (this.stackTraceLimit) {
+        if (stackTraceLimit) {
             _stackTraceLimit = Error.stackTraceLimit;
-            Error.stackTraceLimit = this.stackTraceLimit
+            Error.stackTraceLimit = stackTraceLimit
         }
-        if (!omitAboveFunctionName) {
-            omitAboveFunctionName = "captureTraceSource";
-            omitSelf = true
-        }
-        let traceSource = {
-            source: new Error(),
-            omitAboveFunctionName,
-            omitSelf
-        };
-        if (this.stackTraceLimit) {
+
+        this.source = new Error();
+        this.omitAboveFunctionName = omitAboveFunctionName;
+        this.omitSelf = omitSelf;
+
+        if (stackTraceLimit) {
             Error.stackTraceLimit = _stackTraceLimit
         }
-        return traceSource
+
+        this.init()
     }
 
-    attachTrace(targetObject, traceSource) {
-        if (typeof traceSource !== "object") {
-            traceSource = this.captureTraceSource(traceSource || "attachTrace", !traceSource);
-        }
-
-        let trace = traceSource.source;
-        this.toPrintableTrace(traceSource)
-            .then(r => trace = r);
-
-        let log = () => console.log(trace) || this.label;
-
-        Object.defineProperty(targetObject, this.keys[0] /* traceLog */, {
-            enumerable: false,
-            configurable: true,
-            // hide the function body to improve readability in devtool
-            get: () => log()
-        });
-        Object.defineProperty(targetObject, this.keys[1] /* traceSource */, {
-            enumerable: false,
-            configurable: true,
-            // hide the traceSource Error to improve readability in devtool, specially in Firefox
-            get: () => traceSource
-        });
+    init() {
+        this.printable = this.source;
+        this.asyncPrintable = Promise.resolve(this.printable)
     }
 
-    toPrintableTrace(traceSource) {
-        // SPEC: this overridable method returns a promise
-        // because stacktrace parsers may be asynchronous
-        return Promise.resolve(traceSource.source)
+    static createErrorFromStack(stack) {
+        let e = new Error();
+        e.name = "JFactoryTrace";
+        e.stack = stack;
+        return e
     }
 }
 
-export class JFactoryTrace_LIB_STACKTRACE extends JFactoryTrace_NOFILTER {
+export class JFactoryTrace_LIB_STACKTRACE extends JFactoryTrace {
 
-    constructor(config) {
-        super(config);
-    }
-
-    toPrintableTrace(traceSource) {
-        return StackTrace.fromError(traceSource.source, this.libOptions)
-            .then(traceFrames => {
-
-                if (traceSource.omitAboveFunctionName) {
-                    let slice = traceFrames.findIndex(
-                        value => {
-                            return value.functionName && value.functionName.endsWith(traceSource.omitAboveFunctionName)
-                        }
-                    );
-                    if (slice > 0) {
-                        if (traceSource.omitSelf) {
-                            slice++
-                        }
-                        traceFrames = traceFrames.slice(slice);
-                    }
-                }
-                traceFrames = traceFrames
-                    .filter(this.libOptions.filter);
-                return this.formatTraceFrames(traceFrames)
-            });
-    }
-
-    formatTraceFrames(traceFrames) {
-        let header;
-        let linePrefix;
-        if (this.libOptions.offline && window.chrome) {
-            // if the fallowing syntax is detected on Chrome,
-            // the console.log() will convert the fileNames using sourcemaps
-            header = "Error\n"; // notes that anything after "Error" is valid
-            linePrefix = "\tat ";
-        } else {
-            header = "";
-            linePrefix = "";
+    init() {
+        let h = traceFrames => {
+            this.printable = this.constructor.createErrorFromStack(
+                this.createStackFromTraceFrames(
+                    this.filterTraceFrames(traceFrames)
+                )
+            )
         }
-        return header +
-            traceFrames
-                .map(sf => linePrefix + sf.toString())
-                .join("\n");
+
+        h(StackTrace.getSync(this.source, config.libOptions));
+        if (config.useSourcemap) {
+            this.asyncPrintable = StackTrace.fromError(this.source, config.libOptions).then(h)
+        } else {
+            this.asyncPrintable = Promise.resolve(this.printable)
+        }
+    }
+
+    filterTraceFrames(traceFrames) {
+        if (this.omitAboveFunctionName) {
+            let slice = traceFrames.findIndex(
+                value => value.functionName && value.functionName.endsWith(this.omitAboveFunctionName)
+            );
+            if (slice > 0) {
+                if (this.omitSelf) {
+                    slice++
+                }
+                traceFrames = traceFrames.slice(slice);
+            }
+        }
+        return traceFrames
+    }
+
+    createStackFromTraceFrames(traceFrames) {
+        for (let formatter of Object.values(jFactoryTrace.formatters)) {
+            if (formatter.test()) {
+                return formatter.format(traceFrames)
+            }
+        }
+        return this.source.stack
     }
 }
 
@@ -136,23 +105,101 @@ export class JFactoryTrace_LIB_STACKTRACE extends JFactoryTrace_NOFILTER {
 // Status: Beta
 // ---------------------------------------------------------------------------------------------------------------------
 
-export const jFactoryTrace = {};
+let tracer;
+if (JFACTORY_DEV && JFACTORY_TRACE) {
 
-jFactoryLoader_onInit(function() {
-    let config = JFACTORY_CFG_JFactoryTrace;
-    if (config && config.use !== false) {
-        let constructor;
-        constructor = typeof config.use === "function" ?
-            config.use :
-            typeof StackTrace === "object" ? JFactoryTrace_LIB_STACKTRACE : JFactoryTrace_NOFILTER;
-        if (constructor === JFactoryTrace_LIB_STACKTRACE) {
-            console.warn("jFactory: Stack trace enabled; Performance will be affected")
+    tracer = {
+
+        captureTraceSource(omitAboveFunctionName, omitSelf, stackTraceLimit) {
+            return new(config.tracer || JFactoryTrace)(omitAboveFunctionName, omitSelf, stackTraceLimit)
+        },
+
+        attachTrace(
+            targetObject, traceSource /* or omitAboveFunctionName */,
+            traceLogKey = config.keys[0], traceSourceKey = config.keys[1],
+            label = config.label
+        ) {
+            if (typeof traceSource !== "object") {
+                traceSource = this.captureTraceSource(traceSource || "attachTrace", !traceSource);
+            }
+
+            let log = () => console.log(traceSource.printable) || label || "The stack has been printed in the console";
+
+            Object.defineProperty(targetObject, traceLogKey, {
+                // hide the function body to improve readability in devtool
+                get: () => log()
+            });
+
+            Object.defineProperty(targetObject, traceSourceKey, {
+                value: traceSource
+            });
+        },
+
+        formatters: {
+
+            webkit: {
+                test() {
+                    return helper_useragent("Chrome")
+                },
+                format(traceFrames) {
+                    // Chrome syntax
+                    // String must start with "Error" and parenthesis are important
+                    // => The console will convert the uri using sourcemaps
+                    return "Error (generated by JFactoryTrace)\n" +
+                        traceFrames.map(sf => {
+                            let s = "\tat ";
+                            let uri = sf.fileName + ":" + sf.lineNumber + ":" + sf.columnNumber;
+                            if (sf.functionName) {
+                                s += sf.functionName + " (" + uri + ")"
+                            } else {
+                                s += uri // no parenthesis
+                            }
+                            return s
+                        }).join("\n");
+                }
+            },
+
+            firefox: {
+                test() {
+                    return helper_useragent("Gecko")
+                },
+                format(traceFrames) {
+                    // Firefox syntax
+                    return traceFrames.map(sf =>
+                        (sf.functionName ?? "<anonymous>")
+                            + "@" + sf.fileName + ":" + sf.lineNumber + ":" + sf.columnNumber
+                    ).join("\n");
+                }
+            }
         }
-        jFactoryTrace.tracer = new constructor(config);
-    } else {
-        jFactoryTrace.tracer = {
-            captureTraceSource: NOOP,
-            attachTrace: NOOP
-        };
     }
-});
+
+} else {
+
+    tracer = {
+        captureTraceSource: NOOP,
+        attachTrace: NOOP
+    };
+
+}
+
+export const jFactoryTrace = tracer;
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Config
+// ---------------------------------------------------------------------------------------------------------------------
+
+const config = jFactoryCfg("JFACTORY_CFG_JFactoryTrace");
+
+if (JFACTORY_DEV && JFACTORY_TRACE) {
+    config.keys = ["$dev_traceLog", "$dev_traceSource"];
+    if (typeof StackTrace === "object") {
+        config.tracer = JFactoryTrace_LIB_STACKTRACE;
+        config.useSourcemap = false;
+    }
+    jFactoryBootstrap_onBoot(function() {
+        if (config.tracer === JFactoryTrace_LIB_STACKTRACE) {
+            console.log("JFactoryTrace: Stacktrace.js support enabled; performances will be affected")
+        }
+    })
+}
