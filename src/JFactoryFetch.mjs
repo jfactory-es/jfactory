@@ -2,6 +2,12 @@
 
 import { JFACTORY_ERR_REQUEST_ERROR } from "./JFactoryError";
 import { JFactoryPromise } from "./JFactoryPromise";
+import {
+    JFACTORY_COMPAT_AbortController,
+    JFACTORY_COMPAT_fetch,
+    JFACTORY_COMPAT_Request,
+    jFactoryCompat_require
+} from "./jFactoryCompat.mjs";
 
 // ---------------------------------------------------------------------------------------------------------------------
 // JFactoryFetch
@@ -71,3 +77,9 @@ export class JFactoryFetch extends JFactoryPromise {
         return this
     }
 }
+
+jFactoryCompat_require(
+    JFACTORY_COMPAT_fetch,
+    JFACTORY_COMPAT_Request,
+    JFACTORY_COMPAT_AbortController
+);
