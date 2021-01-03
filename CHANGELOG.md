@@ -1,3 +1,8 @@
+## 1.7.4 (Jan 03, 2021)
+* feat: JfactoryFetch: added compatibility test
+* feat: [JFactoryPromise](docs/JFactoryPromise.md): removed lodash and jquery dependencies
+* build: dev-server 4 support (disabled by default)
+
 ## 1.7.0 (Sept 09, 2020)
 * build: improved tree shaking
 
@@ -9,7 +14,7 @@
 * feat: improved phase-switching queueing     
 * feat: [TraitCSS](docs/TraitCSS.md).$cssFetch(): don't duplicate rules with same url 
 * feat: [TraitDom](docs/TraitDOM.md).$dom(): support textnodes in \<template>
-* ###### feat: [JFactoryPromise](docs/JFactoryPromise.md) improved abort and expire 
+* feat: [JFactoryPromise](docs/JFactoryPromise.md) improved abort and expire 
 
 ## 1.4.0 (Jan 28, 2020 )
 * feat: Better support for [Web Components](docs/playground/class-webcomp.md)
