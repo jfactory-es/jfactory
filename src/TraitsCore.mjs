@@ -1,4 +1,4 @@
-/* jFactory, Copyright (c) 2019, Stéphane Plazis, https://github.com/jfactory-es/jfactory/blob/master/LICENSE.txt */
+/* jFactory, Copyright (c) 2019-2021, Stéphane Plazis, https://github.com/jfactory-es/jfactory */
 
 // ---------------------------------------------------------------------------------------------------------------------
 // ---------------------------------------------------------------------------------------------------------------------
@@ -6,19 +6,19 @@
 // ---------------------------------------------------------------------------------------------------------------------
 // ---------------------------------------------------------------------------------------------------------------------
 
-import { JFACTORY_DEV, JFACTORY_CFG_LOG } from "./jFactory-env";
+import { JFACTORY_DEV, JFACTORY_LOG } from "./jFactory-env.mjs";
 import {
     JFACTORY_ERR_KEY_DUPLICATED, JFACTORY_ERR_KEY_MISSING,
     JFACTORY_ERR_PROMISE_EXPIRED, JFactoryError
-} from "./JFactoryError";
-import { jFactory } from "./jFactory";
-import { JFactoryExpect } from "./JFactoryExpect";
-import { JFactoryAbout } from "./JFactoryAbout";
-import { JFactoryLogger } from "./JFactoryLogger";
-import { JFactoryPromise, JFactoryPromiseSync } from "./JFactoryPromise";
-import { JFactoryEventsManager } from "./JFactoryEvents";
-import { JFactoryObject } from "./JFactoryObject";
-import { JFactoryTimeTrace } from "./JFactoryTime";
+} from "./JFactoryError.mjs";
+import { jFactory } from "./jFactory.mjs";
+import { JFactoryExpect } from "./JFactoryExpect.mjs";
+import { JFactoryAbout } from "./JFactoryAbout.mjs";
+import { JFactoryLogger } from "./JFactoryLogger.mjs";
+import { JFactoryPromise, JFactoryPromiseSync } from "./JFactoryPromise.mjs";
+import { JFactoryEventsManager } from "./JFactoryEvents.mjs";
+import { JFactoryObject } from "./JFactoryObject.mjs";
+import { JFactoryTimeTrace } from "./JFactoryTime.mjs";
 
 // ---------------------------------------------------------------------------------------------------------------------
 // Trait Object
@@ -110,7 +110,7 @@ export class TraitLog {
     trait_constructor() {
         let config = Object.assign({
             label: this.$.about.name
-        }, JFACTORY_CFG_LOG.enabled || {
+        }, JFACTORY_LOG || {
             enabled: false
         });
 

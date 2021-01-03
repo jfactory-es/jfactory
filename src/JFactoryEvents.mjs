@@ -1,11 +1,11 @@
-/* jFactory, Copyright (c) 2019, Stéphane Plazis, https://github.com/jfactory-es/jfactory/blob/master/LICENSE.txt */
+/* jFactory, Copyright (c) 2019-2021, Stéphane Plazis, https://github.com/jfactory-es/jfactory */
 
-import { JFACTORY_DEV } from "./jFactory-env";
-import { JFACTORY_ERR_INVALID_VALUE } from "./JFactoryError";
-import { JFactoryExpect } from "./JFactoryExpect";
-import { JFactoryPromiseSync } from "./JFactoryPromise";
-import { JFactoryFunctionComposer } from "./JFactoryFunction";
-import { jQuery, helper_isPlainObject } from "./jFactory-helpers";
+import { JFACTORY_DEV } from "./jFactory-env.mjs";
+import { JFACTORY_ERR_INVALID_VALUE } from "./JFactoryError.mjs";
+import { JFactoryExpect } from "./JFactoryExpect.mjs";
+import { JFactoryPromiseSync } from "./JFactoryPromise.mjs";
+import { JFactoryFunctionComposer } from "./JFactoryFunction.mjs";
+import { jQuery, helper_isPlainObject } from "./jFactory-helpers.mjs";
 
 // ---------------------------------------------------------------------------------------------------------------------
 // JFactoryEvents

@@ -1,9 +1,9 @@
-/* jFactory, Copyright (c) 2019, Stéphane Plazis, https://github.com/jfactory-es/jfactory/blob/master/LICENSE.txt */
+/* jFactory, Copyright (c) 2019-2021, Stéphane Plazis, https://github.com/jfactory-es/jfactory */
 
-import { JFACTORY_DEV, JFACTORY_CFG_LOG } from "./jFactory-env";
-import { JFACTORY_ERR_INVALID_CALL } from "./JFactoryError";
-import { JFactoryExpect } from "./JFactoryExpect";
-import { helper_setFunctionName } from "./jFactory-helpers";
+import { JFACTORY_DEV, JFACTORY_LOG } from "./jFactory-env.mjs";
+import { JFACTORY_ERR_INVALID_CALL } from "./JFactoryError.mjs";
+import { JFactoryExpect } from "./JFactoryExpect.mjs";
+import { helper_setFunctionName } from "./jFactory-helpers.mjs";
 
 // ---------------------------------------------------------------------------------------------------------------------
 // JFactoryFunctionComposer
@@ -191,7 +191,7 @@ export class JFactoryFunctionExpirable {
     onExpired(expired) {
         if (this.expiredCalls < JFactoryFunctionExpirable.MaxWarningExpiration) {
             this.expiredCalls++;
-            if (JFACTORY_CFG_LOG.enabled) {
+            if (JFACTORY_LOG) {
                 console.warn(...new JFACTORY_ERR_INVALID_CALL({
                     ...expired.$data,
                     reason: expired.$data.reason

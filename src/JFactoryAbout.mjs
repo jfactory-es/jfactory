@@ -1,9 +1,9 @@
-/* jFactory, Copyright (c) 2019, Stéphane Plazis, https://github.com/jfactory-es/jfactory/blob/master/LICENSE.txt */
+/* jFactory, Copyright (c) 2019-2021, Stéphane Plazis, https://github.com/jfactory-es/jfactory */
 
-import { JFACTORY_DEV } from "./jFactory-env";
-import { helper_camelCase } from "./jFactory-helpers";
-import { JFactoryExpect } from "./JFactoryExpect";
-import { JFactoryObject } from "./JFactoryObject";
+import { JFACTORY_DEV } from "./jFactory-env.mjs";
+import { helper_camelCase } from "./jFactory-helpers.mjs";
+import { JFactoryExpect } from "./JFactoryExpect.mjs";
+import { JFactoryObject } from "./JFactoryObject.mjs";
 
 // ---------------------------------------------------------------------------------------------------------------------
 // JFactoryAbout

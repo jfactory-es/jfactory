@@ -1,10 +1,12 @@
-/* jFactory, Copyright (c) 2019, Stéphane Plazis, https://github.com/jfactory-es/jfactory/blob/master/LICENSE.txt */
+/* jFactory, Copyright (c) 2019-2020, Stéphane Plazis, https://github.com/jfactory-es/jfactory */
 
-import { JFACTORY_DEV } from "./jFactory-env";
-import { JFACTORY_ERR_INVALID_CALL, JFACTORY_ERR_PROMISE_EXPIRED } from "./JFactoryError";
-import { JFactoryExpect } from "./JFactoryExpect";
-import { jFactoryTrace } from "./JFactoryTrace";
-import { helper_isNative, helper_Deferred } from "./jFactory-helpers";
+import { JFACTORY_DEV } from "./jFactory-env.mjs";
+import { JFACTORY_ERR_INVALID_CALL, JFACTORY_ERR_PROMISE_EXPIRED } from "./JFactoryError.mjs";
+import { JFactoryExpect } from "./JFactoryExpect.mjs";
+import { jFactoryTrace } from "./JFactoryTrace.mjs";
+import { helper_isNative } from "./jFactory-helpers.mjs";
+import { helper_deferred } from "./jFactory-helpers.mjs";
+import { jFactoryBootstrap_expected } from "./jFactory-bootstrap.mjs";
 
 // ---------------------------------------------------------------------------------------------------------------------
 // JFactoryPromise 1.7
@@ -25,6 +27,7 @@ const moduleGenId = () => ++moduleGenId.uid; moduleGenId.uid = 0;
 export class JFactoryPromise extends Promise {
 
     constructor({ name, config, traceSource }, executor) {
+        JFACTORY_DEV && jFactoryBootstrap_expected();
 
         if (arguments.length === 1) {
             [name, config, executor] = [null, null, arguments[0]]
@@ -110,7 +113,7 @@ export class JFactoryPromise extends Promise {
                     }
                 });
             }
-            jFactoryTrace.tracer.attachTrace(this, traceSource);
+            jFactoryTrace.attachTrace(this, traceSource);
         }
 
         const tryAutoComplete = () => {
@@ -486,7 +489,7 @@ export class JFactoryPromiseChain {
             chainMap: { value: new Map },
             isCompleted: { value: false, configurable: true },
             data: { value: {} },
-            __deferred__: { value: helper_Deferred() }
+            __deferred__: { value: helper_deferred() }
         })
     }
 

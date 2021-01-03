@@ -1,7 +1,7 @@
-/* jFactory, Copyright (c) 2019, Stéphane Plazis, https://github.com/jfactory-es/jfactory/blob/master/LICENSE.txt */
+/* jFactory, Copyright (c) 2019-2021, Stéphane Plazis, https://github.com/jfactory-es/jfactory */
 
-import { JFACTORY_DEV, JFACTORY_CFG_LOG } from "./jFactory-env";
-import { JFactoryExpect } from "./JFactoryExpect";
+import { JFACTORY_DEV, JFACTORY_LOG } from "./jFactory-env.mjs";
+import { JFactoryExpect } from "./JFactoryExpect.mjs";
 
 // ---------------------------------------------------------------------------------------------------------------------
 // JFactoryTraits
@@ -46,7 +46,7 @@ export class JFactoryTraits {
 
         if (cache) {
             if (cache.has(trait)) {
-                if (JFACTORY_CFG_LOG.enabled) {
+                if (JFACTORY_LOG) {
                     console.warn(`${trait.name} already called on`, callerInstance);
                 }
                 return this;
@@ -108,7 +108,7 @@ export class JFactoryTraits {
         if (isStatic) {return null} // don't export static members
 
         if (propertyName in target) { // skip existing properties
-            if (JFACTORY_CFG_LOG.enabled) {
+            if (JFACTORY_LOG) {
                 console.warn(
                     `${target.constructor.name}> skipping export of existing property "${propertyName}"`,
                     value);
@@ -117,7 +117,7 @@ export class JFactoryTraits {
         }
 
         if (typeof value === "object") { // prevent shared object exportation
-            if (JFACTORY_CFG_LOG.enabled) {
+            if (JFACTORY_LOG) {
                 console.warn(
                     `${target.constructor.name}> skipping export of shared object "${propertyName}"`,
                     value);

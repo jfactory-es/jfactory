@@ -1,4 +1,4 @@
-/* jFactory, Copyright (c) 2019, Stéphane Plazis, https://github.com/jfactory-es/jfactory/blob/master/LICENSE.txt */
+/* jFactory, Copyright (c) 2019-2021, Stéphane Plazis, https://github.com/jfactory-es/jfactory */
 
 // ---------------------------------------------------------------------------------------------------------------------
 // ---------------------------------------------------------------------------------------------------------------------
@@ -6,17 +6,17 @@
 // ---------------------------------------------------------------------------------------------------------------------
 // ---------------------------------------------------------------------------------------------------------------------
 
-import { jFactory } from "./jFactory";
-import { JFACTORY_DEV } from "./jFactory-env";
-import { JFACTORY_COMPAT_MutationObserver, jFactoryCompat_require } from "./jFactoryCompat";
-import { JFACTORY_ERR_INVALID_VALUE, JFACTORY_ERR_KEY_DUPLICATED, JFACTORY_ERR_KEY_MISSING } from "./JFactoryError";
-import { JFactoryExpect } from "./JFactoryExpect";
-import { TraitCore, TraitService } from "./TraitsCore";
-import { JFactoryFetch } from "./JFactoryFetch";
-import { JFactoryPromise } from "./JFactoryPromise";
-import { JFactoryObject } from "./JFactoryObject";
-import { jFactoryTrace } from "./JFactoryTrace";
-import { helper_isPlainObject, helper_url_abs, jQuery } from "./jFactory-helpers";
+import { jFactory } from "./jFactory.mjs";
+import { JFACTORY_DEV } from "./jFactory-env.mjs";
+import { JFACTORY_COMPAT_MutationObserver, jFactoryCompat_require } from "./jFactory-compat.mjs";
+import { JFACTORY_ERR_INVALID_VALUE, JFACTORY_ERR_KEY_DUPLICATED, JFACTORY_ERR_KEY_MISSING } from "./JFactoryError.mjs";
+import { JFactoryExpect } from "./JFactoryExpect.mjs";
+import { TraitCore, TraitService } from "./TraitsCore.mjs";
+import { JFactoryFetch } from "./JFactoryFetch.mjs";
+import { JFactoryPromise } from "./JFactoryPromise.mjs";
+import { JFactoryObject } from "./JFactoryObject.mjs";
+import { jFactoryTrace } from "./JFactoryTrace.mjs";
+import { helper_isPlainObject, helper_url_abs, jQuery } from "./jFactory-helpers.mjs";
 
 // ---------------------------------------------------------------------------------------------------------------------
 // Trait Fetch
@@ -44,7 +44,7 @@ export class TraitFetch {
 
         let promise = new JFactoryFetch({
             name: id,
-            traceSource: jFactoryTrace.tracer.captureTraceSource("$fetch"),
+            traceSource: jFactoryTrace.captureTraceSource("$fetch"),
             config: {
                 chainAutoComplete: true
             }
@@ -137,7 +137,7 @@ export class TraitTimeout {
         let promise = new JFactoryPromise(
             {
                 name: id,
-                traceSource: jFactoryTrace.tracer.captureTraceSource("$timeout"),
+                traceSource: jFactoryTrace.captureTraceSource("$timeout"),
                 config: {
                     chainAutoComplete: true
                 }
@@ -532,7 +532,7 @@ export class TraitCSS {
                 {
                     name: id,
                     config: { chainAutoComplete: true },
-                    traceSource: jFactoryTrace.tracer.captureTraceSource("$cssFetch")
+                    traceSource: jFactoryTrace.captureTraceSource("$cssFetch")
                 },
                 dom
             );
@@ -546,7 +546,7 @@ export class TraitCSS {
                 {
                     name: id,
                     config: { chainAutoComplete: true },
-                    traceSource: jFactoryTrace.tracer.captureTraceSource("$cssFetch")
+                    traceSource: jFactoryTrace.captureTraceSource("$cssFetch")
                 },
                 resolve => dom = jQuery("<link>",
                     { id: cssId ? id : "", rel: "stylesheet", type: "text/css", "data-usage": "1" })

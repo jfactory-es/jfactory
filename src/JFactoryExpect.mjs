@@ -1,8 +1,10 @@
-/* jFactory, Copyright (c) 2019, Stéphane Plazis, https://github.com/jfactory-es/jfactory/blob/master/LICENSE.txt */
+/* jFactory, Copyright (c) 2019-2021, Stéphane Plazis, https://github.com/jfactory-es/jfactory */
 
-import { JFACTORY_ERR_INVALID_VALUE } from "./JFactoryError";
-import { helper_isNumber, helper_isPlainObject, helper_isString } from "./jFactory-helpers";
-import { jFactoryLoader_onInit } from "./jFactoryLoader";
+import { JFACTORY_DEV } from "./jFactory-env.mjs";
+import { JFACTORY_ERR_INVALID_VALUE } from "./JFactoryError.mjs";
+import { helper_isNumber, helper_isPlainObject, helper_isString } from "./jFactory-helpers.mjs";
+import { jFactoryBootstrap_onBoot } from "./jFactory-bootstrap.mjs";
+import { jFactoryBootstrap_expected } from "./jFactory-bootstrap.mjs";
 
 // ---------------------------------------------------------------------------------------------------------------------
 // JFactoryExpect
@@ -16,6 +18,7 @@ import { jFactoryLoader_onInit } from "./jFactoryLoader";
  * @return {*|JFactoryExpect}
  */
 export function JFactoryExpect(label, value) {
+    JFACTORY_DEV && jFactoryBootstrap_expected();
     if (new.target) {
         this.label = label;
         this.value = value;
@@ -420,7 +423,7 @@ const staticMethods = {
     }
 };
 
-jFactoryLoader_onInit(function() {
+jFactoryBootstrap_onBoot(function() {
     Object.assign(JFactoryExpect, staticMethods);
     // Generate members from static methods
     for (const name of Object.getOwnPropertyNames(staticMethods)) {

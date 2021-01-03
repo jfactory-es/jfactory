@@ -1,17 +1,47 @@
-/* jFactory, Copyright (c) 2019, Stéphane Plazis, https://github.com/jfactory-es/jfactory/blob/master/LICENSE.txt */
+/* jFactory, Copyright (c) 2019-2021, Stéphane Plazis, https://github.com/jfactory-es/jfactory */
 
-import { JFACTORY_DEV } from "./jFactory-env";
-import { JFACTORY_CFG_LOG } from "./jFactory-env";
-import { jFactoryCompat_run } from "./jFactoryCompat";
-import { jFactoryLoader_init } from "./jFactoryLoader";
+import { JFACTORY_DEV } from "./jFactory-env.mjs";
+import { JFACTORY_VER } from "./jFactory-env.mjs";
+import { JFACTORY_LOG } from "./jFactory-env.mjs";
+import { JFACTORY_BOOT } from "./jFactory-env.mjs";
+import { jFactoryCompat_run } from "./jFactory-compat.mjs";
 
-export function jFactoryBootstrap() {
-    if (JFACTORY_DEV) {
-        console.log("jFactory is running in development mode; performances will be affected");
-        !JFACTORY_CFG_LOG.enabled && console.warn("jFactory logs disabled");
+export function jFactoryBootstrap(auto) {
+    if (!_isLoaded) {
+        if (auto && !JFACTORY_BOOT) {
+            // auto bootstrap is disabled by env
+            return
+        }
+        if (JFACTORY_DEV) {
+            console.log(`jFactory ${JFACTORY_VER} running in development mode; performances will be affected`);
+            !JFACTORY_LOG && console.log("jFactory: logs disabled");
+            jFactoryCompat_run()
+        }
+        init();
+        _isLoaded = true
     }
-    jFactoryLoader_init();
-    if (JFACTORY_DEV) {
-        jFactoryCompat_run()
+}
+
+let seq = [];
+function init() {
+    if (seq) {
+        for (let handler of seq) {
+            handler()
+        }
+        seq = null;
     }
+}
+
+let _isLoaded = false;
+export function jFactoryBootstrap_expected() {
+    if (!_isLoaded) {
+        throw new Error("jFactoryBootstrap() must be called before using jFactory")
+    }
+}
+
+export function jFactoryBootstrap_onBoot(handler) {
+    if (_isLoaded) {
+        throw new Error("jFactoryBootstrap() already called")
+    }
+    seq.push(handler)
 }

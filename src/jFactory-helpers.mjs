@@ -1,4 +1,4 @@
-/* jFactory, Copyright (c) 2019, Stéphane Plazis, https://github.com/jfactory-es/jfactory/blob/master/LICENSE.txt */
+/* jFactory, Copyright (c) 2019-2021, Stéphane Plazis, https://github.com/jfactory-es/jfactory */
 
 import _ from "lodash";
 import $ from "jquery";
@@ -31,34 +31,42 @@ export const helper_isNative = function(f) {
     return typeof f === "function" && Function.prototype.toString.call(f).indexOf("[native code]") !== -1
 }
 
-export const helper_Deferred = () => new Deferred;
-
-function Deferred(){
-    this._done = [];
-    this._fail = [];
+export function helper_useragent(id) {
+    return globalThis.navigator &&
+    globalThis.navigator.userAgent &&
+    globalThis.navigator.userAgent.indexOf(id + "/") > 0
 }
-Deferred.prototype = {
-    execute: function(list, args){
+
+export const helper_deferred = () => new Deferred;
+class Deferred {
+    constructor() {
+        this._done = [];
+        this._fail = [];
+    }
+    execute(list) {
         for (let h of list){
-            h(...args)
+            h()
         }
         this.fulfilled = true
-    },
-    resolve: function(){
-        this.execute(this._done, arguments);
-    },
-    reject: function(){
-        this.execute(this._fail, arguments);
-    },
-
-    done: function(callback){
+    }
+    resolve() {
+        this.execute(this._done);
+    }
+    reject() {
+        this.execute(this._fail);
+    }
+    done(callback) {
         if (this.fulfilled) {
             callback()
         } else {
             this._done.push(callback);
         }
-    },
-    fail: function(callback){
-        this._fail.push(callback);
+    }
+    fail(callback) {
+        if (this.fulfilled) {
+            callback()
+        } else {
+            this._fail.push(callback);
+        }
     }
 }

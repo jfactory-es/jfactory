@@ -1,6 +1,4 @@
-/* jFactory, Copyright (c) 2019, Stéphane Plazis, https://github.com/jfactory-es/jfactory/blob/master/LICENSE.txt */
-
-import { JFACTORY_DEV } from "./jFactory-env";
+/* jFactory, Copyright (c) 2019-2021, Stéphane Plazis, https://github.com/jfactory-es/jfactory */
 
 // ---------------------------------------------------------------------------------------------------------------------
 // jFactoryCompat
@@ -8,11 +6,6 @@ import { JFACTORY_DEV } from "./jFactory-env";
 // Status: Beta
 // ---------------------------------------------------------------------------------------------------------------------
 
-export const JFACTORY_COMPAT_globalThis = {
-    name: "globalThis",
-    test: () => globalThis,
-    info: "https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/globalThis"
-}
 export const JFACTORY_COMPAT_fetch = {
     name: "fetch",
     test: () => fetch,
@@ -45,7 +38,7 @@ export function jFactoryCompat_require(...args) {
     }
 }
 
-export function jFactoryCompat_run(){
+export function jFactoryCompat_run() {
     for (let [name, entry] of Object.entries(list)) {
         let pass;
         try {pass = Boolean(entry.test())} catch (ignore) {}
@@ -54,8 +47,4 @@ export function jFactoryCompat_run(){
         }
     }
     list = null;
-}
-
-if (JFACTORY_DEV) {
-    jFactoryCompat_require(JFACTORY_COMPAT_globalThis);
 }

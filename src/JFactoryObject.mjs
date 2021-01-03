@@ -1,6 +1,6 @@
-/* jFactory, Copyright (c) 2019, Stéphane Plazis, https://github.com/jfactory-es/jfactory/blob/master/LICENSE.txt */
+/* jFactory, Copyright (c) 2019-2021, Stéphane Plazis, https://github.com/jfactory-es/jfactory */
 
-import { jFactoryLoader_onInit } from "./jFactoryLoader";
+import { jFactoryBootstrap_onBoot } from "./jFactory-bootstrap.mjs";
 
 // ---------------------------------------------------------------------------------------------------------------------
 // JFactoryObject
@@ -130,6 +130,6 @@ JFactoryObject.DESCRIPTORS_PROTOTYPE = { writable: false, enumerable: false, con
 // jFactoryObject
 // ---------------------------------------------------------------------------------------------------------------------
 
-jFactoryLoader_onInit(function() {
+jFactoryBootstrap_onBoot(function() {
     JFactoryObject.descriptors = JFactoryObject.createDescriptors()
 });

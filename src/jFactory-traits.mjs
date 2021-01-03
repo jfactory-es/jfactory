@@ -1,8 +1,8 @@
-/* jFactory, Copyright (c) 2019, Stéphane Plazis, https://github.com/jfactory-es/jfactory/blob/master/LICENSE.txt */
+/* jFactory, Copyright (c) 2019-2021, Stéphane Plazis, https://github.com/jfactory-es/jfactory */
 
-import { JFACTORY_ERR_INVALID_CALL } from "./JFactoryError";
-import { JFactoryTraits } from "./JFactoryTraits";
-import { jFactoryFunctionWrappable } from "./JFactoryFunction";
+import { JFACTORY_ERR_INVALID_CALL } from "./JFactoryError.mjs";
+import { JFactoryTraits } from "./JFactoryTraits.mjs";
+import { jFactoryFunctionWrappable } from "./JFactoryFunction.mjs";
 
 // ---------------------------------------------------------------------------------------------------------------------
 // jFactoryTraits

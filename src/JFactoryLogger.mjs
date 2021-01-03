@@ -1,12 +1,12 @@
-/* jFactory, Copyright (c) 2019, Stéphane Plazis, https://github.com/jfactory-es/jfactory/blob/master/LICENSE.txt */
+/* jFactory, Copyright (c) 2019-2021, Stéphane Plazis, https://github.com/jfactory-es/jfactory */
 
-import { JFACTORY_DEV, JFACTORY_CLI } from "./jFactory-env";
-import { JFactoryExpect } from "./JFactoryExpect";
-import { jFactoryFunctionConditional } from "./JFactoryFunction";
-import { helper_defaultsDeep, NOOP } from "./jFactory-helpers";
+import { JFACTORY_DEV, JFACTORY_CLI } from "./jFactory-env.mjs";
+import { jFactoryCfg } from "./jFactory-env.mjs";
+import { JFactoryExpect } from "./JFactoryExpect.mjs";
+import { helper_defaultsDeep, NOOP } from "./jFactory-helpers.mjs";
 
 // ---------------------------------------------------------------------------------------------------------------------
-// JFactoryLogger
+// JFactoryLogger 1.7
 // ---------------------------------------------------------------------------------------------------------------------
 // A contextual logger that prepends a label and allows runtime filtering while preserving the caller line number
 // ---------------------------------------------------------------------------------------------------------------------
@@ -27,8 +27,7 @@ export class JFactoryLogger {
             JFactoryExpect("JFactoryLogger(options)", options)
                 .properties(Object.getOwnPropertyNames(JFactoryLogger.DEFAULT_CONFIG))
         }
-        helper_defaultsDeep(this, options, JFactoryLogger.DEFAULT_CONFIG);
-        this.condition = jFactoryFunctionConditional(JFactoryLogger.DEFAULT_CONDITION);
+        helper_defaultsDeep(this, options, config);
         this.installAccessor("log");
         this.installAccessor("warn");
         this.installAccessor("error")
@@ -135,6 +134,7 @@ JFactoryLogger.DEFAULT_CONFIG = /** @lends JFactoryLogger# */ {
     label: "",
     enabled: true,
     parentLogger: null,
+    condition: JFactoryLogger.DEFAULT_CONDITION,
     formatter: JFACTORY_CLI ?
         JFactoryLogger.FORMATTER_CLI :
         JFactoryLogger.FORMATTER_BROWSER,
@@ -148,3 +148,5 @@ JFactoryLogger.DEFAULT_CONFIG = /** @lends JFactoryLogger# */ {
         label: "color: gray"
     }
 };
+
+const config = jFactoryCfg("JFACTORY_CFG_JFactoryLogger", JFactoryLogger.DEFAULT_CONFIG);
