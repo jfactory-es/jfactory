@@ -1,8 +1,14 @@
 const { getEnv } = require("../env");
 
 module.exports = {
+
   port: 8080,
   host: "localhost",
+  hot: false,
+
+  // webpack-dev-server 3
+  // --------------------
+
   contentBase: "scripts/dev/serverRoot",
   publicPath: "/",
 
@@ -11,7 +17,6 @@ module.exports = {
 
   // Hot module is not useful here
   // Better to liveReload the page to cleanup everything
-  hot: false,
   liveReload: true,
 
   // caution: causes webpack compile loop
@@ -36,4 +41,24 @@ module.exports = {
   // compress: true,
   // http2: true,
   // https: true,
+
+  // webpack-dev-server 4
+  // see node_modules/webpack-dev-server/lib/options.json
+  // --------------------
+  //
+  // static: {
+  //   directory: "scripts/dev/serverRoot"
+  // },
+  //
+  // dev: {
+  //   publicPath: "/"
+  //
+  //   // writeToDisk: getEnv("DEBUG") && (filePath => {
+  //   //   return filePath.endsWith("testsuite.js");
+  //   // }),
+  // },
+  //
+  // client: {
+  //   // logging: "error",
+  // }
 };

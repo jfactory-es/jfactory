@@ -8,8 +8,7 @@ const webpack = require("webpack");
 module.exports =  {
   mode: "development",
 
-  // prevents sourceURL=webpack://
-  devtool: "inline-source-map",
+  devtool: "eval-source-map",
 
   // devtool: "inline-source-map",
   // devtool: "cheap-eval-source-map",
@@ -43,15 +42,11 @@ module.exports =  {
         use: ["source-map-loader"]
       },
       {
-        use: "mocha-loader",
         test: /.test\.js$/,
+        use: "mocha-loader",
         exclude: /node_modules/
       }
     ]
-  },
-
-  node: {
-    // fs: "empty" // fix require("fs") errors
   },
 
   plugins: [
@@ -64,7 +59,7 @@ module.exports =  {
       "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV)
     }),
     new HtmlWebpackPlugin({
-      filename: "testsuite",
+      filename: "testsuite.html",
       template: "./scripts/dev/test-template.html",
       title: "JFactory Test",
       inject: "body"
