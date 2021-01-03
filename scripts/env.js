@@ -3,6 +3,8 @@
 
 const fs = require("fs");
 const colors = require("ansi-colors");
+const semverSatisfies = require("semver/functions/satisfies");
+const packageJson = require("../package.json");
 
 const WORKSPACE = __dirname + "/../";
 
@@ -37,12 +39,20 @@ function initEnv(verbose = true) {
   const pkg = require("../package.json");
   if (verbose) {
     let pad = 8;
+
+    let checkNode = semverSatisfies(process.version, packageJson.engines.node);
+
     console.log("Ver".padEnd(8, " ")      + warnIfStr(pkg.version.includes("-"), "v" + pkg.version));
-    // console.log("Node".padEnd(pad, " ")   + process.version);
+    console.log("Node".padEnd(pad, " ")   + warnIf(!checkNode, process.version, `"${process.version}"`));
     console.log("Env".padEnd(pad, " ")    + warnIfStr(ENV !== "production", ENV));
     console.log("Bundle".padEnd(pad, " ") + warnIfBool(!BUNDLE, BUNDLE));
     console.log("Debug".padEnd(pad, " ")  + warnIfBool(DEBUG, DEBUG));
     console.log("-".repeat(80));
+
+    if (process.env.NODE_ENV === "production" && warnCount) {
+      console.log("\n" + colors.red("Production env check failure"));
+      process.exit(1);
+    }
   }
 }
 
@@ -67,12 +77,15 @@ function getEnv(key) {
   return val
 }
 
+let warnCount = 0;
 function warnIf(test, val, msg, type) {
   if (msg === undefined) msg = val.toString();
+  if (type === "string") msg = "\"" + msg + "\"";
   if (type && type !== typeof val) {
     msg = colors.red("(" + typeof val + ") ") + msg;
   }
   if (test) {
+    warnCount++;
     return colors.red(msg)
   } else {
     return colors.green(msg)
