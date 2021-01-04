@@ -15,180 +15,111 @@ const VERSION = "v" + pkg.version;
 const SOURCEMAP = true; // *.map
 // const SOURCEMAP = "inline";
 
+const banner_b = fs.readFileSync("scripts/bundler/dist-banner-b.txt", "utf8");
+const banner_s = fs.readFileSync("scripts/bundler/dist-banner-s.txt", "utf8");
+
 module.exports = [];
 
-const config = {
-  input: "src/index.mjs",
-  external: ["lodash", "jquery"],
-  treeshake: {
-    // see https://rollupjs.org/guide/en/#treeshake
-    annotations: true, // allows  @__PURE__ or #__PURE__
-    moduleSideEffects: false, // unused module never has side-effects. Can be a list or function
-    unknownGlobalSideEffects: false, // reading an unknown global never has side-effect
-    propertyReadSideEffects: false, // reading a property of an object has side-effect
-    tryCatchDeoptimization: false // disable optimization inside try catch
-  }
-};
+function mkConfig(devmode, format) {
 
-const config_output = {
-  globals: {
-    lodash: "_",
-    jquery: "$"
-  },
-  interop: false,
-  banner: fs.readFileSync("scripts/bundler/dist-header.mjs", "utf8").replace("(custom build)", VERSION)
-};
+  const version = `${VERSION}${devmode ? "-devel" : ""}-${BUNDLE ? format : "raw"}`;
 
-const config_replace = {
-  "(custom build)": VERSION,
-  'env("JFACTORY_ENV_DEBUG")': DEBUG,
-  delimiters: ["", ""]
-};
-
-const config_terser = {
-  output: {
-    beautify: DEBUG,
-    comments: DEBUG ? true : "some"
-  },
-  keep_classnames: DEBUG,
-  keep_fnames: DEBUG,
-  mangle: !DEBUG,
-  toplevel: !DEBUG,
-  compress: !DEBUG && {
-    ecma: 2020,
-    drop_console: false,
-    drop_debugger: !DEBUG
-  }
-};
-
-const config_terser_devel = {
-  ...config_terser,
-  // output: {
-  //   ...config_terser.output
-  // },
-  // compress: {
-  //   ...config_terser.compress
-  // },
-  keep_classnames: true,
-  keep_fnames: true
-};
-
-if (!BUNDLE) { // simplified build for development
-
-  module.exports.push({
-    ...config,
-    output: {
-      ...config_output,
-      file: pkg.main,
-      format: "cjs",
-      sourcemap: SOURCEMAP
+  const output = {
+    format: format === "mjs" ? "es" : format,
+    sourcemap: (devmode || DEBUG) && SOURCEMAP,
+    globals: {
+      lodash: "_",
+      jquery: "$"
     },
-    plugins: [
-      replace({
-        ...config_replace,
-        'env("JFACTORY_ENV_DEV")': true
-      })
-    ]
-  })
+    interop: false,
+    banner: banner_b.replace("JFACTORY_VER", version)
+  };
+  if (BUNDLE) {
+    output.file = "dist/jFactory" +
+      (devmode ? "-devel" : "") +
+      "." + format + ".js"
+  } else {
+    output.file = pkg.main
+  }
+  if (format === "umd") {
+    output.name = "jFactoryModule"
+  }
 
-} else { // full "dist" build
+  let plugin_replace = {
+    delimiters: ["", ""],
+    "(custom build)": version,
+    'env("JFACTORY_ENV_DEV")': devmode,
+    'env("JFACTORY_ENV_DEBUG")': DEBUG,
+    "const _ = globalThis._": 'import _ from "lodash"',
+    "const $ = globalThis.$": 'import $ from "jquery"',
+    [banner_s]: ""
+  };
 
-  const plugins_prod = [
-    replace({
-      ...config_replace,
-      'env("JFACTORY_ENV_DEV")': false
-    }),
-    terser(config_terser)
+  let plugin_terser = {
+    output: {
+      beautify: DEBUG,
+      comments: DEBUG ? true : "some"
+    },
+    keep_classnames: DEBUG,
+    keep_fnames: DEBUG,
+    mangle: !DEBUG,
+    toplevel: !DEBUG,
+    compress: !DEBUG && {
+      ecma: 2020,
+      drop_console: false,
+      drop_debugger: !DEBUG
+    }
+  };
+  if (devmode || DEBUG) {
+    Object.assign(plugin_terser, {
+      keep_classnames: true,
+      keep_fnames: true
+    })
+  }
+
+  let plugins = [
+    replace(plugin_replace)
   ];
+  if (!devmode || DEBUG) {
+    plugins.push(terser(plugin_terser))
+  }
 
-  const plugins_dev = [
-    replace({
-      ...config_replace,
-      'env("JFACTORY_ENV_DEV")': true
-    }),
-    terser(config_terser_devel)
-  ];
+  return {
+    input: "src/index.mjs",
+    external: ["lodash", "jquery"],
+    treeshake: {
+      // see https://rollupjs.org/guide/en/#treeshake
+      annotations: true, // allows  @__PURE__ or #__PURE__
+      moduleSideEffects: false, // unused module never has side-effects. Can be a list or function
+      unknownGlobalSideEffects: false, // reading an unknown global never has side-effect
+      propertyReadSideEffects: false, // reading a property of an object has side-effect
+      tryCatchDeoptimization: false // disable optimization inside try catch
+    },
+    output,
+    plugins
+  };
+}
 
+function mkConfig_PROD(ext) {return mkConfig(false, ext)}
+function mkConfig_DEV(ext) {return mkConfig(true, ext)}
+
+if (BUNDLE) {
   module.exports.push(
-
     { // loader
-      ...config,
       input: "scripts/bundler/dist-index.js",
       output: {
-        ...config_output,
         format: "cjs",
         file: pkg.main,
         interop: false
       }
     },
-
-    { // prod cjs
-      ...config,
-      output: {
-        ...config_output,
-        format: "cjs",
-        file: "dist/jFactory.cjs.js",
-        sourcemap: DEBUG ? SOURCEMAP : false
-      },
-      plugins: plugins_prod
-    },
-
-    { // prod umd
-      ...config,
-      output: {
-        ...config_output,
-        format: "umd",
-        name: "jFactoryModule",
-        file: "dist/jFactory.umd.js",
-        sourcemap: DEBUG ? SOURCEMAP : false
-      },
-      plugins: plugins_prod
-    },
-
-    { // prod mjs
-      ...config,
-      output: {
-        ...config_output,
-        format: "es",
-        file: "dist/jFactory.mjs",
-        sourcemap: DEBUG ? SOURCEMAP : false
-      },
-      plugins: plugins_prod
-    },
-
-    { // dev cjs
-      ...config,
-      output: {
-        ...config_output,
-        format: "cjs",
-        file: "dist/jFactory-devel.cjs.js",
-        sourcemap: SOURCEMAP
-      },
-      plugins: plugins_dev
-    },
-
-    { // dev umd
-      ...config,
-      output: {
-        ...config_output,
-        format: "umd",
-        name: "jFactoryModule",
-        file: "dist/jFactory-devel.umd.js",
-        sourcemap: SOURCEMAP
-      },
-      plugins: plugins_dev
-    },
-
-    { // dev mjs
-      ...config,
-      output: {
-        ...config_output,
-        format: "es",
-        file: "dist/jFactory-devel.mjs",
-        sourcemap: SOURCEMAP
-      },
-      plugins: plugins_dev
-    }
-
+    mkConfig_PROD("cjs"),
+    mkConfig_PROD("umd"),
+    mkConfig_PROD("mjs"),
+    mkConfig_DEV("cjs"),
+    mkConfig_DEV("umd"),
+    mkConfig_DEV("mjs")
   )
+} else {
+  module.exports.push(mkConfig_DEV("cjs"));
 }

@@ -1,7 +1,10 @@
 /* jFactory, Copyright (c) 2019-2021, Stéphane Plazis, https://github.com/jfactory-es/jfactory */
 
-import _ from "lodash";
-import $ from "jquery";
+// The compiler converts these globals into module imports.
+// jFactory can be used from /src without compiling (externals are global)
+// or bundled from /dist (externals are imported from node_modules)
+const _ = globalThis._;
+const $ = globalThis.$;
 
 // ---------------------------------------------------------------------------------------------------------------------
 // jFactory Helpers

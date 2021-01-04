@@ -25,12 +25,12 @@ module.exports =  {
     filename: "[name].js"
   },
 
-  // can exclude imports to load them externally from browser, see ./test-template.html
+  // excludes imports to load them externally from browser, see ./test-template.html
   // See advanced options: https://webpack.js.org/configuration/externals/
   // Could be used with https://www.npmjs.com/package/webpack-cdn-plugin
   // externals: {
-  //     'lodash' : "_",
-  //     'jquery': "jQuery"
+  //   lodash: "_",
+  //   jquery: "$"
   // },
 
   module: {
