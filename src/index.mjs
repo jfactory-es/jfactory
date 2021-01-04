@@ -1,7 +1,7 @@
 /* jFactory, Copyright (c) 2019-2021, Stéphane Plazis, https://github.com/jfactory-es/jfactory */
 
 // ---------------------------------------------------------------------------------------------------------------------
-// jFactory bundle entry file (see package.json scripts to compile the /dist)
+// jFactory entry file (see package.json scripts to compile the /dist)
 // ---------------------------------------------------------------------------------------------------------------------
 // Almost everything is exported; The resulting modules should be imported by a bundler that supports Tree Shacking.
 // ---------------------------------------------------------------------------------------------------------------------
