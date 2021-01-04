@@ -1,16 +1,12 @@
 /*!
- * jFactory v1.7.4-devel-cjs
+ * jFactory v1.7.4-devel-mjs
  * https://github.com/jfactory-es/jfactory
  *
  * Copyright (c) 2019, Stéphane Plazis
  * https://github.com/jfactory-es/jfactory/blob/master/LICENSE.txt
  */
-'use strict';
-
-Object.defineProperty(exports, '__esModule', { value: true });
-
-var _ = require('lodash');
-var $ = require('jquery');
+import _ from 'lodash';
+import $ from 'jquery';
 
 // ---------------------------------------------------------------------------------------------------------------------
 // jFactory Env
@@ -19,7 +15,7 @@ var $ = require('jquery');
 // ---------------------------------------------------------------------------------------------------------------------
 
 // The official builder replaces this line with the version extracted from package.json
-const JFACTORY_VER = "v1.7.4-devel-cjs";
+const JFACTORY_VER = "v1.7.4-devel-mjs";
 
 // Immutable configuration
 // A builder can replace env("JFACTORY_ENV_*") by hard coded true/false primitives,
@@ -4608,92 +4604,5 @@ jFactory.TraitLibReact = TraitLibReact;
 
 jFactoryBootstrap(true);
 
-exports.JFACTORY_BOOT = JFACTORY_BOOT;
-exports.JFACTORY_CFG = JFACTORY_CFG;
-exports.JFACTORY_CLI = JFACTORY_CLI;
-exports.JFACTORY_COMPAT_AbortController = JFACTORY_COMPAT_AbortController;
-exports.JFACTORY_COMPAT_MutationObserver = JFACTORY_COMPAT_MutationObserver;
-exports.JFACTORY_COMPAT_Request = JFACTORY_COMPAT_Request;
-exports.JFACTORY_COMPAT_fetch = JFACTORY_COMPAT_fetch;
-exports.JFACTORY_DEBUG = JFACTORY_DEBUG;
-exports.JFACTORY_DEV = JFACTORY_DEV;
-exports.JFACTORY_ERR_INVALID_CALL = JFACTORY_ERR_INVALID_CALL;
-exports.JFACTORY_ERR_INVALID_VALUE = JFACTORY_ERR_INVALID_VALUE;
-exports.JFACTORY_ERR_KEY_DUPLICATED = JFACTORY_ERR_KEY_DUPLICATED;
-exports.JFACTORY_ERR_KEY_MISSING = JFACTORY_ERR_KEY_MISSING;
-exports.JFACTORY_ERR_PROMISE_EXPIRED = JFACTORY_ERR_PROMISE_EXPIRED;
-exports.JFACTORY_ERR_REQUEST_ERROR = JFACTORY_ERR_REQUEST_ERROR;
-exports.JFACTORY_LOG = JFACTORY_LOG;
-exports.JFACTORY_TRACE = JFACTORY_TRACE;
-exports.JFACTORY_VER = JFACTORY_VER;
-exports.JFactoryAbout = JFactoryAbout;
-exports.JFactoryComponent = JFactoryComponent;
-exports.JFactoryCoreObject = JFactoryCoreObject;
-exports.JFactoryError = JFactoryError;
-exports.JFactoryEventSelector = JFactoryEventSelector;
-exports.JFactoryEventSelectorParser = JFactoryEventSelectorParser;
-exports.JFactoryEvents = JFactoryEvents;
-exports.JFactoryEventsManager = JFactoryEventsManager;
-exports.JFactoryExpect = JFactoryExpect;
-exports.JFactoryFetch = JFactoryFetch;
-exports.JFactoryFunctionComposer = JFactoryFunctionComposer;
-exports.JFactoryFunctionConditional = JFactoryFunctionConditional;
-exports.JFactoryFunctionExpirable = JFactoryFunctionExpirable;
-exports.JFactoryFunctionWrappable = JFactoryFunctionWrappable;
-exports.JFactoryLogger = JFactoryLogger;
-exports.JFactoryObject = JFactoryObject;
-exports.JFactoryPromise = JFactoryPromise;
-exports.JFactoryPromiseChain = JFactoryPromiseChain;
-exports.JFactoryPromisePath = JFactoryPromisePath;
-exports.JFactoryPromiseSync = JFactoryPromiseSync;
-exports.JFactoryTime = JFactoryTime;
-exports.JFactoryTimeTrace = JFactoryTimeTrace;
-exports.JFactoryTrace = JFactoryTrace;
-exports.JFactoryTrace_LIB_STACKTRACE = JFactoryTrace_LIB_STACKTRACE;
-exports.JFactoryTraits = JFactoryTraits;
-exports.NOOP = NOOP;
-exports.TraitAbout = TraitAbout;
-exports.TraitCSS = TraitCSS;
-exports.TraitCore = TraitCore;
-exports.TraitDOM = TraitDOM;
-exports.TraitEvents = TraitEvents;
-exports.TraitFetch = TraitFetch;
-exports.TraitInterval = TraitInterval;
-exports.TraitLibReact = TraitLibReact;
-exports.TraitLibVue = TraitLibVue;
-exports.TraitLog = TraitLog;
-exports.TraitMutation = TraitMutation;
-exports.TraitService = TraitService;
-exports.TraitState = TraitState;
-exports.TraitTask = TraitTask;
-exports.TraitTimeout = TraitTimeout;
-exports.assignPrivate = assignPrivate;
-exports.assignPrivateMember = assignPrivateMember;
-exports.helper_camelCase = helper_camelCase;
-exports.helper_defaultsDeep = helper_defaultsDeep;
-exports.helper_deferred = helper_deferred;
-exports.helper_get = helper_get;
-exports.helper_isNative = helper_isNative;
-exports.helper_isNumber = helper_isNumber;
-exports.helper_isPlainObject = helper_isPlainObject;
-exports.helper_isString = helper_isString;
-exports.helper_lowerFirst = helper_lowerFirst;
-exports.helper_setFunctionName = helper_setFunctionName;
-exports.helper_template = helper_template;
-exports.helper_url_abs = helper_url_abs;
-exports.helper_useragent = helper_useragent;
-exports.jFactory = jFactory;
-exports.jFactoryBootstrap = jFactoryBootstrap;
-exports.jFactoryBootstrap_expected = jFactoryBootstrap_expected;
-exports.jFactoryBootstrap_onBoot = jFactoryBootstrap_onBoot;
-exports.jFactoryCfg = jFactoryCfg;
-exports.jFactoryCompat_require = jFactoryCompat_require;
-exports.jFactoryCompat_run = jFactoryCompat_run;
-exports.jFactoryEnv = jFactoryEnv;
-exports.jFactoryFunctionConditional = jFactoryFunctionConditional;
-exports.jFactoryFunctionExpirable = jFactoryFunctionExpirable;
-exports.jFactoryFunctionWrappable = jFactoryFunctionWrappable;
-exports.jFactoryTrace = jFactoryTrace;
-exports.jFactoryTraits = jFactoryTraits;
-exports.jQuery = jQuery;
-//# sourceMappingURL=jFactory-devel.cjs.js.map
+export { JFACTORY_BOOT, JFACTORY_CFG, JFACTORY_CLI, JFACTORY_COMPAT_AbortController, JFACTORY_COMPAT_MutationObserver, JFACTORY_COMPAT_Request, JFACTORY_COMPAT_fetch, JFACTORY_DEBUG, JFACTORY_DEV, JFACTORY_ERR_INVALID_CALL, JFACTORY_ERR_INVALID_VALUE, JFACTORY_ERR_KEY_DUPLICATED, JFACTORY_ERR_KEY_MISSING, JFACTORY_ERR_PROMISE_EXPIRED, JFACTORY_ERR_REQUEST_ERROR, JFACTORY_LOG, JFACTORY_TRACE, JFACTORY_VER, JFactoryAbout, JFactoryComponent, JFactoryCoreObject, JFactoryError, JFactoryEventSelector, JFactoryEventSelectorParser, JFactoryEvents, JFactoryEventsManager, JFactoryExpect, JFactoryFetch, JFactoryFunctionComposer, JFactoryFunctionConditional, JFactoryFunctionExpirable, JFactoryFunctionWrappable, JFactoryLogger, JFactoryObject, JFactoryPromise, JFactoryPromiseChain, JFactoryPromisePath, JFactoryPromiseSync, JFactoryTime, JFactoryTimeTrace, JFactoryTrace, JFactoryTrace_LIB_STACKTRACE, JFactoryTraits, NOOP, TraitAbout, TraitCSS, TraitCore, TraitDOM, TraitEvents, TraitFetch, TraitInterval, TraitLibReact, TraitLibVue, TraitLog, TraitMutation, TraitService, TraitState, TraitTask, TraitTimeout, assignPrivate, assignPrivateMember, helper_camelCase, helper_defaultsDeep, helper_deferred, helper_get, helper_isNative, helper_isNumber, helper_isPlainObject, helper_isString, helper_lowerFirst, helper_setFunctionName, helper_template, helper_url_abs, helper_useragent, jFactory, jFactoryBootstrap, jFactoryBootstrap_expected, jFactoryBootstrap_onBoot, jFactoryCfg, jFactoryCompat_require, jFactoryCompat_run, jFactoryEnv, jFactoryFunctionConditional, jFactoryFunctionExpirable, jFactoryFunctionWrappable, jFactoryTrace, jFactoryTraits, jQuery };
+//# sourceMappingURL=jFactory-devel.mjs.js.map
