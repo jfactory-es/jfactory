@@ -1,5 +1,5 @@
 /*!
- * jFactory v1.7.4-beta.2-devel-umd
+ * jFactory v1.7.4-beta.4-devel-umd
  * https://github.com/jfactory-es/jfactory
  *
  * Copyright (c) 2019, Stéphane Plazis
@@ -18,13 +18,13 @@
     // ---------------------------------------------------------------------------------------------------------------------
 
     // The official builder replaces this line with the version extracted from package.json
-    const JFACTORY_VER = "v1.7.4-beta.2-devel-umd";
+    const JFACTORY_VER = "v1.7.4-beta.4-devel-umd";
 
     // Immutable configuration
     // A builder can replace env("JFACTORY_ENV_*") by hard coded true/false primitives,
     // allowing the bundler to remove unused code (Tree Shaking)
-    const JFACTORY_CLI  = env("JFACTORY_ENV_CLI") ?? isNode();
-    //export const JFACTORY_REPL  = env("JFACTORY_ENV_REPL") ?? isPlayground();
+    const JFACTORY_CLI   = env("JFACTORY_ENV_CLI") ?? isNode();
+    const JFACTORY_REPL  = env("JFACTORY_ENV_REPL") ?? isPlayground();
     const JFACTORY_DEV   = true ; // Developer Mode
     const JFACTORY_DEBUG = false ; // Debug the library
     const JFACTORY_LOG   = env("JFACTORY_ENV_LOG") ?? (JFACTORY_DEV );
@@ -59,21 +59,21 @@
         )
     }
 
-    // function isPlayground() {
-    //     const hosts = [
-    //         "cdpn.io",
-    //         "fiddle.jshell.net",
-    //         "null.jsbin.com",
-    //         "jsitor.com",
-    //         "jseditor.io",
-    //         "liveweave.com",
-    //         "run.plnkr.co",
-    //         "playcode.io"
-    //     ];
-    //     try {
-    //         return hosts.indexOf(new URL(document.location.href).hostname) !== -1
-    //     } catch {}
-    // }
+    function isPlayground() {
+        const hosts = [
+            "cdpn.io",
+            "fiddle.jshell.net",
+            "null.jsbin.com",
+            "jsitor.com",
+            "jseditor.io",
+            "liveweave.com",
+            "run.plnkr.co",
+            "playcode.io"
+        ];
+        try {
+            return hosts.indexOf(new URL(document.location.href).hostname) !== -1
+        } catch {}
+    }
 
     // ---------------------------------------------------------------------------------------------------------------------
     // jFactory Helpers
@@ -2907,7 +2907,7 @@
         parentLogger: null,
         condition: JFactoryLogger.DEFAULT_CONDITION,
         formatter:
-            !helper_isNative(console.log) ? JFactoryLogger.FORMATTER_NATIVE :
+            !helper_isNative(console.log) || JFACTORY_REPL ? JFactoryLogger.FORMATTER_NATIVE :
                 JFACTORY_CLI ? JFactoryLogger.FORMATTER_CLI :
                     JFactoryLogger.FORMATTER_BROWSER
         ,
@@ -4642,6 +4642,7 @@
     exports.JFACTORY_ERR_PROMISE_EXPIRED = JFACTORY_ERR_PROMISE_EXPIRED;
     exports.JFACTORY_ERR_REQUEST_ERROR = JFACTORY_ERR_REQUEST_ERROR;
     exports.JFACTORY_LOG = JFACTORY_LOG;
+    exports.JFACTORY_REPL = JFACTORY_REPL;
     exports.JFACTORY_TRACE = JFACTORY_TRACE;
     exports.JFACTORY_VER = JFACTORY_VER;
     exports.JFactoryAbout = JFactoryAbout;

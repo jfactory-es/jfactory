@@ -1,5 +1,5 @@
 /*!
- * jFactory v1.7.4-beta.2-devel-mjs
+ * jFactory v1.7.4-beta.4-devel-mjs
  * https://github.com/jfactory-es/jfactory
  *
  * Copyright (c) 2019, Stéphane Plazis
@@ -15,13 +15,13 @@ import $ from 'jquery';
 // ---------------------------------------------------------------------------------------------------------------------
 
 // The official builder replaces this line with the version extracted from package.json
-const JFACTORY_VER = "v1.7.4-beta.2-devel-mjs";
+const JFACTORY_VER = "v1.7.4-beta.4-devel-mjs";
 
 // Immutable configuration
 // A builder can replace env("JFACTORY_ENV_*") by hard coded true/false primitives,
 // allowing the bundler to remove unused code (Tree Shaking)
-const JFACTORY_CLI  = env("JFACTORY_ENV_CLI") ?? isNode();
-//export const JFACTORY_REPL  = env("JFACTORY_ENV_REPL") ?? isPlayground();
+const JFACTORY_CLI   = env("JFACTORY_ENV_CLI") ?? isNode();
+const JFACTORY_REPL  = env("JFACTORY_ENV_REPL") ?? isPlayground();
 const JFACTORY_DEV   = true ; // Developer Mode
 const JFACTORY_DEBUG = false ; // Debug the library
 const JFACTORY_LOG   = env("JFACTORY_ENV_LOG") ?? (JFACTORY_DEV );
@@ -56,21 +56,21 @@ function isNode() {
     )
 }
 
-// function isPlayground() {
-//     const hosts = [
-//         "cdpn.io",
-//         "fiddle.jshell.net",
-//         "null.jsbin.com",
-//         "jsitor.com",
-//         "jseditor.io",
-//         "liveweave.com",
-//         "run.plnkr.co",
-//         "playcode.io"
-//     ];
-//     try {
-//         return hosts.indexOf(new URL(document.location.href).hostname) !== -1
-//     } catch {}
-// }
+function isPlayground() {
+    const hosts = [
+        "cdpn.io",
+        "fiddle.jshell.net",
+        "null.jsbin.com",
+        "jsitor.com",
+        "jseditor.io",
+        "liveweave.com",
+        "run.plnkr.co",
+        "playcode.io"
+    ];
+    try {
+        return hosts.indexOf(new URL(document.location.href).hostname) !== -1
+    } catch {}
+}
 
 // ---------------------------------------------------------------------------------------------------------------------
 // jFactory Helpers
@@ -2904,7 +2904,7 @@ JFactoryLogger.DEFAULT_CONFIG = /** @lends JFactoryLogger# */ {
     parentLogger: null,
     condition: JFactoryLogger.DEFAULT_CONDITION,
     formatter:
-        !helper_isNative(console.log) ? JFactoryLogger.FORMATTER_NATIVE :
+        !helper_isNative(console.log) || JFACTORY_REPL ? JFactoryLogger.FORMATTER_NATIVE :
             JFACTORY_CLI ? JFactoryLogger.FORMATTER_CLI :
                 JFactoryLogger.FORMATTER_BROWSER
     ,
@@ -4623,5 +4623,5 @@ jFactory.TraitLibReact = TraitLibReact;
 
 jFactoryBootstrap(true);
 
-export { JFACTORY_BOOT, JFACTORY_CFG, JFACTORY_CLI, JFACTORY_COMPAT_AbortController, JFACTORY_COMPAT_MutationObserver, JFACTORY_COMPAT_Request, JFACTORY_COMPAT_fetch, JFACTORY_DEBUG, JFACTORY_DEV, JFACTORY_ERR_INVALID_CALL, JFACTORY_ERR_INVALID_VALUE, JFACTORY_ERR_KEY_DUPLICATED, JFACTORY_ERR_KEY_MISSING, JFACTORY_ERR_PROMISE_EXPIRED, JFACTORY_ERR_REQUEST_ERROR, JFACTORY_LOG, JFACTORY_TRACE, JFACTORY_VER, JFactoryAbout, JFactoryComponent, JFactoryCoreObject, JFactoryError, JFactoryEventSelector, JFactoryEventSelectorParser, JFactoryEvents, JFactoryEventsManager, JFactoryExpect, JFactoryFetch, JFactoryFunctionComposer, JFactoryFunctionConditional, JFactoryFunctionExpirable, JFactoryFunctionWrappable, JFactoryLogger, JFactoryObject, JFactoryPromise, JFactoryPromiseChain, JFactoryPromisePath, JFactoryPromiseSync, JFactoryTime, JFactoryTimeTrace, JFactoryTrace, JFactoryTrace_LIB_STACKTRACE, JFactoryTraits, NOOP, TraitAbout, TraitCSS, TraitCore, TraitDOM, TraitEvents, TraitFetch, TraitInterval, TraitLibReact, TraitLibVue, TraitLog, TraitMutation, TraitService, TraitState, TraitTask, TraitTimeout, assignPrivate, assignPrivateMember, helper_camelCase, helper_defaultsDeep, helper_deferred, helper_get, helper_isNative, helper_isNumber, helper_isPlainObject, helper_isString, helper_lowerFirst, helper_setFunctionName, helper_template, helper_url_abs, helper_useragent, jFactory, jFactoryBootstrap, jFactoryBootstrap_expected, jFactoryBootstrap_onBoot, jFactoryCfg, jFactoryCompat_require, jFactoryCompat_run, jFactoryEnv, jFactoryFunctionConditional, jFactoryFunctionExpirable, jFactoryFunctionWrappable, jFactoryTrace, jFactoryTraits, jQuery };
+export { JFACTORY_BOOT, JFACTORY_CFG, JFACTORY_CLI, JFACTORY_COMPAT_AbortController, JFACTORY_COMPAT_MutationObserver, JFACTORY_COMPAT_Request, JFACTORY_COMPAT_fetch, JFACTORY_DEBUG, JFACTORY_DEV, JFACTORY_ERR_INVALID_CALL, JFACTORY_ERR_INVALID_VALUE, JFACTORY_ERR_KEY_DUPLICATED, JFACTORY_ERR_KEY_MISSING, JFACTORY_ERR_PROMISE_EXPIRED, JFACTORY_ERR_REQUEST_ERROR, JFACTORY_LOG, JFACTORY_REPL, JFACTORY_TRACE, JFACTORY_VER, JFactoryAbout, JFactoryComponent, JFactoryCoreObject, JFactoryError, JFactoryEventSelector, JFactoryEventSelectorParser, JFactoryEvents, JFactoryEventsManager, JFactoryExpect, JFactoryFetch, JFactoryFunctionComposer, JFactoryFunctionConditional, JFactoryFunctionExpirable, JFactoryFunctionWrappable, JFactoryLogger, JFactoryObject, JFactoryPromise, JFactoryPromiseChain, JFactoryPromisePath, JFactoryPromiseSync, JFactoryTime, JFactoryTimeTrace, JFactoryTrace, JFactoryTrace_LIB_STACKTRACE, JFactoryTraits, NOOP, TraitAbout, TraitCSS, TraitCore, TraitDOM, TraitEvents, TraitFetch, TraitInterval, TraitLibReact, TraitLibVue, TraitLog, TraitMutation, TraitService, TraitState, TraitTask, TraitTimeout, assignPrivate, assignPrivateMember, helper_camelCase, helper_defaultsDeep, helper_deferred, helper_get, helper_isNative, helper_isNumber, helper_isPlainObject, helper_isString, helper_lowerFirst, helper_setFunctionName, helper_template, helper_url_abs, helper_useragent, jFactory, jFactoryBootstrap, jFactoryBootstrap_expected, jFactoryBootstrap_onBoot, jFactoryCfg, jFactoryCompat_require, jFactoryCompat_run, jFactoryEnv, jFactoryFunctionConditional, jFactoryFunctionExpirable, jFactoryFunctionWrappable, jFactoryTrace, jFactoryTraits, jQuery };
 //# sourceMappingURL=jFactory-devel.mjs.js.map
