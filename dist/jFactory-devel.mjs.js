@@ -1,5 +1,5 @@
 /*!
- * jFactory v1.7.4-devel-mjs
+ * jFactory v1.7.4-beta.1-devel-mjs
  * https://github.com/jfactory-es/jfactory
  *
  * Copyright (c) 2019, Stéphane Plazis
@@ -15,7 +15,7 @@ import $ from 'jquery';
 // ---------------------------------------------------------------------------------------------------------------------
 
 // The official builder replaces this line with the version extracted from package.json
-const JFACTORY_VER = "v1.7.4-devel-mjs";
+const JFACTORY_VER = "v1.7.4-beta.1-devel-mjs";
 
 // Immutable configuration
 // A builder can replace env("JFACTORY_ENV_*") by hard coded true/false primitives,
@@ -23,8 +23,8 @@ const JFACTORY_VER = "v1.7.4-devel-mjs";
 const JFACTORY_CLI   = env("JFACTORY_ENV_CLI") ?? (isNode() || isPlayground()); // CLI Mode
 const JFACTORY_DEV   = true ; // Developer Mode
 const JFACTORY_DEBUG = false ; // Debug the library
-const JFACTORY_LOG   = env("JFACTORY_ENV_LOG") ?? ( !JFACTORY_CLI || JFACTORY_DEBUG);
-const JFACTORY_TRACE = env("JFACTORY_ENV_TRACE") ?? ( !JFACTORY_CLI || JFACTORY_DEBUG);
+const JFACTORY_LOG   = env("JFACTORY_ENV_LOG") ?? (JFACTORY_DEV );
+const JFACTORY_TRACE = env("JFACTORY_ENV_TRACE") ?? (JFACTORY_DEV );
 const JFACTORY_BOOT  = env("JFACTORY_ENV_BOOT") ?? true; // Allow autoboot at load
 
 const jFactoryEnv = env;
