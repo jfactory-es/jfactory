@@ -1,15 +1,17 @@
-<p align="center"><img width="140" src="https://jfactory-es.github.io/jfactory/img/jFactory.png"></p>
+<div align="center">
 
-<p align="center">
+<img width="140" src="https://jfactory-es.github.io/jfactory/img/jFactory.png">
+
 Easily modularise your application into components.<br>
 Thus, <b>everything they initialize can be monitored, stopped and removed automatically !</b></p>
-
-# jFactory
 
 [![GitHub version](https://img.shields.io/github/package-json/v/jfactory-es/jfactory.svg?label=git)](https://github.com/jfactory-es/jfactory)
 [![npm version](https://img.shields.io/npm/v/jfactory.svg)](https://www.npmjs.com/package/jfactory)
 [![Tests](https://github.com/jfactory-es/jfactory/workflows/Node%20CI/badge.svg)](#implementation)
 
+</div>
+
+# jFactory
 
 **Why?** Imagine a feature that uses views, css, event listeners, requests and asynchronous processes with promise chains. 
 jFactory groups all this together into a component object that provides the methods `$install(), $enable(), $disable() and $uninstall()`. Now, you can safely stop, unload or restart the component, making your asynchronous application easier to control and clean.  
