@@ -48,9 +48,10 @@ or more simply by using an Object Literal through the shortcut [`jFactory()`](ht
 
 ```javascript
 let component = jFactory("myComponent", {
-  async onInstall() {
-    // load asset html as #myAssetDiv into #parent
-    this.$domFetch("#myAssetDiv", "asset.html", "#parent");
+  onInstall() {
+    // load asset.html into #parentDiv as #myAssetDiv
+    // (this is one example among many other uses)
+    this.$domFetch("#myAssetDiv", "asset.html", "#parentDiv");
     this.$cssFetch("myCss", "asset.css");
   },
 
@@ -67,10 +68,11 @@ let component = jFactory("myComponent", {
   }
 })
 
-await component.$install(); 
-await component.$enable();
+// automatically await all asynchronous tasks
+await component.$install();  
+await component.$enable(); 
 //await component.$disable(); 
-//await component.$uninstall();  
+//await component.$uninstall(); 
 ```
 [Playground](https://github.com/jfactory-es/jfactory/blob/master/docs/playground/README.md) / [Starter Kit](https://github.com/jfactory-es/jfactory-starterkit)
 
