@@ -1,7 +1,8 @@
 <p align="center"><img width="140" src="https://jfactory-es.github.io/jfactory/img/jFactory.png"></p>
 
-Easily modularise your application into components. 
-Thus, **everything they initialize can be monitored, stopped and removed automatically !**
+<p align="center">
+Easily modularise your application into components.<br>
+Thus, <b>everything they initialize can be monitored, stopped and removed automatically !</b></p>
 
 # jFactory
 
