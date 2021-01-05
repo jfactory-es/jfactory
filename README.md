@@ -78,7 +78,7 @@ let component = jFactory("myComponent", {
 
   myCloseHandler() {
     // stop and remove:
-    // dom container, css, listeners, interval, fetch, promise...
+    // dom container, css, listeners, intervals, requests, promises...
     this.$uninstall();
   }
 })
