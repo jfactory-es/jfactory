@@ -1,5 +1,5 @@
 /*!
- * jFactory v1.7.4-beta.1-devel-mjs
+ * jFactory v1.7.4-beta.2-devel-mjs
  * https://github.com/jfactory-es/jfactory
  *
  * Copyright (c) 2019, Stéphane Plazis
@@ -15,7 +15,7 @@ import $ from 'jquery';
 // ---------------------------------------------------------------------------------------------------------------------
 
 // The official builder replaces this line with the version extracted from package.json
-const JFACTORY_VER = "v1.7.4-beta.1-devel-mjs";
+const JFACTORY_VER = "v1.7.4-beta.2-devel-mjs";
 
 // Immutable configuration
 // A builder can replace env("JFACTORY_ENV_*") by hard coded true/false primitives,
