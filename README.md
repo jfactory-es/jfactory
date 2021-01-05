@@ -2,7 +2,7 @@
 
 <img width="140" src="https://jfactory-es.github.io/jfactory/img/jFactory.png">
 
-Easily modularise your application into cancelable components.<br>
+Easily modularize your application into cancelable components.<br>
 <b>Everything they initialize can be monitored, stopped and removed automatically,<br>
 including views, promise chains, requests, listeners, DOM and CSS.</b>
 
