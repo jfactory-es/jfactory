@@ -1,5 +1,5 @@
 /*!
- * jFactory v1.7.4-devel-umd
+ * jFactory v1.7.5-devel-umd
  * https://github.com/jfactory-es/jfactory
  *
  * Copyright (c) 2019, Stéphane Plazis
@@ -18,7 +18,7 @@
     // ---------------------------------------------------------------------------------------------------------------------
 
     // The official builder replaces this line with the version extracted from package.json
-    const JFACTORY_VER = "v1.7.4-devel-umd";
+    const JFACTORY_VER = "v1.7.5-devel-umd";
 
     // Immutable configuration
     // A builder can replace env("JFACTORY_ENV_*") by hard coded true/false primitives,
