@@ -57,7 +57,7 @@ function isNode() {
 
 function isPlayground() {
     const hosts = [
-        "cdpen.io",
+        "cdpn.io",
         "fiddle.jshell.net",
         "null.jsbin.com",
         "jsitor.com",
