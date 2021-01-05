@@ -1,6 +1,7 @@
 ## 1.7.4 (Jan 03, 2021)
 * feat: JfactoryFetch: added compatibility test
 * feat: [JFactoryPromise](docs/JFactoryPromise.md): removed lodash and jquery dependencies
+* feat: detect playgrounds as CLI
 * refactor: JFactoryTrace: complete redesign
 * refactor: env, config, compat, bootstrap, libs
 * build: complete redesign
