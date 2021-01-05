@@ -1,7 +1,7 @@
 {
   "name": "jfactory",
   "version": "1.7.4",
-  "description": "Easily compartmentalize your JavaScript application into components. Track, stop, and delete anything initialized into them, including promise chains, requests, listeners, views, DOM and CSS.",
+  "description": "Easily modularise your application into cancelable components. Everything they initialize can be monitored, stopped and removed automatically, including views, promise chains, requests, listeners, DOM and CSS.",
   "keywords": [
     "vue",
     "vuejs",
