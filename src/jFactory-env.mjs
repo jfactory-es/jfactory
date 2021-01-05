@@ -49,13 +49,13 @@ function isNode() {
 
 function isPlayground() {
     const hosts = [
-        "codepen.io",
-        "jsfiddle.net",
-        "jsbin.com",
+        "cdpen.io",
+        "fiddle.jshell.net",
+        "null.jsbin.com",
         "jsitor.com",
         "jseditor.io",
         "liveweave.com",
-        "plnkr.co",
+        "run.plnkr.co",
         "playcode.io"
     ];
     try {
