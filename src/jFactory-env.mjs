@@ -15,8 +15,8 @@ export const JFACTORY_VER = "(custom build)";
 export const JFACTORY_CLI   = env("JFACTORY_ENV_CLI") ?? (isNode() || isPlayground()); // CLI Mode
 export const JFACTORY_DEV   = env("JFACTORY_ENV_DEV") ?? true; // Developer Mode
 export const JFACTORY_DEBUG = env("JFACTORY_ENV_DEBUG") ?? false; // Debug the library
-export const JFACTORY_LOG   = env("JFACTORY_ENV_LOG") ?? (JFACTORY_DEV && !JFACTORY_CLI || JFACTORY_DEBUG)
-export const JFACTORY_TRACE = env("JFACTORY_ENV_TRACE") ?? (JFACTORY_DEV && !JFACTORY_CLI || JFACTORY_DEBUG)
+export const JFACTORY_LOG   = env("JFACTORY_ENV_LOG") ?? (JFACTORY_DEV || JFACTORY_DEBUG)
+export const JFACTORY_TRACE = env("JFACTORY_ENV_TRACE") ?? (JFACTORY_DEV || JFACTORY_DEBUG)
 export const JFACTORY_BOOT  = env("JFACTORY_ENV_BOOT") ?? true; // Allow autoboot at load
 
 export const jFactoryEnv = env;
