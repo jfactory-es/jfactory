@@ -41,8 +41,9 @@ function initEnv(verbose = true) {
     let pad = 8;
 
     let checkNode = semverSatisfies(process.version, packageJson.engines.node);
+    let checkVer = !pkg.version.includes("-") || pkg.version.includes("-beta.");
 
-    console.log("Ver".padEnd(8, " ")      + warnIfStr(pkg.version.includes("-"), "v" + pkg.version));
+    console.log("Ver".padEnd(pad, " ")    + warnIfStr(!checkVer, "v" + pkg.version));
     console.log("Node".padEnd(pad, " ")   + warnIf(!checkNode, process.version, `"${process.version}"`));
     console.log("Env".padEnd(pad, " ")    + warnIfStr(ENV !== "production", ENV));
     console.log("Bundle".padEnd(pad, " ") + warnIfBool(!BUNDLE, BUNDLE));
