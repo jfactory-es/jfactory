@@ -12,7 +12,7 @@ export const JFACTORY_VER = "(custom build)";
 // Immutable configuration
 // A builder can replace env("JFACTORY_ENV_*") by hard coded true/false primitives,
 // allowing the bundler to remove unused code (Tree Shaking)
-export const JFACTORY_CLI   = env("JFACTORY_ENV_CLI") ?? isNode(); // CLI Mode
+export const JFACTORY_CLI   = env("JFACTORY_ENV_CLI") ?? (isNode() || isPlayground()); // CLI Mode
 export const JFACTORY_DEV   = env("JFACTORY_ENV_DEV") ?? true; // Developer Mode
 export const JFACTORY_DEBUG = env("JFACTORY_ENV_DEBUG") ?? false; // Debug the library
 export const JFACTORY_LOG   = env("JFACTORY_ENV_LOG") ?? (JFACTORY_DEV && !JFACTORY_CLI || JFACTORY_DEBUG)
@@ -45,4 +45,20 @@ function isNode() {
         typeof process.versions === "object" &&
         process.versions.node
     )
+}
+
+function isPlayground() {
+    const hosts = [
+        "codepen.io",
+        "jsfiddle.net",
+        "jsbin.com",
+        "jsitor.com",
+        "jseditor.io",
+        "liveweave.com",
+        "plnkr.co",
+        "playcode.io"
+    ];
+    try {
+        return hosts.indexOf(new URL(document.location.href).hostname) !== -1
+    } catch {}
 }
