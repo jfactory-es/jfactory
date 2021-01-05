@@ -1,13 +1,17 @@
+<p align="center"><img width="140" src="https://jfactory-es.github.io/jfactory/img/jFactory.png"></p>
+
+Easily modularise your application into components. 
+Thus, **everything they initialize can be monitored, stopped and removed automatically !**
+
 # jFactory
-<img align="right" width="140" src="https://jfactory-es.github.io/jfactory/img/jFactory.png">jFactory is an Open Source JavaScript library that allows you to easily compartmentalize your application into components. 
-Thus, **everything they initialize can be monitored, stopped and removed automatically.**
 
-**Why?** Imagine a feature in your application that uses views, css, event listeners, requests and asynchronous processes. 
-jFactory groups all this together into a component object that provides the methods `$install(), $enable(), $disable() and $uninstall()`. Now, you can safely stop, remove or restart the component, making your asynchronous application easier to control and clean.  
+[![GitHub version](https://img.shields.io/github/package-json/v/jfactory-es/jfactory.svg?label=git)](https://github.com/jfactory-es/jfactory)
+[![npm version](https://img.shields.io/npm/v/jfactory.svg)](https://www.npmjs.com/package/jfactory)
+[![Tests](https://github.com/jfactory-es/jfactory/workflows/Node%20CI/badge.svg)](#implementation)
 
-<!--
-jFactory is easy to learn and offers useful features for developing single-page applications.
--->
+
+**Why?** Imagine a feature that uses views, css, event listeners, requests and asynchronous processes with promise chains. 
+jFactory groups all this together into a component object that provides the methods `$install(), $enable(), $disable() and $uninstall()`. Now, you can safely stop, unload or restart the component, making your asynchronous application easier to control and clean.  
 
 * [Playground](https://github.com/jfactory-es/jfactory/blob/master/docs/playground/README.md) 
 * [Installation](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-import.md) / [Starter Kit](https://github.com/jfactory-es/jfactory-starterkit)
@@ -19,10 +23,11 @@ jFactory components are able to:
 
 - operate like a service (install, enable, disable, uninstall) 
 - automatically switch off subscribed css, dom, event listeners, observers, timers, requests, promise chains and views. 
-- automatically prevent all expired asynchronous calls (promise subtrees, event handlers...) 
-- automatically ensure that all the promise chains are completed at service state change
+- automatically prevent expired asynchronous calls (promise subtrees, event handlers...) 
+- automatically ensure that the promise chains are completed at service state change (awaitable)
 - keep track in DevTools of all running subscriptions (listeners, timers, requests, promises, dom, css...)
-- improve the Promise chains (Awaitable, Completable, Cancelable and Expirable)
+- log messages in console with controllable loggers 
+- improve the Promise chains (Awaitable/Expirable promise tree)
 - easily create/load CSS & DOM and clone from \<template> 
 
 ## Supported APIs
@@ -30,7 +35,7 @@ jFactory components are able to:
 <img align="left" height="40" src="https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg">
 <img align="left" height="40" src="https://jfactory-es.github.io/jfactory/img/HTML5.png"> 
 
-jFactory also supports **Vue.js**, **React**, and **HTML5 WebComponents** allowing components to automatically **uninstall** and **reinstall** their views.
+jFactory supports **Vue.js**, **React**, and **HTML5 WebComponents** allowing components to automatically **uninstall** and **reinstall** their views.
 See [Playground](https://github.com/jfactory-es/jfactory/blob/master/docs/playground/README.md).
 
 ## Overview
@@ -38,33 +43,39 @@ See [Playground](https://github.com/jfactory-es/jfactory/blob/master/docs/playgr
 In a nutshell, jFactory provides methods to register listeners, views, dom, css, requests and asynchronous tasks that will be automatically stopped (including subpromise trees) and removed at opposite service state change (install/uninstall, enable/disable). 
 
 Components **[can be created from any Class](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-components.md)**, 
-or by using a simple Object Literal through the shortcut [`jFactory()`](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-components.md#create-a-component-literal):  
+or more simply by using an Object Literal through the shortcut [`jFactory()`](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-components.md#create-a-component-literal):  
 
 ```javascript
 let component = jFactory("myComponent", {
-  onInstall() {
-    this.$domFetch("#myDiv", "asset.html", "#parent").then(() => this.$log("html loaded"));
+  async onInstall() {
+    // load asset html as #myAssetDiv into #parent
+    this.$domFetch("#myAssetDiv", "asset.html", "#parent");
+    this.$cssFetch("myCss", "asset.css");
   },
 
   onEnable() {
-    this.$interval("myUpdater", 250, () =>
-      this.$fetchJSON("myRequest", "asset.json").then(() => this.$log("updated"))
-    )
-  }
+    this.$interval("myUpdater", 1000, () => 
+      this.$fetchJSON("myRequest", "asset.json")
+        .then(data => this.$log("updated", data))
+    );
+    this.$on("click", "#myAssetDiv", () => this.myMethod())
+  },
 
-  // ... your own methods and properties
+  myMethod() {
+      this.$log("myMethod called") 
+  }
 })
 
 await component.$install(); 
 await component.$enable();
-await component.$disable(); 
-await component.$uninstall();  
+//await component.$disable(); 
+//await component.$uninstall();  
 ```
 [Playground](https://github.com/jfactory-es/jfactory/blob/master/docs/playground/README.md) / [Starter Kit](https://github.com/jfactory-es/jfactory-starterkit)
 
 ## Learning
 
-jFactory is an easy-to-learn library based on jQuery. Unlike a framework, it does not impose an application architecture: you are free to use only what you want without restriction. 
+jFactory is an easy-to-learn library. Unlike a framework, it does not impose an architecture: you are free to use only what you need. 
 
 All the [methods are listed here](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-index.md#traits-component-features). \
 See also the [Playground](https://github.com/jfactory-es/jfactory/blob/master/docs/playground/README.md) and the [Starter Kit](https://github.com/jfactory-es/jfactory-starterkit)
@@ -86,7 +97,7 @@ See also the [Playground](https://github.com/jfactory-es/jfactory/blob/master/do
      
 ## Library   
 
-jFactory is designed from [ES6 Classes](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-index.md#classes-internal-library):
+jFactory is designed with powerful ES6 [Classes](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-index.md#classes-internal-library):
 
 - [Extended Promise](https://github.com/jfactory-es/jfactory/blob/master/docs/JFactoryPromise.md)
     - Expirable, awaitable, explorable Promise Chain
@@ -110,24 +121,18 @@ jFactory is designed from [ES6 Classes](https://github.com/jfactory-es/jfactory/
 
 ###### Modular JavaScript
   
-- Written in ES6+ Modules with Class optimized for Tree Shaking
+- Written in ES6+ optimized for Tree Shaking
 - Highly configurable, overridable and dynamically patchable
 - Interoperable. Framework-agnostic. No transpiler.  
 - Provides a "Developer Build" for additional validations and debugging properties   
 
-## Implementation
-[![GitHub version](https://img.shields.io/github/package-json/v/jfactory-es/jfactory.svg?label=git)](https://github.com/jfactory-es/jfactory)
-[![npm version](https://img.shields.io/npm/v/jfactory.svg)](https://www.npmjs.com/package/jfactory)
-[![Tests](https://github.com/jfactory-es/jfactory/workflows/Node%20CI/badge.svg)](#implementation)
 <!--
-[![](https://img.shields.io/github/issues/jfactory-es/jfactory.svg?style=flat)](#implementation)
-[![](https://img.shields.io/snyk/vulnerabilities/npm/jfactory.svg)](#implementation) 
--->
+## Implementation
 
 - Supports Vue.js, React and HTML5 Web Components
 - Supports Promises, Listeners, Timers, Mutations, DOM, CSS   
 - Dependencies: jQuery, Lodash
-
+-->
 ## How to Contribute
 
 jFactory is an Open Source project. Your comments, bug reports and code proposals are always welcome. This project is new and you can help a lot by spreading the word. Also consider adding a github star, as it seems very important for its visibility at this stage. Thank you for your contributions! 
