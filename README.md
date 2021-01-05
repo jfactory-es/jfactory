@@ -48,31 +48,43 @@ or more simply by using an Object Literal through the shortcut [`jFactory()`](ht
 
 ```javascript
 let component = jFactory("myComponent", {
+
   onInstall() {
-    // load asset.html into #parentDiv as #myAssetDiv
-    // (this is one example among many other uses)
-    this.$domFetch("#myAssetDiv", "asset.html", "#parentDiv");
+    // create, insert and register a DOM container
+    // (jFactory can also use templates, vue and react, load assets, etc)
+    this.$dom("#containerDiv", '<div>', "body")
+      .append(
+        '<button id="bt-switch">switch</button>' +
+        '<button id="bt-close">close</button>');
+
+    // load a CSS asynchronously
     this.$cssFetch("myCss", "asset.css");
+
+    this.$on("click", "#bt-switch", () => this.mySwitchHandler());
+    this.$on("click", "#bt-close", () => this.myCloseHandler());
   },
 
   onEnable() {
-    this.$interval("myUpdater", 1000, () => 
+    this.$interval("myUpdater", 1000, () =>
       this.$fetchJSON("myRequest", "asset.json")
         .then(data => this.$log("updated", data))
     );
-    this.$on("click", "#myAssetDiv", () => this.myMethod())
   },
 
-  myMethod() {
-      this.$log("myMethod called") 
+  async mySwitchHandler() {
+    await (this.$.states.enabled ? this.$disable() : this.$enable());
+    this.$log(this.$.states.enabled);
+  },
+
+  myCloseHandler() {
+    // stop and remove:
+    // dom container, css, listeners, interval, fetch, promise...
+    this.$uninstall();
   }
 })
 
-// automatically await all asynchronous tasks
-await component.$install();  
-await component.$enable(); 
-//await component.$disable(); 
-//await component.$uninstall(); 
+// install and enable the component
+await component.$install(true);
 ```
 [Playground](https://github.com/jfactory-es/jfactory/blob/master/docs/playground/README.md) / [Starter Kit](https://github.com/jfactory-es/jfactory-starterkit)
 
