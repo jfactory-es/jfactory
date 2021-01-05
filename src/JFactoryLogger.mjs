@@ -1,6 +1,6 @@
 /* jFactory, Copyright (c) 2019-2021, Stéphane Plazis, https://github.com/jfactory-es/jfactory */
 
-import { JFACTORY_DEV, JFACTORY_CLI } from "./jFactory-env.mjs";
+import { JFACTORY_DEV, JFACTORY_CLI, JFACTORY_REPL } from "./jFactory-env.mjs";
 import { jFactoryCfg } from "./jFactory-env.mjs";
 import { JFactoryExpect } from "./JFactoryExpect.mjs";
 import { helper_defaultsDeep, helper_isNative, NOOP } from "./jFactory-helpers.mjs";
@@ -136,7 +136,7 @@ JFactoryLogger.DEFAULT_CONFIG = /** @lends JFactoryLogger# */ {
     parentLogger: null,
     condition: JFactoryLogger.DEFAULT_CONDITION,
     formatter:
-        !helper_isNative(console.log) ? JFactoryLogger.FORMATTER_NATIVE :
+        !helper_isNative(console.log) || JFACTORY_REPL ? JFactoryLogger.FORMATTER_NATIVE :
             JFACTORY_CLI ? JFactoryLogger.FORMATTER_CLI :
                 JFactoryLogger.FORMATTER_BROWSER
     ,

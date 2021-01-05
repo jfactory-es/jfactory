@@ -12,8 +12,8 @@ export const JFACTORY_VER = "(custom build)";
 // Immutable configuration
 // A builder can replace env("JFACTORY_ENV_*") by hard coded true/false primitives,
 // allowing the bundler to remove unused code (Tree Shaking)
-export const JFACTORY_CLI  = env("JFACTORY_ENV_CLI") ?? isNode();
-//export const JFACTORY_REPL  = env("JFACTORY_ENV_REPL") ?? isPlayground();
+export const JFACTORY_CLI   = env("JFACTORY_ENV_CLI") ?? isNode();
+export const JFACTORY_REPL  = env("JFACTORY_ENV_REPL") ?? isPlayground();
 export const JFACTORY_DEV   = env("JFACTORY_ENV_DEV") ?? true; // Developer Mode
 export const JFACTORY_DEBUG = env("JFACTORY_ENV_DEBUG") ?? false; // Debug the library
 export const JFACTORY_LOG   = env("JFACTORY_ENV_LOG") ?? (JFACTORY_DEV || JFACTORY_DEBUG)
@@ -48,18 +48,18 @@ function isNode() {
     )
 }
 
-// function isPlayground() {
-//     const hosts = [
-//         "cdpn.io",
-//         "fiddle.jshell.net",
-//         "null.jsbin.com",
-//         "jsitor.com",
-//         "jseditor.io",
-//         "liveweave.com",
-//         "run.plnkr.co",
-//         "playcode.io"
-//     ];
-//     try {
-//         return hosts.indexOf(new URL(document.location.href).hostname) !== -1
-//     } catch {}
-// }
+function isPlayground() {
+    const hosts = [
+        "cdpn.io",
+        "fiddle.jshell.net",
+        "null.jsbin.com",
+        "jsitor.com",
+        "jseditor.io",
+        "liveweave.com",
+        "run.plnkr.co",
+        "playcode.io"
+    ];
+    try {
+        return hosts.indexOf(new URL(document.location.href).hostname) !== -1
+    } catch {}
+}
