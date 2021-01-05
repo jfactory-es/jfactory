@@ -12,7 +12,7 @@ describe("ex1", async function() {
 
     onInstall() {
       // create, insert and register a DOM container
-      // (jFactory can also use templates, vue and react, load assets, etc)
+      // (jFactory can also use templates, vue and react, load assets...)
       this.$dom("#containerDiv", '<div>', "body")
         .append(
           '<button id="bt-switch">switch</button>' +
