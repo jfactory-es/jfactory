@@ -3,7 +3,7 @@
 import { JFACTORY_DEV, JFACTORY_CLI } from "./jFactory-env.mjs";
 import { jFactoryCfg } from "./jFactory-env.mjs";
 import { JFactoryExpect } from "./JFactoryExpect.mjs";
-import { helper_defaultsDeep, NOOP } from "./jFactory-helpers.mjs";
+import { helper_defaultsDeep, helper_isNative, NOOP } from "./jFactory-helpers.mjs";
 
 // ---------------------------------------------------------------------------------------------------------------------
 // JFactoryLogger 1.7
@@ -135,9 +135,11 @@ JFactoryLogger.DEFAULT_CONFIG = /** @lends JFactoryLogger# */ {
     enabled: true,
     parentLogger: null,
     condition: JFactoryLogger.DEFAULT_CONDITION,
-    formatter: JFACTORY_CLI ?
-        JFactoryLogger.FORMATTER_CLI :
-        JFactoryLogger.FORMATTER_BROWSER,
+    formatter:
+        !helper_isNative(console.log) ? JFactoryLogger.FORMATTER_NATIVE :
+            JFACTORY_CLI ? JFactoryLogger.FORMATTER_CLI :
+                JFactoryLogger.FORMATTER_BROWSER
+    ,
     console,
     filters: {
     },
