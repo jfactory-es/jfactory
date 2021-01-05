@@ -23,7 +23,8 @@
     // Immutable configuration
     // A builder can replace env("JFACTORY_ENV_*") by hard coded true/false primitives,
     // allowing the bundler to remove unused code (Tree Shaking)
-    const JFACTORY_CLI   = env("JFACTORY_ENV_CLI") ?? (isNode() || isPlayground()); // CLI Mode
+    const JFACTORY_CLI  = env("JFACTORY_ENV_CLI") ?? isNode();
+    //export const JFACTORY_REPL  = env("JFACTORY_ENV_REPL") ?? isPlayground();
     const JFACTORY_DEV   = true ; // Developer Mode
     const JFACTORY_DEBUG = false ; // Debug the library
     const JFACTORY_LOG   = env("JFACTORY_ENV_LOG") ?? (JFACTORY_DEV );
@@ -58,21 +59,21 @@
         )
     }
 
-    function isPlayground() {
-        const hosts = [
-            "cdpn.io",
-            "fiddle.jshell.net",
-            "null.jsbin.com",
-            "jsitor.com",
-            "jseditor.io",
-            "liveweave.com",
-            "run.plnkr.co",
-            "playcode.io"
-        ];
-        try {
-            return hosts.indexOf(new URL(document.location.href).hostname) !== -1
-        } catch {}
-    }
+    // function isPlayground() {
+    //     const hosts = [
+    //         "cdpn.io",
+    //         "fiddle.jshell.net",
+    //         "null.jsbin.com",
+    //         "jsitor.com",
+    //         "jseditor.io",
+    //         "liveweave.com",
+    //         "run.plnkr.co",
+    //         "playcode.io"
+    //     ];
+    //     try {
+    //         return hosts.indexOf(new URL(document.location.href).hostname) !== -1
+    //     } catch {}
+    // }
 
     // ---------------------------------------------------------------------------------------------------------------------
     // jFactory Helpers
@@ -2905,9 +2906,11 @@
         enabled: true,
         parentLogger: null,
         condition: JFactoryLogger.DEFAULT_CONDITION,
-        formatter: JFACTORY_CLI ?
-            JFactoryLogger.FORMATTER_CLI :
-            JFactoryLogger.FORMATTER_BROWSER,
+        formatter:
+            !helper_isNative(console.log) ? JFactoryLogger.FORMATTER_NATIVE :
+                JFACTORY_CLI ? JFactoryLogger.FORMATTER_CLI :
+                    JFactoryLogger.FORMATTER_BROWSER
+        ,
         console,
         filters: {
         },
