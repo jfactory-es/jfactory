@@ -2,8 +2,9 @@
 
 <img width="140" src="https://jfactory-es.github.io/jfactory/img/jFactory.png">
 
-Easily modularise your application into components.<br>
-Thus, <b>everything they initialize can be monitored, stopped and removed automatically !</b></p>
+Easily modularise your application into cancelable components.<br>
+<b>Everything they initialize can be monitored, stopped and removed automatically,<br>
+including views, promise chains, requests, listeners, DOM and CSS.</b>
 
 [![GitHub version](https://img.shields.io/github/package-json/v/jfactory-es/jfactory.svg?label=git)](https://github.com/jfactory-es/jfactory)
 [![npm version](https://img.shields.io/npm/v/jfactory.svg)](https://www.npmjs.com/package/jfactory)
@@ -33,10 +34,7 @@ jFactory components are able to:
 - improve the Promise chains (Awaitable/Expirable promise tree)
 - easily create/load CSS & DOM and clone from \<template> 
 
-## Supported APIs
-<img align="left" height="40" src="https://vuejs.org/images/logo.png"> 
-<img align="left" height="40" src="https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg">
-<img align="left" height="40" src="https://jfactory-es.github.io/jfactory/img/HTML5.png"> 
+## Supported APIs <img height="20" src="https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg"> <img height="20" src="https://vuejs.org/images/logo.png"> <img height="20" src="https://jfactory-es.github.io/jfactory/img/HTML5.png"> 
 
 jFactory supports **Vue.js**, **React**, and **HTML5 WebComponents** allowing components to automatically **uninstall** and **reinstall** their views.
 See [Playground](https://github.com/jfactory-es/jfactory/blob/master/docs/playground/README.md).
