@@ -5,41 +5,32 @@
 ## Import as \<script\> 
 
 ! NOT THE RECOMMENDED USAGE !\
-For immediate testing in a browser you can use the UMD module from a CDN:
+For immediate testing in html file, the UMD module loads all the library:
 
 ```html
 <!doctype html>
-<html lang="en">
+<html>
 <head>
     <meta charset="utf-8">
-    <!-- loading lodash and jquery as global from a cdn -->
-    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.20/lodash.min.js"
-            integrity="sha256-ur/YlHMU96MxHEsy3fHGszZHas7NzH4RQlD4tDVvFhw="
-            crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-            integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs="
-            crossorigin="anonymous"></script>
-    <!-- loading jFactory from a cdn -->
-    <script src="https://cdn.jsdelivr.net/npm/jfactory@latest/dist/jFactory-devel.umd.js"></script>
+    <!-- loading dependencies from a cdn -->
+    <script src="https://cdn.jsdelivr.net/npm/lodash/lodash.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery/jquery.min.js"></script>
+    <!-- loading jFactory (development) from a cdn -->
+    <script src="https://cdn.jsdelivr.net/npm/jfactory@1.7.4/dist/jFactory-devel.umd.js"></script>
 </head>
 <body>
 <script>
-    const { jFactory } = jFactoryModule;
+    const { jFactory, JFactoryPromise } = jFactoryModule;
 
-    let module1 = jFactory("myModule1", {
-        onEnable() {
-          this.$log("enable")
-        }
-    });
-
-    let module2 = jFactory("myModule2", {
+    let module = jFactory("myModule", {
         onEnable() {
             this.$log("enable")
         }
     });
-    
-    module1.$install(true)
-    module2.$install(true)
+    module.$install(true)
+
+    JFactoryPromise.resolve('ok')
+        .then(r => console.log(r))
 </script>
 </body>
 </html>
@@ -47,8 +38,7 @@ For immediate testing in a browser you can use the UMD module from a CDN:
 
 ## Import as node_modules (NPM) 
 
-This is the recommended installation. Use a bundler such as Rollupjs or Webpack. 
-
+This is the recommended installation because it supports the use of a bundler like Webpack to benefit from TreeShacking.
 ```
 npm add lodash jquery 
 npm add jfactory
@@ -58,35 +48,33 @@ Now you can import the module in your project files:
 
 #### Manual import
 
-You can manually import a specific build, using one of these lines:
+You can import a specific module using one of these lines:
 
 ```javascript
-// CommonJS syntax: require()
-const { jFactory } = require('jfactory/dist/jFactory-devel.cjs') // development
-const { jFactory } = require('jfactory/dist/jFactory.cjs') // production
-// or
-// ES6 syntax: import 
-import { jFactory } from "jfactory/dist/jFactory-devel.mjs.js" // development
+const { jFactory } = require('jfactory/dist/jFactory.cjs.js') // production
+const { jFactory } = require('jfactory/dist/jFactory-devel.cjs.js') // development
 import { jFactory } from "jfactory/dist/jFactory.mjs.js" // production
+import { jFactory } from "jfactory/dist/jFactory-devel.mjs.js" // development
 ```
 
 #### Automatic import  
 
+You can import a contextualized module using one of these lines:
+
 ```javascript
-// CommonJS syntax
 const { jFactory } = require("jfactory")   
-// or
-// ES6 syntax (see restriction below)
 import { jFactory } from "jfactory"  
 ```
 
 This uses the `process.env.NODE_ENV` and [Tree Shaking](https://webpack.js.org/guides/tree-shaking/) to contextually 
 import the `production` or the `development` module at compile time.
-Note that webpack configures `NODE_ENV` with the value of its [`mode`](https://webpack.js.org/configuration/mode/) 
-option, so you shouldn't need to set it. 
+
+Note that if you are using Weback, it configures `NODE_ENV` with the value of its [`mode`](https://webpack.js.org/configuration/mode/) 
+option, so you shouldn't need to set it: your project will automatically use the production module 
+if webpack is configured for production.
 
 **Restriction:** Because the "automatic import" is a CommonJS file, it may not work when imported from an ES6 ".mjs" file. 
-In this case, you may need to use the [manual import](#nodejs-manual-import), or a transpiler or a bundler.
+In this case, you may need to use the [manual import](#nodejs-manual-import).
 
 <!--
 _Additional note_: 
@@ -122,13 +110,13 @@ git clone https://github.com/jfactory-es/jfactory
     // ... see /src/jFactory-env.mjs
 </script>
 <script type="module" src="src/index.mjs"></script>
-<!-- or import it as ES6 module from a .js file -->
+<!-- or from a module: import { jFactory } from "./src/index.mjs" -->
 ```
 
 ## Development module
 
-The development version of the module (jFactory-devel.*) provides debug data and logs. 
-You must see a warning in the console when loaded. If not, see Manual import. 
+The development version `jFactory-devel.*` provides additional debug tools and logs. 
+You must see a log in the console when loaded. If not, see manual import. 
 
 ## See also
 
@@ -164,82 +152,3 @@ you can load them from a CDN:
         crossorigin="anonymous"></script>
 ```
 -->
-## Overriding
-
-jFactory is designed to be patchable at runtime (allowing MonkeyPatch, hotfix, hooks, ...)
-
-To safely rewrite the library at runtime (including changing the default configuration),
-you must set a `JFACTORY_ENV_BOOT = false` global variables before loading the module:
-
-#### UMD module (browser usage):
-
-```html
-<!--disable jfactory bootstrap-->
-<script>JFACTORY_ENV_BOOT = false</script>
-<!-- loading jFactory from a cdn -->
-<script src="https://cdn.jsdelivr.net/npm/jfactory@latest/dist/jFactory-devel.umd.js"></script>
-<script>
-
-    const { jFactory, jFactoryCfg, jFactoryBootstrap } = jFactoryModule;
-
-    // changing the configuration of the class JFactoryTrace:
-    jFactoryCfg("JFACTORY_CFG_JFactoryTrace", {
-      // ...
-    });
-
-    // overriding
-    const { JFactoryDOM } = jFactoryModule;
-    JFactoryDOM.$dom = function() { /* ... */}
-
-    // call the bootstrap
-    jFactoryBootstrap();
-
-</script>
-```
-
-#### CommonJS module (node usage, cjs file)
-
-```javascript
-// disable jfactory bootstrap
-global.JFACTORY_ENV_BOOT = false;
-
-// loading jFactory 
-const { jFactory, jFactoryCfg, jFactoryBootstrap } = require("jfactory");
-
-// changing the configuration of the class JFactoryTrace:
-jFactoryCfg("JFACTORY_CFG_JFactoryTrace", {
-  // ...
-});
-
-// overriding
-JFactoryDOM.$dom = function() { /* ... */}
-
-// call the bootstrap
-jFactoryBootstrap();
-```
-#### ES6 module (mjs file):
-
-Because ES6 "import" is handled before any other statements, you may need to use separated modules:
-
-```javascript
-// env.js
-// disable jfactory bootstrap
-globalThis.JFACTORY_ENV_BOOT = false;
-```
-
-```javascript
-// main.js
-import "env.js";
-import { jFactory, jFactoryCfg, jFactoryBootstrap } from "./jFactory.mjs";
-
-// changing the configuration of the class JFactoryTrace:
-jFactoryCfg("JFACTORY_CFG_JFactoryTrace", {
-  // ...
-});
-
-// overriding
-JFactoryDOM.$dom = function() { /* ... */}
-
-// call the bootstrap
-jFactoryBootstrap();
-````
