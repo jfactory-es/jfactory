@@ -3,7 +3,7 @@
 jFactory is designed to be patchable at runtime (allowing MonkeyPatch, hotfix, hooks, ...)
 
 To safely rewrite the library at runtime (including changing the default configuration),
-you must set a `JFACTORY_ENV_BOOT = false` global variables before loading the module:
+you must set a `JFACTORY_ENV_BOOT = false` global variable before loading the module:
 
 ### UMD module (\<script\>):
 
@@ -11,7 +11,7 @@ you must set a `JFACTORY_ENV_BOOT = false` global variables before loading the m
 <!--disable jfactory bootstrap-->
 <script>JFACTORY_ENV_BOOT = false</script>
 <!-- loading jFactory from a cdn -->
-<script src="https://cdn.jsdelivr.net/npm/jfactory@latest/dist/jFactory-devel.umd.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jfactory/dist/jFactory-devel.umd.js"></script>
 <script>
 
     const { jFactory, jFactoryCfg, jFactoryBootstrap } = jFactoryModule;
@@ -64,7 +64,7 @@ globalThis.JFACTORY_ENV_BOOT = false;
 ```javascript
 // main.js
 import "env.js";
-import { jFactory, jFactoryCfg, jFactoryBootstrap } from "./jFactory.mjs";
+import { jFactory, jFactoryCfg, jFactoryBootstrap } from "./jFactory.mjs.js";
 
 // changing the configuration of the class JFactoryTrace:
 jFactoryCfg("JFACTORY_CFG_JFactoryTrace", {

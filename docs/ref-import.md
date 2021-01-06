@@ -121,6 +121,8 @@ You must see a log in the console when loaded. If not, see manual import.
 ## See also
 
 * Starter kit: https://github.com/jfactory-es/jfactory-starterkit
+* [Overriding](ref-overriding.md)
+
 <!--
 ## External Dependencies
 
