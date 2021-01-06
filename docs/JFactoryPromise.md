@@ -4,7 +4,7 @@
 
 [Properties](#properties) / [Methods](#methods) / [Options](#options) / [Usages](#usages)
 
-Improved Promise where the whole promise tree can be awaited and canceled, with status, explorable chain map, shared data, debug data and trace.
+Improved Promise where the whole tree can be awaited and canceled, with status, explorable chain map, shared data, debug data and trace.
 
 ```javascript
 import { JFactoryPromise } from "jfactory" 
