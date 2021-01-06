@@ -1,9 +1,6 @@
 <div align="center" markdown="1">
 
-<img width="140" src="https://jfactory-es.github.io/jfactory/img/jFactory.png">
-
-<br>
-
+<img width="140" src="https://jfactory-es.github.io/jfactory/img/jFactory.png"><br>
 Easily modularize your application into cancelable components.<br>
 <b>Everything they initialize can be monitored, stopped and removed automatically,<br>
 including views, promise chains, requests, listeners, DOM and CSS.</b>
