@@ -17,7 +17,7 @@ including views, promise chains, requests, listeners, DOM and CSS.</b>
 jFactory groups all this together into a component object that provides the methods `$install(), $enable(), $disable() and $uninstall()`. Now, you can safely stop, unload or restart the component, making your asynchronous application easier to control and clean.  
 
 * [Playground](https://github.com/jfactory-es/jfactory/blob/master/docs/playground/README.md) 
-* [Installation](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-import.md) / [Starter Kit](https://github.com/jfactory-es/jfactory-starterkit)
+* [Installation](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-import.md) / [Starter Kit](https://github.com/jfactory-es/jfactory-starterkit) / [Overriding](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-overriding.md)
 * [Documentation](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-index.md) / [Traits](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-index.md#traits-component-features) / [Classes](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-index.md#classes-internal-library)
 
 ## Abstract
