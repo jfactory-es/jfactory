@@ -8,13 +8,11 @@ including views, promise chains, requests, listeners, DOM and CSS.</b>
 
 </div>
 
+<div align="center" markdown=1>
 
-<center>
-  
 [![GitHub version](https://img.shields.io/github/package-json/v/jfactory-es/jfactory.svg?label=git)](https://github.com/jfactory-es/jfactory) [![npm version](https://img.shields.io/npm/v/jfactory.svg)](https://www.npmjs.com/package/jfactory) [![Tests](https://github.com/jfactory-es/jfactory/workflows/Node%20CI/badge.svg)](#implementation)
 
-</center>
-
+</div>
 
 # jFactory
 
