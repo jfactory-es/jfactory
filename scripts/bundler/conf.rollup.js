@@ -110,7 +110,8 @@ if (BUNDLE) {
       output: {
         format: "cjs",
         file: pkg.main,
-        interop: false
+        interop: false,
+        banner: banner_b.replace("JFACTORY_VER", VERSION)
       }
     },
     mkConfig_PROD("cjs"),

@@ -61,7 +61,7 @@ module.exports =  {
     new HtmlWebpackPlugin({
       filename: "testsuite.html",
       template: "./scripts/dev/test-template.html",
-      title: "JFactory Test",
+      title: "jFactory Test",
       inject: "body"
     })
   ]
