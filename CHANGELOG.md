@@ -1,4 +1,9 @@
-## 1.7.5 (Jan 06, 2021)
+## 1.7.5 (Jan 09, 2021)
+* feat: generic external imports
+* feat: warn for missing external dependencies
+* feat: improved compatibility check
+* feat: rollup configuration maker
+* removed cjs version for universal module (umd)  
 
 ## 1.7.4 (Jan 05, 2021)
 * feat: JfactoryFetch: added compatibility test

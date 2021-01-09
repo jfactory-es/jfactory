@@ -1,6 +1,6 @@
 {
   "name": "jfactory",
-  "version": "1.7.5",
+  "version": "1.7.5-beta.0",
   "description": "Easily modularize your application into cancelable components. Everything they initialize can be monitored, stopped and removed automatically, including views, promise chains, requests, listeners, DOM and CSS.",
   "keywords": [
     "vue",
@@ -74,7 +74,6 @@
     "webpack-cli": "^4.3.1",
     "webpack-dev-server": "^3.11.1"
   },
-  "dependencies": {},
   "peerDependencies": {
     "jquery": "^3",
     "lodash": "^4"
@@ -92,6 +91,8 @@
   },
   "files": [
     "dist/**",
-    "src/**"
+    "src/**",
+    "scripts/bundler/RollupCfgMaker.js",
+    "scripts/bundler/dist-*.*"
   ]
 }

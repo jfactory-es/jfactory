@@ -5,7 +5,7 @@
 ## Import as \<script\> 
 
 ! NOT THE RECOMMENDED USAGE !\
-For immediate testing in html file, the UMD module loads all the library:
+For immediate testing in html file:
 
 ```html
 <!doctype html>
@@ -51,8 +51,8 @@ Now you can import the module in your project files:
 You can import a specific module using one of these lines:
 
 ```javascript
-const { jFactory } = require('jfactory/dist/jFactory.cjs.js') // production
-const { jFactory } = require('jfactory/dist/jFactory-devel.cjs.js') // development
+const { jFactory } = require('jfactory/dist/jFactory.umd.js') // production
+const { jFactory } = require('jfactory/dist/jFactory-devel.umd.js') // development
 import { jFactory } from "jfactory/dist/jFactory.mjs.js" // production
 import { jFactory } from "jfactory/dist/jFactory-devel.mjs.js" // development
 ```
