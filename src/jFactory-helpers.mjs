@@ -1,28 +1,30 @@
 /*! jFactory, (c) 2019-2021, Stéphane Plazis, http://github.com/jfactory-es/jfactory */
 
-import { JFACTORY_DEV, JFACTORY_GLOBAL } from "./jFactory-env.mjs";
+import { JFACTORY_DEV } from "./jFactory-env.mjs";
 import { jFactoryCompat_run } from "./jFactory-compat.mjs";
 
+// #JFACTORY_IF NPM /*
 const _ = globalThis._;
 const $ = globalThis.$;
+// #JFACTORY_IF NPM */
+// #JFACTORY_IF NPM import _ from "lodash";
+// #JFACTORY_IF NPM import $ from "jquery";
 
-if (JFACTORY_GLOBAL) {
-    if (JFACTORY_DEV) {
-        jFactoryCompat_run([
-            {
-                name: "lodash",
-                test: () => _,
-                strict: true,
-                info: "http://github.com/jfactory-es/jfactory/blob/master/docs/ref-import.md"
-            },
-            {
-                name: "jquery",
-                test: () => $,
-                strict: true,
-                info: "http://github.com/jfactory-es/jfactory/blob/master/docs/ref-import.md"
-            }
-        ]);
-    }
+if (JFACTORY_DEV) {
+    jFactoryCompat_run([
+        {
+            name: "lodash",
+            test: () => _,
+            strict: true,
+            info: "http://github.com/jfactory-es/jfactory/blob/master/docs/ref-import.md"
+        },
+        {
+            name: "jquery",
+            test: () => $,
+            strict: true,
+            info: "http://github.com/jfactory-es/jfactory/blob/master/docs/ref-import.md"
+        }
+    ]);
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
