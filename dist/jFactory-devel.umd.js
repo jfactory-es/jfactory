@@ -1,5 +1,5 @@
 /*!
- * jFactory v1.7.6
+ * jFactory v1.7.7
  * http://github.com/jfactory-es/jfactory
  * (c) 2019-2021, Stéphane Plazis, http://github.com/jfactory-es/jfactory/blob/master/LICENSE.txt
  */
@@ -17,7 +17,7 @@
 
     // The builder replaces these lines
     const JFACTORY_NAME = "jFactory";
-    const JFACTORY_VER  = "1.7.6-devel-umd";
+    const JFACTORY_VER  = "1.7.7-devel-umd";
 
     // The builder may replace env("JFACTORY_ENV_*") by hard coded true/false primitives,
     // allowing the bundler to remove unused code using Tree Shaking
@@ -124,23 +124,6 @@
                 }
             }
         }
-    }
-
-    {
-        jFactoryCompat_run([
-            {
-                name: "lodash",
-                test: () => _,
-                strict: true,
-                info: "http://github.com/jfactory-es/jfactory/blob/master/docs/ref-import.md"
-            },
-            {
-                name: "jquery",
-                test: () => $,
-                strict: true,
-                info: "http://github.com/jfactory-es/jfactory/blob/master/docs/ref-import.md"
-            }
-        ]);
     }
 
     // ---------------------------------------------------------------------------------------------------------------------

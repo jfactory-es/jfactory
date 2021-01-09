@@ -11,6 +11,7 @@ const $ = globalThis.$;
 // #JFACTORY_IF NPM import $ from "jquery";
 
 if (JFACTORY_DEV) {
+    // #JFACTORY_IF NPM /*
     jFactoryCompat_run([
         {
             name: "lodash",
@@ -25,6 +26,7 @@ if (JFACTORY_DEV) {
             info: "http://github.com/jfactory-es/jfactory/blob/master/docs/ref-import.md"
         }
     ]);
+    // #JFACTORY_IF NPM */
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

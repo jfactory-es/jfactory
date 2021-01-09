@@ -1,6 +1,6 @@
 {
   "name": "jfactory",
-  "version": "1.7.6",
+  "version": "1.7.7",
   "description": "Easily modularize your application into cancelable components. Everything they initialize can be monitored, stopped and removed automatically, including views, promise chains, requests, listeners, DOM and CSS.",
   "keywords": [
     "vue",

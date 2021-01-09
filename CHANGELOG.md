@@ -1,4 +1,4 @@
-## 1.7.5 (Jan 09, 2021)
+## 1.7.7 (Jan 10, 2021)
 * feat: generic external imports
 * feat: warn for missing external dependencies
 * feat: improved compatibility check
@@ -10,7 +10,7 @@
 ## 1.7.4 (Jan 05, 2021)
 * feat: JfactoryFetch: added compatibility test
 * feat: detect playgrounds
-* refactor: [JFactoryPromise](docs/JFactoryPromise.md): removed lodash and jquery dependencies
+* refactor: [JFactoryPromise](docs/JFactoryPromise.md): removed jquery dependencies
 * refactor: JFactoryTrace: complete redesign
 * refactor: env, config, compat, bootstrap, libs
 * build: complete redesign
