@@ -1,11 +1,3 @@
-/* jFactory Developer Server, Copyright (c) 2019, Stéphane Plazis,
-   https://github.com/jfactory-es/jfactory/blob/master/LICENSE.txt */
-
-// ------------------------------------------------------------------------------
-// Webpack developer server (wds)
-// Auto compiles the bundle on the fly and provides the test suite in web browser
-// ------------------------------------------------------------------------------
-
 require("./env").initEnv();
 
 const bundler = require("./bundler/bundler");

@@ -1,11 +1,5 @@
-/* jFactory Lint, Copyright (c) 2019, Stéphane Plazis,
-   https://github.com/jfactory-es/jfactory/blob/master/LICENSE.txt */
-
-// https://eslint.org/docs/6.0.0/developer-guide/nodejs-api
-
 const files = ".";
 const config = { extensions: [".js", ".mjs"] };
-
 const CLIEngine = require("eslint").CLIEngine;
 const inquirer = require("inquirer");
 

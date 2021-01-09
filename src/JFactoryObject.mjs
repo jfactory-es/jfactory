@@ -1,4 +1,4 @@
-/* jFactory, Copyright (c) 2019-2021, Stéphane Plazis, https://github.com/jfactory-es/jfactory */
+/*! jFactory, (c) 2019-2021, Stéphane Plazis, http://github.com/jfactory-es/jfactory */
 
 import { jFactoryBootstrap_onBoot } from "./jFactory-bootstrap.mjs";
 

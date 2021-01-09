@@ -1,4 +1,4 @@
-/* jFactory, Copyright (c) 2019-2020, Stéphane Plazis, https://github.com/jfactory-es/jfactory */
+/*! jFactory, (c) 2019-2021, Stéphane Plazis, http://github.com/jfactory-es/jfactory */
 
 import { JFACTORY_DEV } from "./jFactory-env.mjs";
 import { JFACTORY_ERR_INVALID_CALL, JFACTORY_ERR_PROMISE_EXPIRED } from "./JFactoryError.mjs";

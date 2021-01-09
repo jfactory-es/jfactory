@@ -1,4 +1,4 @@
-/* jFactory, Copyright (c) 2019, Stéphane Plazis, https://github.com/jfactory-es/jfactory/blob/master/LICENSE.txt */
+/*! jFactory, (c) 2019-2021, Stéphane Plazis, http://github.com/jfactory-es/jfactory */
 
 import { jFactoryTraits } from "./jFactory-traits";
 

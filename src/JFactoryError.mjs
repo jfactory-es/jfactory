@@ -1,4 +1,4 @@
-/* jFactory, Copyright (c) 2019-2021, Stéphane Plazis, https://github.com/jfactory-es/jfactory */
+/*! jFactory, (c) 2019-2021, Stéphane Plazis, http://github.com/jfactory-es/jfactory */
 
 import { helper_get, helper_isNative, helper_lowerFirst, helper_template } from "./jFactory-helpers.mjs";
 import { jFactoryCfg } from "./jFactory-env.mjs";

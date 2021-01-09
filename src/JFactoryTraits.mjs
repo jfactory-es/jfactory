@@ -1,4 +1,4 @@
-/* jFactory, Copyright (c) 2019-2021, Stéphane Plazis, https://github.com/jfactory-es/jfactory */
+/*! jFactory, (c) 2019-2021, Stéphane Plazis, http://github.com/jfactory-es/jfactory */
 
 import { JFACTORY_DEV, JFACTORY_LOG } from "./jFactory-env.mjs";
 import { JFactoryExpect } from "./JFactoryExpect.mjs";
