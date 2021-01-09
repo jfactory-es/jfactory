@@ -1,4 +1,4 @@
-/* jFactory, Copyright (c) 2019-2021, Stéphane Plazis, https://github.com/jfactory-es/jfactory */
+/*! jFactory, (c) 2019-2021, Stéphane Plazis, http://github.com/jfactory-es/jfactory */
 
 // ---------------------------------------------------------------------------------------------------------------------
 // jFactoryCompat
@@ -30,21 +30,25 @@ export const JFACTORY_COMPAT_MutationObserver = {
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-let list = {};
+let deferred = {};
 
 export function jFactoryCompat_require(...args) {
     for (let compat of args) {
-        list[compat.name] = compat
+        deferred[compat.name] = compat
     }
 }
 
-export function jFactoryCompat_run() {
-    for (let [name, entry] of Object.entries(list)) {
+export function jFactoryCompat_run(entries = deferred) {
+    for (let entry of Object.values(entries)) {
         let pass;
         try {pass = Boolean(entry.test())} catch (ignore) {}
         if (!pass) {
-            console.warn(`jFactory may require the support of "${name}", ${entry.info}`)
+            let msg = `jFactory may require the support of "${entry.name}", ${entry.info}`;
+            if (entry.strict) {
+                throw new Error(msg)
+            } else {
+                console.warn(msg)
+            }
         }
     }
-    list = null;
 }
