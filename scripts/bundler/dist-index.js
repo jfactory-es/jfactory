@@ -1,5 +1,5 @@
 if (process.env.NODE_ENV === "development") {
-  module.exports = require("./jFactory-devel.cjs.js");
+  module.exports = require("./JFACTORY_$FILENAME-devel.umd.js");
 } else {
-  module.exports = require("./jFactory.cjs.js");
+  module.exports = require("./JFACTORY_$FILENAME.umd.js");
 }
