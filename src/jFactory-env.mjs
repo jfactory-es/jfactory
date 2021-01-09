@@ -6,19 +6,19 @@
 // Contextualize jFactory for bundle, raw source or partial export usage
 // ---------------------------------------------------------------------------------------------------------------------
 
-// The official builder replaces this line with the version extracted from package.json
-export const JFACTORY_VER = "(custom build)";
+// The builder replaces these lines
+export const JFACTORY_NAME = "jFactory";
+export const JFACTORY_VER  = "(custom build)";
 
-// Immutable configuration
-// A builder can replace env("JFACTORY_ENV_*") by hard coded true/false primitives,
-// allowing the bundler to remove unused code (Tree Shaking)
-export const JFACTORY_CLI    = env("JFACTORY_ENV_CLI") ?? isNode();
-export const JFACTORY_REPL   = env("JFACTORY_ENV_REPL") ?? isPlayground();
-export const JFACTORY_DEV    = env("JFACTORY_ENV_DEV") ?? true; // Developer Mode
-export const JFACTORY_DEBUG  = env("JFACTORY_ENV_DEBUG") ?? false; // Debug the library
-export const JFACTORY_LOG    = env("JFACTORY_ENV_LOG") ?? (JFACTORY_DEV || JFACTORY_DEBUG)
-export const JFACTORY_TRACE  = env("JFACTORY_ENV_TRACE") ?? (JFACTORY_DEV || JFACTORY_DEBUG)
-export const JFACTORY_BOOT   = env("JFACTORY_ENV_BOOT") ?? true; // Allow autoboot at load
+// The builder may replace env("JFACTORY_ENV_*") by hard coded true/false primitives,
+// allowing the bundler to remove unused code using Tree Shaking
+export const JFACTORY_CLI   = env("JFACTORY_ENV_CLI") ?? isNode();
+export const JFACTORY_REPL  = env("JFACTORY_ENV_REPL") ?? isPlayground();
+export const JFACTORY_DEV   = env("JFACTORY_ENV_DEV") ?? true; // Developer Mode
+export const JFACTORY_DEBUG = env("JFACTORY_ENV_DEBUG") ?? false; // Debug the library
+export const JFACTORY_LOG   = env("JFACTORY_ENV_LOG") ?? (JFACTORY_DEV || JFACTORY_DEBUG)
+export const JFACTORY_TRACE = env("JFACTORY_ENV_TRACE") ?? (JFACTORY_DEV || JFACTORY_DEBUG)
+export const JFACTORY_BOOT  = env("JFACTORY_ENV_BOOT") ?? true; // Allow autoboot at load
 
 export const jFactoryEnv = env;
 export const jFactoryCfg = cfg;

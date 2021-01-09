@@ -1,9 +1,6 @@
 /*! jFactory, (c) 2019-2021, Stéphane Plazis, http://github.com/jfactory-es/jfactory */
 
-import { JFACTORY_DEV } from "./jFactory-env.mjs";
-import { JFACTORY_VER } from "./jFactory-env.mjs";
-import { JFACTORY_LOG } from "./jFactory-env.mjs";
-import { JFACTORY_BOOT } from "./jFactory-env.mjs";
+import { JFACTORY_BOOT, JFACTORY_DEV, JFACTORY_LOG, JFACTORY_NAME, JFACTORY_VER } from "./jFactory-env.mjs";
 import { jFactoryCompat_run } from "./jFactory-compat.mjs";
 
 export function jFactoryBootstrap(auto) {
@@ -13,7 +10,7 @@ export function jFactoryBootstrap(auto) {
             return
         }
         if (JFACTORY_DEV) {
-            console.log(`jFactory ${JFACTORY_VER} running in development mode; performances will be affected`);
+            console.log(`${JFACTORY_NAME} ${JFACTORY_VER} running in development mode; performances will be affected`);
             !JFACTORY_LOG && console.log("jFactory: logs disabled");
             jFactoryCompat_run()
         }

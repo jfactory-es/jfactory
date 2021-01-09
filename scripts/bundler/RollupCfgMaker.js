@@ -1,18 +1,19 @@
 const { terser } = require("rollup-plugin-terser");
 const replace = require("@rollup/plugin-replace");
+const { nodeResolve } = require("@rollup/plugin-node-resolve");
 const banner_b = require("fs").readFileSync(__dirname + "/dist-banner-b.txt", "utf8");
 const banner_s = require("fs").readFileSync(__dirname + "/dist-banner-s.txt", "utf8");
 
 module.exports = class RollupCfgMaker {
   constructor({
-    filename = "???", version = "???", repo = "???", license = "???",
+    name = "???", version = "???", repo = "???", license = "???",
     bundle = true, debug = false,
     sourcemap = true // true for .map or "inline";
   }) {
     this.BUNDLE = bundle;
     this.DEBUG = debug;
     this.SOURCEMAP = sourcemap;
-    this.FILENAME = filename;
+    this.NAME = name;
     this.VERSION = version;
     this.LICENSE = license;
     this.REPO = repo;
@@ -33,7 +34,7 @@ module.exports = class RollupCfgMaker {
       plugins: [
         replace({
           delimiters: ["", ""],
-          JFACTORY_$FILENAME: this.FILENAME,
+          JFACTORY_$NAME: this.NAME,
           JFACTORY_$VER: this.VERSION,
           JFACTORY_$REPO: this.REPO,
           JFACTORY_$LICENSE: this.LICENSE
@@ -46,10 +47,8 @@ module.exports = class RollupCfgMaker {
     if (this.BUNDLE) {
       return [
         this.loader(),
-        // this.prod("cjs"),
         this.prod("umd"),
         this.prod("mjs"),
-        // this.dev("cjs"),
         this.dev("umd"),
         this.dev("mjs")
       ]
@@ -73,7 +72,7 @@ module.exports = class RollupCfgMaker {
       banner: banner_b
     };
     if (this.BUNDLE) {
-      output.file = "dist/" + this.FILENAME +
+      output.file = "dist/" + this.NAME +
         (devel ? "-devel" : "") +
         "." + format + ".js"
     } else {
@@ -85,11 +84,12 @@ module.exports = class RollupCfgMaker {
 
     let plugin_replace = {
       delimiters: ["", ""],
-      "(custom build)": version,
+      'JFACTORY_NAME = "jFactory"': 'JFACTORY_NAME = "' + this.NAME + '"',
+      'JFACTORY_VER  = "(custom build)"': 'JFACTORY_VER  = "' + version + '"',
       'env("JFACTORY_ENV_DEV")': devel,
       'env("JFACTORY_ENV_DEBUG")': this.DEBUG,
       "// #JFACTORY_IF NPM": "", // alternative: https://github.com/aMarCruz/rollup-plugin-jscc
-      JFACTORY_$FILENAME: this.FILENAME,
+      JFACTORY_$NAME: this.NAME,
       JFACTORY_$VER: this.VERSION,
       JFACTORY_$REPO: this.REPO,
       JFACTORY_$LICENSE: this.LICENSE,
@@ -119,7 +119,8 @@ module.exports = class RollupCfgMaker {
     }
 
     let plugins = [
-      replace(plugin_replace)
+      replace(plugin_replace),
+      nodeResolve() // required by jfactory-promise
     ];
     if (!devel || this.DEBUG) {
       plugins.push(terser(plugin_terser))
