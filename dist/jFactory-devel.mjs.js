@@ -1,5 +1,5 @@
 /*!
- * jFactory v1.7.5
+ * jFactory v1.7.6
  * http://github.com/jfactory-es/jfactory
  * (c) 2019-2021, Stéphane Plazis, http://github.com/jfactory-es/jfactory/blob/master/LICENSE.txt
  */
@@ -14,7 +14,7 @@ import $ from 'jquery';
 
 // The builder replaces these lines
 const JFACTORY_NAME = "jFactory";
-const JFACTORY_VER  = "1.7.5-devel-mjs";
+const JFACTORY_VER  = "1.7.6-devel-mjs";
 
 // The builder may replace env("JFACTORY_ENV_*") by hard coded true/false primitives,
 // allowing the bundler to remove unused code using Tree Shaking
