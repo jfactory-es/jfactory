@@ -1,10 +1,29 @@
-/* jFactory, Copyright (c) 2019-2021, Stéphane Plazis, https://github.com/jfactory-es/jfactory */
+/*! jFactory, (c) 2019-2021, Stéphane Plazis, http://github.com/jfactory-es/jfactory */
 
-// The compiler converts these globals into module imports.
-// jFactory can be used from /src without compiling (externals are global)
-// or bundled from /dist (externals are imported from node_modules)
+import { JFACTORY_DEV, JFACTORY_GLOBAL } from "./jFactory-env.mjs";
+import { jFactoryCompat_run } from "./jFactory-compat.mjs";
+
 const _ = globalThis._;
 const $ = globalThis.$;
+
+if (JFACTORY_GLOBAL) {
+    if (JFACTORY_DEV) {
+        jFactoryCompat_run([
+            {
+                name: "lodash",
+                test: () => _,
+                strict: true,
+                info: "http://github.com/jfactory-es/jfactory/blob/master/docs/ref-import.md"
+            },
+            {
+                name: "jquery",
+                test: () => $,
+                strict: true,
+                info: "http://github.com/jfactory-es/jfactory/blob/master/docs/ref-import.md"
+            }
+        ]);
+    }
+}
 
 // ---------------------------------------------------------------------------------------------------------------------
 // jFactory Helpers
