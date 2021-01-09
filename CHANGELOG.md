@@ -4,7 +4,9 @@
 * feat: improved compatibility check
 * feat: rollup configuration maker
 * removed cjs version for universal module (umd)  
-
+* refactor: version
+* refactor: removed unused polyfill
+  
 ## 1.7.4 (Jan 05, 2021)
 * feat: JfactoryFetch: added compatibility test
 * feat: [JFactoryPromise](docs/JFactoryPromise.md): removed lodash and jquery dependencies

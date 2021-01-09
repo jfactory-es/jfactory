@@ -1,5 +1,5 @@
 /*!
- * jFactory v1.7.5-beta.0
+ * jFactory v1.7.5
  * http://github.com/jfactory-es/jfactory
  * (c) 2019-2021, Stéphane Plazis, http://github.com/jfactory-es/jfactory/blob/master/LICENSE.txt
  */
@@ -15,19 +15,19 @@
     // Contextualize jFactory for bundle, raw source or partial export usage
     // ---------------------------------------------------------------------------------------------------------------------
 
-    // The official builder replaces this line with the version extracted from package.json
-    const JFACTORY_VER = "1.7.5-beta.0-devel-umd";
+    // The builder replaces these lines
+    const JFACTORY_NAME = "jFactory";
+    const JFACTORY_VER  = "1.7.5-devel-umd";
 
-    // Immutable configuration
-    // A builder can replace env("JFACTORY_ENV_*") by hard coded true/false primitives,
-    // allowing the bundler to remove unused code (Tree Shaking)
-    const JFACTORY_CLI    = env("JFACTORY_ENV_CLI") ?? isNode();
-    const JFACTORY_REPL   = env("JFACTORY_ENV_REPL") ?? isPlayground();
-    const JFACTORY_DEV    = true ; // Developer Mode
-    const JFACTORY_DEBUG  = false ; // Debug the library
-    const JFACTORY_LOG    = env("JFACTORY_ENV_LOG") ?? (JFACTORY_DEV );
-    const JFACTORY_TRACE  = env("JFACTORY_ENV_TRACE") ?? (JFACTORY_DEV );
-    const JFACTORY_BOOT   = env("JFACTORY_ENV_BOOT") ?? true; // Allow autoboot at load
+    // The builder may replace env("JFACTORY_ENV_*") by hard coded true/false primitives,
+    // allowing the bundler to remove unused code using Tree Shaking
+    const JFACTORY_CLI   = env("JFACTORY_ENV_CLI") ?? isNode();
+    const JFACTORY_REPL  = env("JFACTORY_ENV_REPL") ?? isPlayground();
+    const JFACTORY_DEV   = true ; // Developer Mode
+    const JFACTORY_DEBUG = false ; // Debug the library
+    const JFACTORY_LOG   = env("JFACTORY_ENV_LOG") ?? (JFACTORY_DEV );
+    const JFACTORY_TRACE = env("JFACTORY_ENV_TRACE") ?? (JFACTORY_DEV );
+    const JFACTORY_BOOT  = env("JFACTORY_ENV_BOOT") ?? true; // Allow autoboot at load
 
     const jFactoryEnv = env;
     const jFactoryCfg = cfg;
@@ -218,7 +218,7 @@
                 return
             }
             {
-                console.log(`jFactory ${JFACTORY_VER} running in development mode; performances will be affected`);
+                console.log(`${JFACTORY_NAME} ${JFACTORY_VER} running in development mode; performances will be affected`);
                 !JFACTORY_LOG && console.log("jFactory: logs disabled");
                 jFactoryCompat_run();
             }
@@ -4657,6 +4657,7 @@
     exports.JFACTORY_ERR_PROMISE_EXPIRED = JFACTORY_ERR_PROMISE_EXPIRED;
     exports.JFACTORY_ERR_REQUEST_ERROR = JFACTORY_ERR_REQUEST_ERROR;
     exports.JFACTORY_LOG = JFACTORY_LOG;
+    exports.JFACTORY_NAME = JFACTORY_NAME;
     exports.JFACTORY_REPL = JFACTORY_REPL;
     exports.JFACTORY_TRACE = JFACTORY_TRACE;
     exports.JFACTORY_VER = JFACTORY_VER;

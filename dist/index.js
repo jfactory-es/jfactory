@@ -1,5 +1,5 @@
 /*!
- * jFactory v1.7.5-beta.0
+ * jFactory v1.7.5
  * http://github.com/jfactory-es/jfactory
  * (c) 2019-2021, Stéphane Plazis, http://github.com/jfactory-es/jfactory/blob/master/LICENSE.txt
  */
