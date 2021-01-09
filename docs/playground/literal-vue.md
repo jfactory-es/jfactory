@@ -16,7 +16,7 @@
     
     <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.15/lodash.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jfactory@1.7.4/dist/jFactory-devel.umd.js"></script> 
+    <script src="https://cdn.jsdelivr.net/npm/jfactory@1.7.5/dist/jFactory-devel.umd.js"></script> 
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 </head> 
 <body>

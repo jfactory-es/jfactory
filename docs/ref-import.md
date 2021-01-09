@@ -16,7 +16,7 @@ For immediate testing in html file:
     <script src="https://cdn.jsdelivr.net/npm/lodash/lodash.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery/jquery.min.js"></script>
     <!-- loading jFactory (development) from a cdn -->
-    <script src="https://cdn.jsdelivr.net/npm/jfactory@1.7.4/dist/jFactory-devel.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jfactory@1.7.5/dist/jFactory-devel.umd.js"></script>
 </head>
 <body>
 <script>
