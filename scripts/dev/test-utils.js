@@ -5,11 +5,11 @@ chai.use(spies);
 
 if (typeof COMPILER_WEBPACK === "undefined") {
   global.JFACTORY_ENV_LOG = false;
-  require("./mocks/polyfill-ECMAScript");
-  require("./mocks/polyfill-fetch");
-  require("./mocks/polyfill-AbortController");
-  require("./mocks/polyfill-DOM");
   require("./mocks/mock-httpRequests");
+  require("./mocks/polyfill-DOM");
+  require("./mocks/polyfill-fetch");
+  // require("./mocks/polyfill-ECMAScript");
+  // require("./mocks/polyfill-AbortController");
 }
 
 if (process.env.NODE_ENV === "development") {
