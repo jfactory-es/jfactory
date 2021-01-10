@@ -38,8 +38,11 @@ For immediate testing in html file:
 
 ## Import as node_modules (NPM) 
 
-This is the recommended installation because it allows the use of a bundler like Webpack to benefit from TreeShacking.
-The dependencies are configured as [peerDependencies](https://stackoverflow.com/a/34645112) so you need to install them.  
+This recommended installation allows you to use a bundler like Webpack to benefit from TreeShacking.
+The package uses [peer dependencies](https://stackoverflow.com/a/34645112) to maximize optimizations with your project (so you need to install them manually). 
+
+> See also [babel-plugin-lodash](https://github.com/lodash/babel-plugin-lodash) to reduce the size of lodash.
+
 ```
 npm add lodash jquery 
 npm add jfactory
