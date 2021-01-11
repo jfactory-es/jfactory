@@ -63,7 +63,7 @@
 
 ```javascript
 const { jFactory, JFactoryComponent } = jFactoryModule; // loaded as umd, see html.
-const assets = "//cdn.jsdelivr.net/gh/jfactory-es/jfactory-starterkit@latest/kit/class/assets/";
+const assets = "//cdn.jsdelivr.net/gh/jfactory-es/jfactory-starterkit/kit/demo/assets/";
 
 window.app = {};
 

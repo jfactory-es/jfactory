@@ -11,9 +11,9 @@ import { JFactoryPromise } from "jfactory"
 let myPromise = new JFactoryPromise((resolve, reject) => {
     resolve('ok')
 })
-let a = myPromise.then(/* not called, chain aborted at next line */);
+let a = myPromise.then(/* not called, chain aborted by next line */);
 myPromise.$chainAbort("canceled !");
-a.then(/* not called, chain aborted at previous line */);
+a.then(/* not called, chain aborted by previous line */);
 
 // ---
 
@@ -23,7 +23,7 @@ let myPromise = new JFactoryPromise((resolve, reject) => {
 myPromise.$chainAutoComplete();
 let a = myPromise.then(...).then(...);
 let b = myPromise.then(...).then(...);
-await myPromise.$chain; // wait for all promises
+await myPromise.$chain; // wait for all declared promises
 ``` 
 
 * [Status](#promise-status)

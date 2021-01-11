@@ -1,8 +1,8 @@
-[jFactory](../index.md) > [Playground](./README.md) > Class - Web Component  
+[jFactory](../index.md) > [Playground](./README.md) > Literal - Vanilla  
 
-# Class - Web Component
+# Literal - Vanilla
 
-[Try it on CodePen](https://codepen.io/jfactory-es/pen/MWYdgoz?editors=1010)
+[Try it on CodePen](https://codepen.io/jfactory-es/pen/KKwxaqr?editors=1010)
 
 ```html
 <!DOCTYPE html>
@@ -19,7 +19,7 @@
     <script src="https://cdn.jsdelivr.net/npm/jfactory@1.7.7/dist/jFactory-devel.umd.js"></script> 
 </head> 
 <body>
-    <h1>The Inaccurate Clock Component - Web Component</h1>
+    <h1>The Inaccurate Clock Component - DOM Template</h1>
     <p>This small component demonstrates how to automatically stop and remove all views,
        queries, promise chains, timers, css and dom, in a single command, using 
        <a target="_blank" href="https://github.com/jfactory-es/jfactory">jFactory</a></p>
@@ -39,78 +39,57 @@
 ```
 
 ```javascript
-const { jFactory, JFactoryCoreObject, JFactoryComponent } = jFactoryModule; // loaded as umd, see html.
-const assets = "//cdn.jsdelivr.net/gh/jfactory-es/jfactory-starterkit@latest/kit/webcomp/assets/";
+const { jFactory } = jFactoryModule; // loaded as umd, see html.
+const assets = "//cdn.jsdelivr.net/gh/jfactory-es/jfactory-starterkit/kit/dom/assets/";
 
-class ClockComponent extends HTMLElement {
-
-    constructor() {
-        super();
-
-        // Inject jFactory Traits using shortcuts
-        // see https://github.com/jfactory-es/jfactory/blob/master/docs/ref-components.md
-        JFactoryCoreObject.inject(this, ClockComponent, this.getAttribute("name"));
-        JFactoryComponent.inject(this, ClockComponent);
-
-        // Init the shadowRoot property
-        // see https://developer.mozilla.org/docs/Web/API/ShadowRoot
-        this.attachShadow({mode: 'open'});
-    }
+window.clock = jFactory("clock", {
 
     async onInstall() {
-        // Load a css in the shadowRoot and register it as "clockCss" 
+        // Load a css and register it as "clockCss"
         // see https://github.com/jfactory-es/jfactory/blob/master/docs/TraitCSS.md
-        await this.$cssFetch("clockCss", assets + "clock.css", this.shadowRoot);
+        await this.$cssFetch("clockCss", assets + "clock.css");
 
-        // Register a DOM target as "clockDom" and append it to the shadowRoot
+        // Register a DOM target as "clockDom" and append it to "body"
         // see https://github.com/jfactory-es/jfactory/blob/master/docs/TraitDOM.md
         // Clone it from a declared <template> (see index.html file)
-        this.view = this.$dom("clockDom", "#tpl-clock", this.shadowRoot);
+        this.view = this.$dom("clockDom", "#tpl-clock", "body");
         // or create it
-        // this.view = this.$dom("clockDom", '<div class="clock"/>', this.shadowRoot);
+        // this.view = this.$dom("clockDom", "<div class='clock'/>", "body");
         // or load it
-        // this.view = await this.$domFetch("clockDom", assets + "template.html", this.shadowRoot);
+        // this.view = await this.$domFetch("clockDom", assets + "template.html", "body",);
 
-        this.updateView("Installed but not enabled");
-    }
+        this.updateView("Installed but not enabled");    
+    },
 
     async onEnable() {
-        this.updateView("Fetching...");
+        this.updateView("fetching...");
         this.date = await this.fetchDate();
         this.$interval("update", 1000, () => {
             this.date = new Date(this.date.setSeconds(this.date.getSeconds() + 1));
             this.updateView(this.date.toLocaleString())
         })
-    }
+    },
 
     onDisable() {
-        this.updateView("Disabled");
-        // everything installed by and after onEnable
+        this.updateView("disabled");
+        // everything installed by and after onEnable 
         // is automatically stopped and removed
-    }
+    },
 
     onUninstall() {
-        // everything installed by onInstall
+        // everything installed by onInstall 
         // is automatically stopped and removed
-    }
+    },
 
     // your own methods...
-
+  
     updateView(value) {
         this.view.html(value)
-    }
+    },
 
     fetchDate() {
         return this.$fetchJSON("worldtimeapi", "//worldtimeapi.org/api/ip")
             .then(v => new Date(v.utc_datetime))
     }
-}
-
-// Register the ClockComponent as a Web Component
-customElements.define('clock-component', ClockComponent);
-
-$(() => {// Wait for document load
-    window.clock = $('<clock-component name="clock"/>').appendTo("body")[0];
 });
-
 ```

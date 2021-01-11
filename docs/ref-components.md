@@ -45,7 +45,7 @@ await myComponent1.$install(true);
 ### Create a Component (base class)
 
 Alternatively, JFactoryTraits can transform any Class to a jFactory Component Class 
-(including Classes that extends HTMLElement to create [Web Components](playground/class-webcomp.md)).
+(including Classes that extends HTMLElement to create [Web Components](playground/class-webc.md)).
 
 Here is an example with a custom Component Base Class, and a custom shortcut that produce the same behavior as `jFactory()` :
 

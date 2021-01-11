@@ -12,8 +12,8 @@
 
 ## Source
 
-* [Literal Component - DOM Template](literal-vanilla.md)
+* [Literal Component - DOM Template](dom.md)
 * [Literal Component - React](literal-react.md)
 * [Literal Component - Vue](literal-vue.md)
-* [Class Component - Web Component](class-webcomp.md)
+* [Class Component - Web Component](class-webc.md)
 * [Instantiated Components - Advanced Demonstration](demo.md)
