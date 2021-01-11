@@ -33,7 +33,7 @@
 * feat: [JFactoryPromise](docs/JFactoryPromise.md) improved abort and expire 
 
 ## 1.4.0 (Jan 28, 2020 )
-* feat: Better support for [Web Components](docs/playground/class-webcomp.md)
+* feat: Better support for [Web Components](docs/playground/class-webc.md)
 * feat: Shortcuts for [Injecting the jFactory Traits into any Classes](docs/ref-components.md#create-a-component-base-class) 
 * feat: [TraitCSS](docs/TraitCSS.md).$cssFetch(): appendTo option with default to "head"  
 
