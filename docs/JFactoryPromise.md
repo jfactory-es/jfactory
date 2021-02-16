@@ -1,29 +1,48 @@
 [jFactory](index.md) > [Reference](ref-index.md) > [Classes](ref-index.md#classes-internal-library) > JFactoryPromise
 
-# JFactoryPromise 
+# JFactoryPromise
 
 [Properties](#properties) / [Methods](#methods) / [Options](#options) / [Usages](#usages)
 
-Improved Promise where the whole tree can be awaited and canceled, with status, explorable chain map, shared data, debug data and trace.
+Promise where the <b>whole tree can be awaited, aborted and expired</b>.\
+Provides synchronous status, explorable chain map, shared data, debug data and trace.
 
 ```javascript
 import { JFactoryPromise } from "jfactory" 
-let myPromise = new JFactoryPromise((resolve, reject) => {
-    resolve('ok')
-})
-let a = myPromise.then(/* not called, chain aborted by next line */);
-myPromise.$chainAbort("canceled !");
-a.then(/* not called, chain aborted by previous line */);
+let myPromise, a, b;
 
-// ---
+// --- Await the whole tree ---
 
-let myPromise = new JFactoryPromise((resolve, reject) => {
-    resolve('ok')
-})
-myPromise.$chainAutoComplete();
-let a = myPromise.then(...).then(...);
-let b = myPromise.then(...).then(...);
-await myPromise.$chain; // wait for all declared promises
+(async function() {
+    myPromise = JFactoryPromise.resolve('ok');
+    a = myPromise.then(h).then(h);
+    b = myPromise.then(h).then(h);
+    // will expire the chain as soon as no more promises are pending:          
+    myPromise.$chainAutoComplete();
+    // wait for all promises         
+    await myPromise.$chain;
+    console.log("done");
+    // chain expired, new handlers not called (passthrough):
+    myPromise.then(h);
+    a.then(h);
+    b.then(h).then(h);
+})();
+
+// --- Abort the whole tree ---
+
+myPromise = JFactoryPromise.resolve('hello');
+a = myPromise.then(h);
+b = myPromise.then(h).then(h);
+// abort the whole tree, handlers not called:
+myPromise.$chainAbort("aborted !");
+// chain expired, new handlers not called (passthrough):
+myPromise.then(h);
+a.then(h);
+b.then(h).then(h);
+
+// handler
+function h(value) {/*console.log(value);*/return value}
+
 ``` 
 
 * [Status](#promise-status)
@@ -34,11 +53,22 @@ await myPromise.$chain; // wait for all declared promises
 * [Chain Awaitable](#chain-awaitable)
 * [Shared Properties](#shared-properties)
 
-***
-**Note:** This library is experimental. Feel free to make suggestions.
-***
-
 ## Promise Status
+
+#### $isFulfilled
+>Type: `boolean` Default: `false`
+>
+>Becomes `true` if the promise is successfully completed (not rejected).
+
+#### $isRejected
+>Type: `boolean` Default: `false`
+>
+>Becomes `true` if the promise is rejected.
+
+#### $isSettled
+>Type: `boolean` Default: `false`
+>
+>Becomes `true` if the promise is not pending anymore.
 
 #### $isAborted
 >Type: `boolean` Default: `false`
@@ -50,24 +80,9 @@ await myPromise.$chain; // wait for all declared promises
 #### $isExpired
 >Type: `boolean` Default: `false`
 >
->Becomes `true` if the promise has expired.
+>Becomes `true` if the promise has expired (after complete or abort).
 >
 >See also [Chain Expiration](#chain-expiration).
-
-#### $isFulfilled
->Type: `boolean` Default: `false`
->
->Becomes `true` if the promise is successfully completed (not rejected).
-
-#### $isRejected 
->Type: `boolean` Default: `false`
->
->Becomes `true` if the promise is rejected.
-   
-#### $isSettled
->Type: `boolean` Default: `false`
->
->Becomes `true` if the promise is not pending anymore. 
 
 #### $value
 >Type: `*` Default: `undefined`
@@ -80,7 +95,7 @@ In addition to the [Promise Status](#promise-status):
 
 
 #### $dev_name (developer mode)
->The optional name given at instantiation to identify the promise. See [Usage 2](#2-instantiation-with-optional-arguments). 
+>The optional name given at instantiation to identify the promise. See [Usage 2](#2-instantiation-with-optional-arguments).
 
 #### $dev_onFulfilled (developer mode)
 >The onFulfilled() handler registered for this promise. (Read-only).
@@ -107,26 +122,26 @@ In addition to the [Promise Status](#promise-status):
 >Type: `string`
 >
 >The method used to create the promise.
->Can be `then` `await` `catch` `$thenExpired` or `promise` 
+>Can be `then` `await` `catch` `$thenExpired` or `promise`
 
 ### Shared Properties
 
 When using then() or catch(), the enumerable properties of the promise are copied to the new subpromise.
-This is useful to inherit methods and share objects through the chain, 
-but keep in mind that primitives properties are copied by value, not by reference.  
- 
+This is useful to inherit methods and share objects through the chain,
+but keep in mind that primitives properties are copied by value, not by reference.
+
 #### $chain (shared)
 >Type: `object`
 >
->The [Promise Chain Manager](#promise-chain) shared by all promises of the chain.     
+>The [Promise Chain Manager](#promise-chain) shared by all promises of the chain.
 
-## Methods 
+## Methods
 
 ### `$chainAbort([reason = "$chainAbort()"])`
 >Returns: `this (JFactoryPromise)`
 >
->Aborts the pending promises of the whole chain.
->[Completes](#chain-completion--abortion) the chain and [Expires](#chain-expiration) all the promises of the chain.  
+>Aborts the pending promises of the whole chain, then
+>marks the chain as [Completed](#chain-completion--abortion) and [Expires](#chain-expiration) all the promises of the chain.
 >
 >```js
 >promise.$chainAbort("aborted by user");
@@ -137,8 +152,8 @@ but keep in mind that primitives properties are copied by value, not by referenc
 ### `$chainComplete([reason = "$chainComplete()"])`
 >Returns: `this (JFactoryPromise)`
 >
->Manually [Completes](#chain-completion--abortion) the chain and [Expires](#chain-expiration) all the promises of the chain.  
->You don't need to use this method if you are not [awaiting the whole Chain](#chain-awaitable).  
+>Marks the chain as [Completed](#chain-completion--abortion) and [Expires](#chain-expiration) all the promises of the chain.  
+>You don't need to use this method if you are not [awaiting the whole Chain](#chain-awaitable).
 >
 >```js
 >promise.$chainComplete("chain completed as expected");
@@ -148,7 +163,7 @@ but keep in mind that primitives properties are copied by value, not by referenc
 >
 >#### Optional Arguments
 >* `reason`  
->An optional `reason` passed to the Expiration Error.
+   >An optional `reason` passed to the Expiration Error.
 
 ### `$chainAutoComplete()`
 >Returns: `this (JFactoryPromise)`
@@ -159,12 +174,12 @@ but keep in mind that primitives properties are copied by value, not by referenc
 >You don't need to use this method if you are not [awaiting the whole chain](#chain-awaitable).  
 >A completed chain is also fully [Expired](#chain-expiration).
 >
->Note: It's a shortcut that sets `myPromise.$chain.chainConfig.chainAutoComplete` to `true`.  
+>Note: It's a shortcut that sets `myPromise.$chain.chainConfig.chainAutoComplete` to `true`.
 
 ### `$thenIfExpired(handler)`
 >Returns: `this (JFactoryPromise)`
 >
->Like `then()`, but the handler is called only if the chain is expired. 
+>Like `then()`, but the handler is called only if the chain is expired.
 >
 >```js
 >let promise = JFactoryPromise.resolve()
@@ -225,18 +240,18 @@ The options of a JFactoryPromise are stored in `myPromise.$chain.chainConfig`. N
 
 ### `chainAutoComplete` (false)
 >When set to true, starts the chain [AutoComplete Watcher](#autocomplete-watcher).  
->The shortcut [`$chainAutoComplete()`](#chainautocomplete) set this value to true. 
+>The shortcut [`$chainAutoComplete()`](#chainautocomplete) set this value to true.
 >
 >**Caution**: [See AutoComplete Restrictions](#autocomplete-restriction)
 
 ## Promise Chain
 
-In jFactory, the whole promise tree (the initial promise and its subpromises, including all subbranches), is called a **Promise Chain**. 
+In jFactory, the whole promise tree (the initial promise and its subpromises, including all subbranches), is called a **Promise Chain**.
 
-The promise chain is managed by `myPromise.$chain`, an Object shared by all the promises of the promise tree. 
-It provides the possibility to make the [whole chain awaitable for completion](#chain-awaitable). 
+The promise chain is managed by `myPromise.$chain`, an Object shared by all the promises of the promise tree.
+It provides the possibility to make the [whole chain awaitable for completion](#chain-awaitable).
 
-### Why 
+### Why
 
 A Promise Chain can be a tree. In this case, running the handler of the last then() doesn't guarantee that all promises are settled.
 
@@ -247,10 +262,10 @@ let p2 = p0.then(v=>v+1); // new promise, p2 from p0 (new branch)
 
 await p2 // = 1, not 2
 ```
-When the `onFulfilled()` handlers of p1 and p2 are unpredictably asynchronous, 
+When the `onFulfilled()` handlers of p1 and p2 are unpredictably asynchronous,
 there is no simple way to determine if they are all settled, unless you store the promises and call a Promise.allSettled().
 In the case of a tree with many subbranches, it becomes complicated. That's why JFactoryPromise provides an [Awaitable Chain Manager](#chain-awaitable) that automatically stores all the subpromises.
- 
+
 ### Chain Properties
 
 `myPromise.$chain.*`
@@ -263,18 +278,18 @@ In the case of a tree with many subbranches, it becomes complicated. That's why 
 >The promise that initiated the chain.
 
 #### isPending
->True if the chain contains a pending promise. 
+>True if the chain contains a pending promise.
 
 #### isCompleted
->True if the chain is explicitly [marked as completed](#chain-completion--abortion).
+>True if the chain is [marked as completed](#chain-completion--abortion).
 
 ## Chain Completion / Abortion
 
 By definition, a Promise Chain is Completed when all its subpromises are settled (fulfilled or rejected), or when the chain is aborted.  
 You don't need to (auto)Complete the chain if you are not [awaiting the whole chain](#chain-awaitable).
 
-Completing a chain has these side effects: 
-* All the promises of the chain are [expired](#chain-expiration).  
+Completing a chain has these side effects:
+* All the promises of the chain are [expired](#chain-expiration).
 * The thenable `myPromise.$chain` is [resolved](#chain-awaitable).
 
 The chain can be completed by two ways:
@@ -283,7 +298,7 @@ The chain can be completed by two ways:
 
 ### AutoComplete watcher
 
-When enabled, the watcher completes the chain as soon as all the promises of a the chain are settled (resolved or rejected).  
+When enabled, the watcher completes the chain as soon as all the promises of a the chain are settled (resolved or rejected).
 
 The AutoComplete can be enabled by tow ways:
 * by calling [`myPromise.$chainAutoComplete()`](#chainautocomplete)
@@ -291,20 +306,20 @@ The AutoComplete can be enabled by tow ways:
 
 >#### AutoComplete Restriction
 >
->Make sure to create the whole chain (using `then()` or `catch()`) before enabling the AutoComplete, 
+>Make sure to create the whole chain (using `then()` or `catch()`) before enabling the AutoComplete,
 because the chain is completed as soon as all its registered promises are settled. In other words, a chain can AutoComplete in background during any "await".
 >In this case, any new then() will result to an expired promise call.
 
 ## Chain Expiration
 
-When a chain is [Completed](#chain-completion--abortion), all the (new and old) promises of the chain are expired:   
+When a chain is [Completed](#chain-completion--abortion), all the (new and old) promises of the chain are expired:
 * All handlers installed by `then()` and `catch()` are ignored.
 * The handlers installed by [`$thenIfExpired()`](#$thenIfExpired) are reachable
 
-## Chain Awaitable 
+## Chain Awaitable
 
 The whole [Promise Chain](#promise-chain) can be awaited through the property `$chain`
- and resolved synchronously when the chain is [marked as Completed](#chain-completion--abortion): 
+and resolved synchronously when the chain is [marked as Completed](#chain-completion--abortion):
 
 `await myPromise.$chain`
 
@@ -316,6 +331,7 @@ let myPromise = new JFactoryPromise((resolve, reject) => {
     resolve('ok')
 });
 
+// also
 JFactoryPromise.resolve();
 JFactoryPromise.resolve(123);
 JFactoryPromise.resolve(promise);
@@ -324,7 +340,7 @@ JFactoryPromise.reject(123);
 ```
 
 #### 2. Instantiation (with optional arguments)
-This advanced syntax allows you to define a name, and override the default configuration. 
+This advanced syntax allows you to define a name, and override the default configuration.
 ```js
 let options = {
     name: "myPromise",
@@ -347,22 +363,10 @@ JFactoryPromise.reject(options, undefined);
 
 #### 3. Automatically Completed - `$chainAutoComplete()`
 
-Await a chain composed of two branches of two unpredictable asynchronous then().  
- 
+Await a chain composed of two branches of two unpredictable asynchronous then().
+
 ```js
 let handlerCalled = 0;
-
-// ---helper
-let doSomethingAsync = function (name) {
-    console.log("called:", name);
-    handlerCalled++;
-    // block the handler by returning an unpredictable pending promise:
-    return new Promise(function (resolve){
-        setTimeout(resolve, Math.random()*50)
-    });
-};
-// ---
-
 let promiseRoot = JFactoryPromise.resolve();
 
 // Branch A
@@ -377,29 +381,26 @@ promiseRoot
 
 promiseRoot.$chainAutoComplete(); // can be called from any promise of the chain
 
-await promiseRoot.$chain;
+await promiseRoot.$chain; // shared by all promises
 console.log("Chain completed; handlerCalled =", handlerCalled); // 4
+
+// ---helper
+function (namedoSomethingAsync) {
+    console.log("called:", name);
+    handlerCalled++;
+    // block the handler by returning an unpredictable pending promise:
+    return new Promise(function (resolve){
+        setTimeout(resolve, Math.random()*50)
+    });
+}
 ```
 
 #### 4. Manual Completion - `$chainComplete()`
 
-Manually completes the chain by calling `$chainComplete()` in the last then().
-Should only be reliable for vertically chained promises (not with multibranch chains. See example 5). 
+Manually marks the chain as completed by calling `$chainComplete()` in the last then() of the tree. This exprires the chain. Should only be reliable for vertically chained promises (not with multibranch chains. See example 5).
 
 ```javascript
 let handlerCalled = 0;
-
-// ---helper
-let doSomethingAsync = function (name) {
-    console.log("called:", name);
-    handlerCalled++;
-    // block the handler by returning a unpredictable pending promise:
-    return new Promise(function (resolve){
-        setTimeout(resolve, Math.random()*50)
-    });
-};
-// ---
-
 let promiseRoot = JFactoryPromise.resolve()
     .then(r => doSomethingAsync('A1'))
     .then(r => doSomethingAsync('A2'))
@@ -409,14 +410,23 @@ let promiseRoot = JFactoryPromise.resolve()
 
 await promiseRoot.$chain;
 console.log("Chain completed; handlerCalled =", handlerCalled) // 4
+
+// ---helper
+function doSomethingAsync(name) {
+    console.log("called:", name);
+    handlerCalled++;
+    // block the handler by returning a unpredictable pending promise:
+    return new Promise(function (resolve){
+        setTimeout(resolve, Math.random()*50)
+    });
+}
 ```
 
 #### 5. Aborting a Chain - `$chainAbort()`
 
-Calling `$chainComplete()` on a multibranch chain may complete and expire
-the chain before all branches are completed. If that's the behavior you want, you should use
-the semantic variant `$chainAbort()` to clarify the source code. Otherwise, use the AutoComplete for such cases.
- 
+Calling `$chainComplete()` on a multibranch chain may complete and expire the chain before all branches are completed. This will result to an error. If you want to abort the chain, you should use
+`$chainAbort()`. Otherwise, use the AutoComplete for such cases.
+
 ```js
 let handlerCalled = 0;
 
@@ -426,7 +436,7 @@ let doSomethingAsync = function (name) {
     handlerCalled++;
     // block the handler by returning a unpredictable pending promise:
     return new Promise(function (resolve){
-        setTimeout(resolve, Math.random()*50)
+        setTimeout(resolve, Math.random()*500)
     });
 };
 // ---
@@ -437,7 +447,7 @@ let promiseRoot = JFactoryPromise.resolve();
 promiseRoot
     .then(r => doSomethingAsync('A1'))
     .then(r => doSomethingAsync('A2'))
-    // will interrupt the chain event if branch B is not completed:
+    // interrupt and expire the chain, even if branch B is not completed:
     .then(r => promiseRoot.$chainAbort()); 
 
 // Branch B
