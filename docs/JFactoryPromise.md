@@ -381,7 +381,7 @@ promiseRoot
 
 promiseRoot.$chainAutoComplete(); // can be called from any promise of the chain
 
-await promiseRoot.$chain; // shared by all promises
+await promiseRoot.$chain; // $chain is accessible from all its promises
 console.log("Chain completed; handlerCalled =", handlerCalled); // 4
 
 // ---helper
