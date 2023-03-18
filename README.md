@@ -3,7 +3,7 @@
 
 Easily modularize your application into cancelable components.<br>
 <b>Everything they initialize can be monitored, stopped and removed automatically,<br>
-including views, promise chains, requests, listeners, DOM and CSS.</b>
+including views, nested promises, requests, listeners, DOM and CSS.</b>
 
 [![GitHub version](https://img.shields.io/github/package-json/v/jfactory-es/jfactory.svg?label=git)](https://github.com/jfactory-es/jfactory)
 [![npm version](https://img.shields.io/npm/v/jfactory.svg)](https://www.npmjs.com/package/jfactory)
@@ -13,37 +13,41 @@ including views, promise chains, requests, listeners, DOM and CSS.</b>
 
 # jFactory
 
-**Why?** Imagine a feature that uses views, css, event listeners, requests and asynchronous processes with promise chains. 
-jFactory groups all this together into a component object that provides the methods `$install(), $enable(), $disable() and $uninstall()`. Now, you can safely stop, unload or restart the component, making your asynchronous application easier to control and clean.  
+**Why?** Imagine a feature that uses views, css, event listeners, requests and asynchronous processes with nested promise trees.
+jFactory groups all this together into a component that provides the methods `$install(), $enable(), $disable() and $uninstall()`. Now, you can safely stop, unload or restart the component, making your asynchronous application easier to control and clean.
 
-* [Playground](https://github.com/jfactory-es/jfactory/blob/master/docs/playground/README.md) 
-* [Installation](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-import.md) / [Starter Kit](https://github.com/jfactory-es/jfactory-starterkit) / [Overriding](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-overriding.md)
+* [Installation](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-import.md) / [Starter Kit](https://github.com/jfactory-es/jfactory-starterkit)
+* [Playground](https://github.com/jfactory-es/jfactory/blob/master/docs/playground/README.md)
 * [Documentation](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-index.md) / [Traits](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-index.md#traits-component-features) / [Classes](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-index.md#classes-internal-library)
+* [Overriding](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-overriding.md)
+
+```
+npm add lodash jquery jfactory
+```
 
 ## Abstract
 
-jFactory components are able to:
-
-- operate like a service (install, enable, disable, uninstall) 
-- automatically switch off subscribed css, dom, event listeners, observers, timers, requests, promise chains and views. 
-- automatically prevent expired asynchronous calls (promise subtrees, event handlers...) 
+jFactory components are able to :
+- operate like a service (install, enable, disable, uninstall)
+- automatically switch off subscribed css, dom, event listeners, observers, timers, requests, promise chains and views.
+- automatically prevent expired asynchronous calls (promise subtrees, event handlers...)
 - automatically ensure that the promise chains are completed at service state change (awaitable)
 - keep track in DevTools of all running subscriptions (listeners, timers, requests, promises, dom, css...)
-- log messages in console with controllable loggers 
+- log messages in console with controllable loggers
 - improve the Promise chains (Awaitable/Expirable promise tree)
-- easily create/load CSS & DOM and clone from \<template> 
+- easily create/load CSS & DOM and clone from \<template>
 
-## Supported APIs <img height="20" src="https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg"> <img height="20" src="https://vuejs.org/images/logo.png"> <img height="20" src="https://jfactory-es.github.io/jfactory/img/HTML5.png"> 
+## Supported APIs <img height="20" src="https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg"> <img height="20" src="https://vuejs.org/images/logo.png"> <img height="20" src="https://jfactory-es.github.io/jfactory/img/HTML5.png">
 
 jFactory supports **Vue.js**, **React**, and **HTML5 WebComponents** allowing components to automatically **uninstall** and **reinstall** their views.
 See [Playground](https://github.com/jfactory-es/jfactory/blob/master/docs/playground/README.md).
 
 ## Overview
 
-In a nutshell, jFactory provides methods to register listeners, views, dom, css, requests and asynchronous tasks that will be automatically stopped (including subpromise trees) and removed at opposite service state change (install/uninstall, enable/disable). 
+In a nutshell, jFactory provides methods to register listeners, views, dom, css, requests and asynchronous tasks that will be automatically stopped (including subpromise trees) and removed at opposite service state change (install/uninstall, enable/disable).
 
-Components **[can be created from any Class](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-components.md)**, 
-or more simply by using an Object Literal through the shortcut [`jFactory()`](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-components.md#create-a-component-literal):  
+Components **[can be created from any Class](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-components.md)**,
+or more simply by using an Object Literal through the shortcut [`jFactory()`](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-components.md#create-a-component-literal):
 
 ```javascript
 let component = jFactory("myComponent", {
@@ -89,7 +93,7 @@ await component.$install(true);
 
 ## Learning
 
-jFactory is an easy-to-learn library. Unlike a framework, it does not impose an architecture: you are free to use only what you need. 
+jFactory is an easy-to-learn library. Unlike a framework, it does not impose an architecture: you are free to use only what you need.
 
 All the [methods are listed here](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-index.md#traits-component-features). \
 See also the [Playground](https://github.com/jfactory-es/jfactory/blob/master/docs/playground/README.md) and the [Starter Kit](https://github.com/jfactory-es/jfactory-starterkit)
@@ -98,7 +102,7 @@ See also the [Playground](https://github.com/jfactory-es/jfactory/blob/master/do
 
 - Registry:<img align="right" src="https://jfactory-es.github.io/jfactory/img/pic1.png"> all component subscriptions (listeners, promises, timers, fetch, dom...) are explorable in a registry, allowing quick visual inspections in DevTools.
 
-- [Tasks](https://github.com/jfactory-es/jfactory/blob/master/docs/TraitTask.md): asynchronous processes can be registered as expirable tasks that block the current Service State Change, guaranteeing that everything is resolved before completing it, including all subpromises. 
+- [Tasks](https://github.com/jfactory-es/jfactory/blob/master/docs/TraitTask.md): asynchronous processes can be registered as expirable tasks that block the current Service State Change, guaranteeing that everything is resolved before completing it, including all subpromises.
 
 - [Remove Phase](https://github.com/jfactory-es/jfactory/blob/master/docs/TraitService-Phases.md#remove-phase): jFactory will automatically stop and remove the subscriptions (listeners, promises, timers, fetch, dom...) registered during an opposite state change (install/uninstall, enable/disable)
 
@@ -107,38 +111,38 @@ See also the [Playground](https://github.com/jfactory-es/jfactory/blob/master/do
 - [Traits](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-components.md#create-a-component-base-class): Components are Objects created from Classes dynamically extended by JFactoryTraits. 
 
 - Debug: jFactory is designed for asynchronous component-based application development, using contextual loggers and subloggers,
- filterable source-mapped stack traces, identifiers, loggable extended errors, explorable promise chains, ...
-     
-## Library   
+  filterable source-mapped stack traces, identifiers, loggable extended errors, explorable promise chains, ...
+
+## Library
 
 jFactory is designed with powerful ES6 [Classes](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-index.md#classes-internal-library):
 
 - [Extended Promise](https://github.com/jfactory-es/jfactory/blob/master/docs/JFactoryPromise.md)
-    - Expirable, awaitable, explorable Promise Chain
-    - Status properties 
+  - Expirable, awaitable, explorable Promise Chain
+  - Status properties
 - Composite Functions
-    - Wrappable / Conditional / Expirable Functions
+  - Wrappable / Conditional / Expirable Functions
 - Awaitable asynchronous observers
 - Traits, for dynamic mixins with configurable parser
-- Loggers, with identified and formatted console logs and inherited switches 
+- Loggers, with identified and formatted console logs and inherited switches
 - Errors, with explorable data
-- Stack traces, filterable and source mapped   
+- Stack traces, filterable and source mapped
 
 ## Philosophy
 
 - Does not modify JavaScript prototypes
-- Injected methods and properties are prefixed to avoid conflicts 
+- Injected methods and properties are prefixed to avoid conflicts
 - Most names are prefixed by affiliation for easier code completion
-- All registrations must be named, to reinforce debugging 
+- All registrations must be named, to reinforce debugging
 - Most of the library is overridable
 - Designed for debugging and inspections
 
 ###### Modular JavaScript
-  
+
 - Written in ES6+ optimized for Tree Shaking
 - Highly configurable, overridable and dynamically patchable
-- Interoperable. Framework-agnostic. No transpiler.  
-- Provides a "Developer Build" for additional validations and debugging properties   
+- Interoperable. Framework-agnostic. No transpiler.
+- Provides a "Developer Build" for additional validations and debugging properties
 
 <!--
 ## Implementation

@@ -25,7 +25,6 @@ jFactory groups all this together into a component that provides the methods `$i
 npm add lodash jquery jfactory
 ```
 
-
 ## Abstract
 
 jFactory components are able to :
