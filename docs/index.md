@@ -3,7 +3,7 @@
 
 Easily modularize your application into cancelable components.<br>
 <b>Everything they initialize can be monitored, stopped and removed automatically,<br>
-including views, promise chains, requests, listeners, DOM and CSS.</b>
+including views, nested promises, requests, listeners, DOM and CSS.</b>
 
 [![GitHub version](https://img.shields.io/github/package-json/v/jfactory-es/jfactory.svg?label=git)](https://github.com/jfactory-es/jfactory)
 [![npm version](https://img.shields.io/npm/v/jfactory.svg)](https://www.npmjs.com/package/jfactory)
@@ -13,17 +13,19 @@ including views, promise chains, requests, listeners, DOM and CSS.</b>
 
 # jFactory
 
-**Why?** Imagine a feature that uses views, css, event listeners, requests and asynchronous processes with promise chains.
-jFactory groups all this together into a component object that provides the methods `$install(), $enable(), $disable() and $uninstall()`. Now, you can safely stop, unload or restart the component, making your asynchronous application easier to control and clean.
+**Why?** Imagine a feature that uses views, css, event listeners, requests and asynchronous processes with nested promise trees.
+jFactory groups all this together into a component that provides the methods `$install(), $enable(), $disable() and $uninstall()`. Now, you can safely stop, unload or restart the component, making your asynchronous application easier to control and clean.
 
 * [Playground](playground/README.md)
-* [Installation](ref-import.md) / [Starter Kit](https://github.com/jfactory-es/jfactory-starterkit) / [Overriding](ref-overriding.md)
 * [Documentation](ref-index.md) / [Traits](ref-index.md#traits-component-features) / [Classes](ref-index.md#classes-internal-library)
+* [Overriding](ref-overriding.md)
+
+> ***npm add lodash jquery jfactory***\
+> [Installation](ref-import.md) / [Starter Kit](https://github.com/jfactory-es/jfactory-starterkit)
 
 ## Abstract
 
-jFactory components are able to:
-
+jFactory components are able to :
 - operate like a service (install, enable, disable, uninstall)
 - automatically switch off subscribed css, dom, event listeners, observers, timers, requests, promise chains and views.
 - automatically prevent expired asynchronous calls (promise subtrees, event handlers...)
