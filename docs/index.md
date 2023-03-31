@@ -13,7 +13,7 @@ including views, nested promises, requests, listeners, DOM and CSS.</b>
 
 # jFactory
 
-**Why?** Imagine a feature that uses views, css, event listeners, requests and asynchronous processes with nested promise trees.
+**Why?** Imagine a feature that uses views, css, event listeners, requests and asynchronous processing with nested promise trees.
 jFactory groups all this together into a component that provides the methods `$install(), $enable(), $disable() and $uninstall()`. Now, you can safely stop, unload or restart the component, making your asynchronous application easier to control and clean.
 
 * [Installation](ref-import.md) / [Starter Kit](https://github.com/jfactory-es/jfactory-starterkit)

@@ -18,3 +18,15 @@ jFactory groups all this together into a component that provides the methods `$i
 
 * [Documentation](https://github.com/jfactory-es/jfactory/tree/master/docs/index.md) / [Traits](https://github.com/jfactory-es/jfactory/tree/master/docs/ref-index.md#traits-component-features) / [Classes](https://github.com/jfactory-es/jfactory/tree/master/docs/ref-index.md#classes-internal-library)
 * [Installation](https://github.com/jfactory-es/jfactory/tree/master/docs/ref-import.md) / [Starter Kit](https://github.com/jfactory-es/jfactory-starterkit)
+
+## Abstract
+
+jFactory components are able to :
+- operate like a service (install, enable, disable, uninstall)
+- automatically switch off subscribed css, dom, event listeners, observers, timers, requests, promise chains and views.
+- automatically prevent expired asynchronous calls (promise subtrees, event handlers...)
+- automatically ensure that the promise chains are completed at service state change (awaitable)
+- keep track in DevTools of all running subscriptions (listeners, timers, requests, promises, dom, css...)
+- log messages in console with controllable loggers
+- improve the Promise chains (Awaitable/Expirable promise tree)
+- easily create/load CSS & DOM and clone from \<template>
