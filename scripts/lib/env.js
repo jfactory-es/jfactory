@@ -7,7 +7,7 @@ function check(/*config*/) {
   const packageJson = require("../../package.json");
 
   let pad = 8;
-  let checkNode = semverSatisfies(process.version, packageJson.engines.node);
+  let checkNode = semverSatisfies(process.version, packageJson.devEngines.node);
   let checkVer = !(
     packageJson.version.includes("beta") || packageJson.version.includes("alpha")
   );
