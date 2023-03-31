@@ -1,8 +1,15 @@
 "use strict";
 
-var assert = require("assert");
-var testFulfilled = require("./helpers/testThreeCases").testFulfilled;
-var testRejected = require("./helpers/testThreeCases").testRejected;
+import {
+  describe,
+  assert,
+  beforeEach,
+  afterEach,
+  specify
+} from "../../../../scripts/test/test-import.mjs";
+
+import { testFulfilled } from "./helpers/testThreeCases";
+import { testRejected } from "./helpers/testThreeCases";
 
 var dummy = { dummy: "dummy" }; // we fulfill or reject with this when we don't intend to test against it
 

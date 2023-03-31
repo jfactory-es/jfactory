@@ -1,10 +1,12 @@
-const { wait, expect } = require("../scripts/dev/test-utils");
-
 // ---------------------------------------------------------------------------------------------------------------------
 // TraitInterval Test
 // ---------------------------------------------------------------------------------------------------------------------
 
-const { jFactory } = require("../dist");
+import {
+    describe, it, expect,
+    wait,
+    jFactory
+} from "../scripts/test/test-import.mjs";
 
 describe("Trait Interval", function() {
 

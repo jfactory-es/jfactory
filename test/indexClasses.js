@@ -1,8 +1,7 @@
-require("./JFactoryTraits.test");
-require("./JFactoryFunction.test");
-require("./JFactoryLogger.test");
-require("./JFactoryObject.test");
-require("./JFactoryPromise.test");
-// require("./_JFactoryFetch.test");
-require("./JFactoryEvents.test");
-require("./JFactoryEventsDOM.test");
+import "./JFactoryTraits.test";
+import "./JFactoryFunction.test";
+import "./JFactoryLogger.test";
+import "./JFactoryObject.test";
+import "./JFactoryPromise.test";
+import "./JFactoryEvents.test";
+import "./JFactoryEventsDOM.test";

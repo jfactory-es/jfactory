@@ -1,10 +1,11 @@
-const { expect } = require("../scripts/dev/test-utils");
-
 // ---------------------------------------------------------------------------------------------------------------------
 // JFactoryObject
 // ---------------------------------------------------------------------------------------------------------------------
 
-const { JFactoryObject } = require("../dist");
+import {
+    describe, it, expect,
+    JFactoryObject
+} from "../scripts/test/test-import.mjs";
 
 describe("JFactoryObject", function() {
     it("should prevent prototype pollution", function() {

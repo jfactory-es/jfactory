@@ -1,10 +1,12 @@
-const { wait, expect } = require("../scripts/dev/test-utils");
-
 // ---------------------------------------------------------------------------------------------------------------------
 // TraitService
 // ---------------------------------------------------------------------------------------------------------------------
 
-const { jFactory, JFactoryComponent, JFactoryPromise } = require("../dist");
+import {
+    describe, it, expect,
+    wait,
+    jFactory, JFactoryComponent, JFactoryPromise
+} from "../scripts/test/test-import.mjs";
 
 // class SyncComponent extends JFactoryComponent {
 //     constructor(...args) {

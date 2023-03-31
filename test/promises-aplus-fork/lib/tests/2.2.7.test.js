@@ -1,8 +1,13 @@
 "use strict";
 
-var assert = require("assert");
-var testFulfilled = require("./helpers/testThreeCases").testFulfilled;
-var testRejected = require("./helpers/testThreeCases").testRejected;
+import {
+  describe,
+  assert,
+  specify
+} from "../../../../scripts/test/test-import.mjs";
+
+import { testFulfilled } from "./helpers/testThreeCases";
+import { testRejected } from "./helpers/testThreeCases";
 var reasons = require("./helpers/reasons");
 
 var adapter = global.adapter;
@@ -49,7 +54,7 @@ describe("2.2.7: `then` must return a promise: `promise2 = promise1.then(onFulfi
                     promise2.then(null, function onPromise2Rejected(actualReason) {
                         assert.strictEqual(actualReason, expectedReason);
                         done();
-                    });
+                    })
                 });
             });
         }

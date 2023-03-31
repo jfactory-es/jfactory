@@ -1,6 +1,10 @@
 "use strict";
 
-var assert = require("assert");
+import {
+  describe,
+  assert,
+  specify
+} from "../../../../scripts/test/test-import.mjs";
 
 var adapter = global.adapter;
 var resolved = adapter.resolved;

@@ -1,11 +1,16 @@
-const { wait, expect } = require("../scripts/dev/test-utils");
-
 // ---------------------------------------------------------------------------------------------------------------------
 // JFactoryEvents
 // ---------------------------------------------------------------------------------------------------------------------
 
-const { JFactoryCoreObject, JFactoryError, JFactoryEvents,
-    JFactoryEventsManager, JFACTORY_DEV } = require("../dist");
+import {
+    describe, it, expect,
+    wait,
+    JFACTORY_DEV,
+    JFactoryCoreObject,
+    JFactoryError,
+    JFactoryEvents,
+    JFactoryEventsManager
+} from "../scripts/test/test-import.mjs";
 
 describe("JFactoryEvents", function() {
     let coreClass = new JFactoryCoreObject("test");

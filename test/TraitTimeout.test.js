@@ -1,10 +1,12 @@
-const { wait, expect } = require("../scripts/dev/test-utils");
-
 // ---------------------------------------------------------------------------------------------------------------------
 // TraitTimeout Test
 // ---------------------------------------------------------------------------------------------------------------------
 
-const { jFactory, JFactoryPromise, JFACTORY_ERR_PROMISE_EXPIRED } = require("../dist");
+import {
+    describe, it, expect,
+    wait,
+    jFactory, JFactoryPromise, JFACTORY_ERR_PROMISE_EXPIRED
+} from "../scripts/test/test-import.mjs";
 
 describe("Trait Timeout", function() {
 

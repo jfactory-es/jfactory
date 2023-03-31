@@ -1,6 +1,12 @@
 "use strict";
 
-var assert = require("assert");
+import {
+  describe,
+  assert,
+  beforeEach,
+  specify
+} from "../../../../scripts/test/test-import.mjs";
+
 var thenables = require("./helpers/thenables");
 var reasons = require("./helpers/reasons");
 
@@ -120,6 +126,7 @@ function testCallingRejectPromiseRejectsWith(reason, stringRepresentation) {
 }
 
 describe("2.3.3: Otherwise, if `x` is an object or function,", function () {
+
     describe("2.3.3.1: Let `then` be `x.then`", function () {
         describe("`x` is an object with null prototype", function () {
             var numberOfTimesThenWasRetrieved = null;
@@ -965,5 +972,6 @@ describe("2.3.3: Otherwise, if `x` is an object or function,", function () {
         testFulfillViaNonFunction([function () { }], "an array containing a function");
         testFulfillViaNonFunction(/a-b/i, "a regular expression");
         testFulfillViaNonFunction(Object.create(Function.prototype), "an object inheriting from `Function.prototype`");
+
     });
 });

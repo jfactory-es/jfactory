@@ -1,11 +1,13 @@
-const { expect } = require("../scripts/dev/test-utils");
 const $ = require("jquery");
 
 // ---------------------------------------------------------------------------------------------------------------------
 // JFactoryEvents DOM
 // ---------------------------------------------------------------------------------------------------------------------
 
-const { JFactoryEvents } = require("../dist");
+import {
+    describe, it, expect,
+    JFactoryEvents,
+} from "../scripts/test/test-import.mjs";
 
 describe("JFactoryEvents DOM", function() {
     let jFactoryEvent = new JFactoryEvents();

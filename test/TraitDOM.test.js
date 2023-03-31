@@ -1,11 +1,13 @@
-const { wait, expect } = require("../scripts/dev/test-utils");
-const $ = require("jquery");
-
 // ---------------------------------------------------------------------------------------------------------------------
 // TraitDOM Test
 // ---------------------------------------------------------------------------------------------------------------------
 
-const { jFactory, JFactoryFetch, JFactoryPromise, JFACTORY_ERR_PROMISE_EXPIRED } = require("../dist");
+import {
+    jQuery as $,
+    describe, it, expect, afterEach,
+    wait,
+    jFactory, JFactoryFetch, JFactoryPromise, JFACTORY_ERR_PROMISE_EXPIRED
+} from "../scripts/test/test-import.mjs";
 
 describe("Trait DOM", function() {
 
@@ -27,7 +29,7 @@ describe("Trait DOM", function() {
     it("should domFetch", async function() {
         let component = jFactory("component");
         await component.$install(true);
-        expect((await component.$domFetch("n1", "asset.html"))[0]).instanceof(HTMLParagraphElement);
+        expect((await component.$domFetch("n1", "https://api.test.local/asset.html"))[0]).instanceof(HTMLParagraphElement);
         component.$uninstall();
     });
 
@@ -39,14 +41,14 @@ describe("Trait DOM", function() {
         expect(component.$dom("n3", document.createElement("div"))).instanceof($); // HTMLElement
         expect(component.$dom("n4", [document.createElement("div"), document.createElement("div")])) // array
             .instanceof($); // HTMLElement
-        expect(await component.$domFetch("n5", "asset.html")).instanceof($);
+        expect(await component.$domFetch("n5", "https://api.test.local/asset.html")).instanceof($);
         component.$uninstall();
     });
 
     it("should task", async function() {
         let component = jFactory("component");
         await component.$install(true);
-        component.$domFetch("n1", "asset.html");
+        component.$domFetch("n1", "https://api.test.local/asset.html");
         expect(component.$.tasks.has('$domFetch("n1")')).equal(true);
         component.$uninstall();
     });
@@ -54,13 +56,13 @@ describe("Trait DOM", function() {
     it("should phase", async function() {
         let component = jFactory("component", {
             onInstall() {
-                this.$domFetch("n1", "asset.html")
+                this.$domFetch("n1", "https://api.test.local/asset.html")
                     .then(r => wait(10).then(() => r))
                     .then(r => this.n1 = r)
             },
             onEnable() {
                 this.pass = this.n1 instanceof $;
-                this.n2 = this.$domFetch("n2", "asset.html")
+                this.n2 = this.$domFetch("n2", "https://api.test.local/asset.html")
                     .then(r => wait(10).then(() => r))
                     .then(r => this.n2 = r)
             }
@@ -75,7 +77,7 @@ describe("Trait DOM", function() {
         let component = jFactory("component");
         await component.$install(true);
         component.$dom("n1", "<div>");
-        component.$domFetch("n2", "asset.html");
+        component.$domFetch("n2", "https://api.test.local/asset.html");
         expect(component.$.dom.has("n1")).equal(true);
         expect(component.$.dom.has("n2")).equal(true);
         component.$uninstall();
@@ -85,7 +87,7 @@ describe("Trait DOM", function() {
         let component = jFactory("component");
         await component.$install(true);
         component.$dom("n1", '<div class="jFactory-test">').appendTo("body");
-        await component.$domFetch("n2", "asset.html").then(r => r.appendTo("body"));
+        await component.$domFetch("n2", "https://api.test.local/asset.html").then(r => r.appendTo("body"));
         expect($(".jFactory-test").length).equal(2);
         component.$domRemove("n1");
         component.$domRemove("n2");
@@ -99,7 +101,7 @@ describe("Trait DOM", function() {
         let component = jFactory("component");
         await component.$install(true);
         component.$dom("n1", '<div class="jFactory-test">').appendTo("body");
-        await component.$domFetch("n2", "asset.html").then(r => r.appendTo("body"));
+        await component.$domFetch("n2", "https://api.test.local/asset.html").then(r => r.appendTo("body"));
         expect($(".jFactory-test").length).equal(2);
         component.$domRemoveAll(jFactory.PHASE.DISABLE);
         expect(component.$.dom.has("n1")).equal(false);
@@ -112,7 +114,7 @@ describe("Trait DOM", function() {
         let component = jFactory("component");
         await component.$install(true);
         component.$dom("n1", '<div class="jFactory-test">').appendTo("body");
-        component.$domFetch("n2", "asset.html").then(r => r.appendTo("body")); // no await
+        component.$domFetch("n2", "https://api.test.local/asset.html").then(r => r.appendTo("body")); // no await
         expect($(".jFactory-test").length).equal(1);
         component.$domRemove("n1");
         component.$domRemove("n2");
@@ -125,7 +127,7 @@ describe("Trait DOM", function() {
         let component = jFactory("component");
         await component.$install(true);
         let n1 = component
-            .$domFetch("n1", "asset.html");
+            .$domFetch("n1", "https://api.test.local/asset.html");
         let n11 = n1
             .then(r => wait(1).then(() => r));
         await n1;
@@ -139,7 +141,7 @@ describe("Trait DOM", function() {
         let component = jFactory("component");
         await component.$install(true);
         let n1 = component
-            .$domFetch("n1", "asset.html");
+            .$domFetch("n1", "https://api.test.local/asset.html");
         let n11 = n1
             .then(r => wait(1).then(() => r));
         await n1;
@@ -153,7 +155,7 @@ describe("Trait DOM", function() {
         let component = jFactory("component");
         await component.$install(true);
         let n1 = component
-            .$domFetch("n1", "asset.html")
+            .$domFetch("n1", "https://api.test.local/asset.html")
             .then(r => wait(1).then(() => r))
             .$chainAbort();
         expect(component.$.tasks.has('$domFetch("n1")')).equal(false);

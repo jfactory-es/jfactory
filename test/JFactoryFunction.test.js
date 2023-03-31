@@ -1,14 +1,14 @@
-const { wait, expect } = require("../scripts/dev/test-utils");
+import {
+    describe, it, expect,
+    JFactoryPromise,
+    JFactoryFunctionComposer,
+    jFactoryFunctionWrappable,
+    jFactoryFunctionConditional,
+    jFactoryFunctionExpirable,
+    wait
+} from "../scripts/test/test-import.mjs";
 
 describe("JFactoryFunction", function() {
-
-    const {
-        JFactoryPromise,
-        JFactoryFunctionComposer,
-        jFactoryFunctionWrappable,
-        jFactoryFunctionConditional,
-        jFactoryFunctionExpirable
-    } = require("../dist");
 
     let f = (a, b, c) => a + b + c;
 

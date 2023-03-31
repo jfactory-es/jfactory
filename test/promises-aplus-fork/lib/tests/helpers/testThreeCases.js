@@ -1,5 +1,9 @@
 "use strict";
 
+import {
+  specify
+} from "../../../../../scripts/test/test-import.mjs";
+
 var adapter = global.adapter;
 var resolved = adapter.resolved;
 var rejected = adapter.rejected;

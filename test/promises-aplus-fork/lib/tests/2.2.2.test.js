@@ -1,7 +1,12 @@
 "use strict";
 
-var assert = require("assert");
-var testFulfilled = require("./helpers/testThreeCases").testFulfilled;
+import {
+  describe,
+  assert,
+  specify
+} from "../../../../scripts/test/test-import.mjs";
+
+import { testFulfilled } from "./helpers/testThreeCases";
 
 var adapter = global.adapter;
 var resolved = adapter.resolved;

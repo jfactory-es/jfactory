@@ -1,10 +1,11 @@
-const { expect } = require("../scripts/dev/test-utils");
-
 // ---------------------------------------------------------------------------------------------------------------------
 // JFactoryTraits
 // ---------------------------------------------------------------------------------------------------------------------
 
-const { JFactoryTraits } = require("../dist");
+import {
+    describe, it, expect,
+    JFactoryTraits
+} from "../scripts/test/test-import.mjs";
 
 describe("JFactoryTraits", function() {
 

@@ -1,10 +1,11 @@
-const { expect } = require("../scripts/dev/test-utils");
-
 // ---------------------------------------------------------------------------------------------------------------------
 // JFactoryTraits
 // ---------------------------------------------------------------------------------------------------------------------
 
-const { JFactoryPromise, JFACTORY_ERR_INVALID_CALL, JFACTORY_ERR_PROMISE_EXPIRED } = require("../dist");
+import {
+    describe, it, expect,
+    JFactoryPromise, JFACTORY_ERR_INVALID_CALL, JFACTORY_ERR_PROMISE_EXPIRED
+} from "../scripts/test/test-import.mjs";
 
 describe("JFactoryPromise", function() {
 

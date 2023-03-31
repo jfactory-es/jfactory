@@ -1,10 +1,11 @@
-const { expect } = require("../scripts/dev/test-utils");
-
 // ---------------------------------------------------------------------------------------------------------------------
 // JFactoryLogger
 // ---------------------------------------------------------------------------------------------------------------------
 
-const { JFactoryLogger } = require("../dist");
+import {
+    describe, it, expect,
+    JFactoryLogger
+} from "../scripts/test/test-import.mjs";
 
 describe("JFactoryLogger", function() {
     let logger;

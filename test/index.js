@@ -1,6 +1,3 @@
-require("../scripts/dev/test-utils");
-
-require("./indexClasses");
-require("./indexTraits");
+import "./indexClasses";
+import "./indexTraits";
 // require("./indexPromises");
-// require("./indexDocs");

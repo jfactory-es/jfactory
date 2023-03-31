@@ -1,6 +1,10 @@
 /*jshint strict: false */
 
-var assert = require("assert");
+import {
+  describe,
+  assert,
+  specify
+} from "../../../../scripts/test/test-import.mjs";
 
 var adapter = global.adapter;
 var resolved = adapter.resolved;
@@ -29,19 +33,20 @@ describe("2.2.5 `onFulfilled` and `onRejected` must be called as functions (i.e.
         });
     });
 
-    describe("sloppy mode", function () {
-        specify("fulfilled", function (done) {
-            resolved(dummy).then(function onFulfilled() {
-                assert.strictEqual(this, global);
-                done();
-            });
-        });
-
-        specify("rejected", function (done) {
-            rejected(dummy).then(null, function onRejected() {
-                assert.strictEqual(this, global);
-                done();
-            });
-        });
-    });
+    // not working with compiled test suite since module is in strict mode
+    // describe("sloppy mode", function () {
+    //     specify("fulfilled", function (done) {
+    //         resolved(dummy).then(function onFulfilled() {
+    //             assert.strictEqual(this, global);
+    //             done();
+    //         });
+    //     });
+    //
+    //     specify("rejected", function (done) {
+    //         rejected(dummy).then(null, function onRejected() {
+    //             assert.strictEqual(this, global);
+    //             done();
+    //         });
+    //     });
+    // });
 });

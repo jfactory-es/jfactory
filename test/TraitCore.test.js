@@ -1,10 +1,11 @@
-const { wait, expect } = require("../scripts/dev/test-utils");
-
 // ---------------------------------------------------------------------------------------------------------------------
 // TraitCore Test
 // ---------------------------------------------------------------------------------------------------------------------
 
-const { jFactory } = require("../dist");
+import {
+    describe, it, expect,
+    jFactory
+} from "../scripts/test/test-import.mjs";
 
 describe("Trait Core", function() {
     it("should auto index", async function() {

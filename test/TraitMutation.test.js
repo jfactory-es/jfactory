@@ -1,11 +1,14 @@
-const { wait, expect } = require("../scripts/dev/test-utils");
-const $ = require("jquery");
-
 // ---------------------------------------------------------------------------------------------------------------------
 // TraitMutation Test
 // ---------------------------------------------------------------------------------------------------------------------
 
-const { jFactory } = require("../dist");
+import {
+    describe, it, expect, afterEach, beforeEach,
+    wait,
+    jFactory
+} from "../scripts/test/test-import.mjs";
+
+const $ = require("jquery");
 
 describe("Trait Mutation", function() {
 

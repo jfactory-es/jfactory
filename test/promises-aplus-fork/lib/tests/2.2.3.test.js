@@ -1,7 +1,11 @@
 "use strict";
 
-var assert = require("assert");
-var testRejected = require("./helpers/testThreeCases").testRejected;
+import {
+  describe,
+  assert,
+  specify
+} from "../../../../scripts/test/test-import.mjs";
+import { testRejected } from "./helpers/testThreeCases";
 
 var adapter = global.adapter;
 var rejected = adapter.rejected;
