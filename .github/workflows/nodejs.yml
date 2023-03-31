@@ -21,5 +21,6 @@ jobs:
       run: |
         npm ci
         npm run test:bundle:prod
+        npm run test:bundle:dev
       env:
         CI: true
