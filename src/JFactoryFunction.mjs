@@ -1,5 +1,3 @@
-/*! jFactory, (c) 2019-2021, Stéphane Plazis, http://github.com/jfactory-es/jfactory */
-
 import { JFACTORY_DEV, JFACTORY_LOG } from "./jFactory-env.mjs";
 import { JFACTORY_ERR_INVALID_CALL } from "./JFactoryError.mjs";
 import { JFactoryExpect } from "./JFactoryExpect.mjs";

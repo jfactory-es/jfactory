@@ -1,28 +1,22 @@
-/*! jFactory, (c) 2019-2021, Stéphane Plazis, http://github.com/jfactory-es/jfactory */
+export const JFACTORY_NAME  = env("JFACTORY_ENV_NAME") ?? "jFactory";
+export const JFACTORY_VER   = env("JFACTORY_ENV_VER") ?? "(custom build)";
 
 // ---------------------------------------------------------------------------------------------------------------------
 // jFactory Env
 // ---------------------------------------------------------------------------------------------------------------------
 // Contextualize jFactory for bundle, raw source or partial export usage
 // ---------------------------------------------------------------------------------------------------------------------
+// JFACTORY_ENV_* are optional globals that allow contextualization at startup.
+// Note that our constructor replaces some 'env("JFACTORY_ENV_*")' with hard-coded primitives (name, version, dev mode).
+// See https://github.com/jfactory-es/jfactory/blob/master/docs/ref-overriding.md
+// ---------------------------------------------------------------------------------------------------------------------
 
-// The builder replaces these lines
-export const JFACTORY_NAME = "jFactory";
-export const JFACTORY_VER  = "(custom build)";
-
-// The builder may replace env("JFACTORY_ENV_*") by hard coded true/false primitives,
-// allowing the bundler to remove unused code using Tree Shaking
 export const JFACTORY_CLI   = env("JFACTORY_ENV_CLI") ?? isNode();
-export const JFACTORY_REPL  = env("JFACTORY_ENV_REPL") ?? isPlayground();
-export const JFACTORY_DEV   = env("JFACTORY_ENV_DEV") ?? true; // Developer Mode
-export const JFACTORY_DEBUG = env("JFACTORY_ENV_DEBUG") ?? false; // Debug the library
-export const JFACTORY_LOG   = env("JFACTORY_ENV_LOG") ?? (JFACTORY_DEV || JFACTORY_DEBUG)
-export const JFACTORY_TRACE = env("JFACTORY_ENV_TRACE") ?? (JFACTORY_DEV || JFACTORY_DEBUG)
-export const JFACTORY_BOOT  = env("JFACTORY_ENV_BOOT") ?? true; // Allow autoboot at load
-
-export const jFactoryEnv = env;
-export const jFactoryCfg = cfg;
-export const JFACTORY_CFG = {};
+export const JFACTORY_REPL  = env("JFACTORY_ENV_REPL") ?? isPlayground(); // is this running in a REPL ?
+export const JFACTORY_DEV   = env("JFACTORY_ENV_DEV") ?? false; // Developer Mode
+export const JFACTORY_LOG   = env("JFACTORY_ENV_LOG") ?? JFACTORY_DEV;
+export const JFACTORY_TRACE = env("JFACTORY_ENV_TRACE") ?? JFACTORY_DEV;
+export const JFACTORY_BOOT  = env("JFACTORY_ENV_BOOT") ?? true; // Boot jFactory at load
 
 function env(key) {
     let env = globalThis[key];
@@ -63,3 +57,6 @@ function isPlayground() {
         return hosts.indexOf(new URL(document.location.href).hostname) !== -1
     } catch {}
 }
+
+export const jFactoryCfg = cfg;
+export const JFACTORY_CFG = {};

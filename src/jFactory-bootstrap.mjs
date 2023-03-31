@@ -1,5 +1,3 @@
-/*! jFactory, (c) 2019-2021, Stéphane Plazis, http://github.com/jfactory-es/jfactory */
-
 import { JFACTORY_BOOT, JFACTORY_DEV, JFACTORY_LOG, JFACTORY_NAME, JFACTORY_VER } from "./jFactory-env.mjs";
 import { jFactoryCompat_run } from "./jFactory-compat.mjs";
 

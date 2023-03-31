@@ -1,7 +1,17 @@
 {
   "name": "jfactory",
-  "version": "1.7.7",
-  "description": "Easily modularize your application into cancelable components. Everything they initialize can be monitored, stopped and removed automatically, including views, promise chains, requests, listeners, DOM and CSS.",
+  "version": "1.8.0-alpha",
+  "description": "Easily modularize your application into cancelable components. Everything they initialize can be monitored, stopped and removed automatically, including views, nested promise trees, requests, listeners, DOM and CSS.",
+  "author": "Stephane Plazis",
+  "license": "SEE LICENSE IN LICENSE.txt",
+  "x-licenseUrl": "https://raw.githubusercontent.com/jfactory-es/jfactory/master/LICENSE.txt",
+  "x-copyrightYear": "2019-2023",
+  "homepage": "https://github.com/jfactory-es/jfactory",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jfactory-es/jfactory.git"
+  },
+  "bugs": "https://github.com/jfactory-es/jfactory/issues",
   "keywords": [
     "vue",
     "vuejs",
@@ -30,69 +40,37 @@
     "library",
     "framework"
   ],
-  "engines": {
-    "node": ">=14.0.0"
-  },
-  "homepage": "https://github.com/jfactory-es/jfactory#readme",
-  "bugs": "https://github.com/jfactory-es/jfactory/issues",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/jfactory-es/jfactory.git"
-  },
   "main": "dist/index.js",
-  "author": "Stéphane Plazis",
-  "license": "SEE LICENSE IN LICENSE.txt",
-  "//": {
-    "abortcontroller-polyfill": "^1.7.0",
-    "stacktrace-js": "^2.0.2"
+  "devEngines": {
+    "node": ">=18.x"
   },
-  "devDependencies": {
-    "@rollup/plugin-node-resolve": "^11.0.1",
-    "@rollup/plugin-replace": "^2.3.4",
-    "ansi-colors": "^4.1.1",
-    "assert": "^2.0.0",
-    "chai": "^4.2.0",
-    "chai-spies": "^1.0.0",
-    "del": "^6.0.0",
-    "dotenv": "^8.2.0",
-    "eslint": "^7.17.0",
-    "html-webpack-plugin": "^5.0.0-beta.4",
-    "inquirer": "^7.3.3",
-    "jsdom": "^16.4.0",
-    "mocha": "^7.2.0",
-    "mocha-loader": "^5.1.5",
-    "nock": "^13.0.5",
-    "node-fetch": "^2.6.1",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
-    "rollup": "^2.36.1",
-    "rollup-plugin-terser": "^7.0.2",
-    "semver": "^7.3.4",
-    "sinon": "^9.2.3",
-    "source-map-loader": "^2.0.0",
-    "vue": "^2.6.12",
-    "webpack": "^5.12.2",
-    "webpack-dev-server": "^3.11.1"
+  "files": [
+    "dist/**",
+    "src/**"
+  ],
+  "scripts": {
+    "build": "node scripts/build.js",
+    "watch:raw": "npx vitest",
+    "watch:raw:ui": "npx vitest --ui",
+    "test:raw": "npx vitest run",
+    "test:bundle:prod": "PROD_BUNDLE=true npx vitest run",
+    "test:bundle:dev": "DEV_BUNDLE=true npx vitest run"
   },
   "peerDependencies": {
     "jquery": "^3",
     "lodash": "^4"
   },
-  "scripts": {
-    "srv:raw": "BUNDLE=false NODE_ENV=development node scripts/wds.js",
-    "srv:bundle:dev": "NODE_ENV=development node scripts/wds.js",
-    "srv:bundle:prod": "node scripts/wds.js",
-    "watch:raw": "BUNDLE=false NODE_ENV=development WATCH=true node scripts/build.js",
-    "test:raw": "BUNDLE=false NODE_ENV=development node scripts/test.js test/index.js",
-    "test:bundle:dev": "NODE_ENV=development node scripts/test.js test/index.js",
-    "test:bundle:prod": "node scripts/test.js test/index.js",
-    "lint": "node scripts/lint.js",
-    "build": "node scripts/build.js"
-  },
-  "files": [
-    "dist/**",
-    "src/**",
-    "scripts/bundler/RollupCfgMaker.js",
-    "scripts/bundler/dist-*.*"
-  ]
+  "devDependencies": {
+    "@rollup/plugin-replace": "^5.0.2",
+    "@rollup/plugin-terser": "^0.4.0",
+    "@vitest/ui": "^0.29.8",
+    "ansi-colors": "^4.1.3",
+    "jsdom": "^21.1.1",
+    "msw": "^1.1.1",
+    "node-fetch": "^4.0.0-beta.4",
+    "rollup": "^3.20.2",
+    "semver": "^7.3.8",
+    "sinon": "^15.0.2",
+    "vitest": "^0.29.8"
+  }
 }

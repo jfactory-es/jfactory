@@ -1,5 +1,3 @@
-/*! jFactory, (c) 2019-2021, Stéphane Plazis, http://github.com/jfactory-es/jfactory */
-
 import { JFACTORY_ERR_INVALID_CALL } from "./JFactoryError.mjs";
 import { JFactoryTraits } from "./JFactoryTraits.mjs";
 import { jFactoryFunctionWrappable } from "./JFactoryFunction.mjs";

@@ -1,7 +1,8 @@
 /*!
- * jFactory v1.7.7
- * http://github.com/jfactory-es/jfactory
- * (c) 2019-2021, Stéphane Plazis, http://github.com/jfactory-es/jfactory/blob/master/LICENSE.txt
+ * jFactory v1.8.0-alpha 2023-03-31
+ * https://github.com/jfactory-es/jfactory
+ * (c) 2019-2023 Stephane Plazis
+ * License: https://raw.githubusercontent.com/jfactory-es/jfactory/master/LICENSE.txt
  */
 'use strict';
 

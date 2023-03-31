@@ -1,5 +1,3 @@
-/*! jFactory, (c) 2019-2021, Stéphane Plazis, http://github.com/jfactory-es/jfactory */
-
 import { JFACTORY_DEV, JFACTORY_CLI, JFACTORY_REPL } from "./jFactory-env.mjs";
 import { jFactoryCfg } from "./jFactory-env.mjs";
 import { JFactoryExpect } from "./JFactoryExpect.mjs";
@@ -101,7 +99,7 @@ export class JFactoryLogger {
 }
 
 // #limitation# To preserve the line number, we can only use native functions, like bind
-// #limitation# Because we use bind(), only the style of the first element can be efficiently defined
+// #limitation# Because we use bind(), only the style of the first element can be defined efficiently
 
 JFactoryLogger.FORMATTER_NATIVE = {
     log: logger => logger.console.log.bind(logger.console, logger.label + ">"),

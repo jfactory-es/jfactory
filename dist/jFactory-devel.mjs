@@ -1,34 +1,28 @@
 /*!
- * jFactory v1.7.7
- * http://github.com/jfactory-es/jfactory
- * (c) 2019-2021, Stéphane Plazis, http://github.com/jfactory-es/jfactory/blob/master/LICENSE.txt
+ * jFactory-devel v1.8.0-alpha 2023-03-31
+ * https://github.com/jfactory-es/jfactory
+ * (c) 2019-2023 Stephane Plazis
+ * License: https://raw.githubusercontent.com/jfactory-es/jfactory/master/LICENSE.txt
  */
-import _ from 'lodash';
-import $ from 'jquery';
+const JFACTORY_NAME  = "jFactory-devel" ;
+const JFACTORY_VER   = "1.8.0-alpha" ;
 
 // ---------------------------------------------------------------------------------------------------------------------
 // jFactory Env
 // ---------------------------------------------------------------------------------------------------------------------
 // Contextualize jFactory for bundle, raw source or partial export usage
 // ---------------------------------------------------------------------------------------------------------------------
+// JFACTORY_ENV_* are optional globals that allow contextualization at startup.
+// Note that our constructor replaces some 'env("JFACTORY_ENV_*")' with hard-coded primitives (name, version, dev mode).
+// See https://github.com/jfactory-es/jfactory/blob/master/docs/ref-overriding.md
+// ---------------------------------------------------------------------------------------------------------------------
 
-// The builder replaces these lines
-const JFACTORY_NAME = "jFactory";
-const JFACTORY_VER  = "1.7.7-devel-mjs";
-
-// The builder may replace env("JFACTORY_ENV_*") by hard coded true/false primitives,
-// allowing the bundler to remove unused code using Tree Shaking
 const JFACTORY_CLI   = env("JFACTORY_ENV_CLI") ?? isNode();
-const JFACTORY_REPL  = env("JFACTORY_ENV_REPL") ?? isPlayground();
+const JFACTORY_REPL  = env("JFACTORY_ENV_REPL") ?? isPlayground(); // is this running in a REPL ?
 const JFACTORY_DEV   = true ; // Developer Mode
-const JFACTORY_DEBUG = false ; // Debug the library
-const JFACTORY_LOG   = env("JFACTORY_ENV_LOG") ?? (JFACTORY_DEV );
-const JFACTORY_TRACE = env("JFACTORY_ENV_TRACE") ?? (JFACTORY_DEV );
-const JFACTORY_BOOT  = env("JFACTORY_ENV_BOOT") ?? true; // Allow autoboot at load
-
-const jFactoryEnv = env;
-const jFactoryCfg = cfg;
-const JFACTORY_CFG = {};
+const JFACTORY_LOG   = env("JFACTORY_ENV_LOG") ?? JFACTORY_DEV;
+const JFACTORY_TRACE = env("JFACTORY_ENV_TRACE") ?? JFACTORY_DEV;
+const JFACTORY_BOOT  = env("JFACTORY_ENV_BOOT") ?? true; // Boot jFactory at load
 
 function env(key) {
     let env = globalThis[key];
@@ -69,6 +63,9 @@ function isPlayground() {
         return hosts.indexOf(new URL(document.location.href).hostname) !== -1
     } catch {}
 }
+
+const jFactoryCfg = cfg;
+const JFACTORY_CFG = {};
 
 // ---------------------------------------------------------------------------------------------------------------------
 // jFactoryCompat
@@ -121,6 +118,26 @@ function jFactoryCompat_run(entries = deferred) {
             }
         }
     }
+}
+
+const _ = globalThis._ || require('lodash');
+const $ = globalThis.$ || require('jquery');
+
+{
+    jFactoryCompat_run([
+        {
+            name: "lodash",
+            test: () => _,
+            strict: true,
+            info: "http://github.com/jfactory-es/jfactory/blob/master/docs/ref-import.md"
+        },
+        {
+            name: "jquery",
+            test: () => $,
+            strict: true,
+            info: "http://github.com/jfactory-es/jfactory/blob/master/docs/ref-import.md"
+        }
+    ]);
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -291,9 +308,9 @@ class JFactoryTrace_LIB_STACKTRACE extends JFactoryTrace {
             );
         };
 
-        h(StackTrace.getSync(this.source, config.libOptions));
-        if (config.useSourcemap) {
-            this.asyncPrintable = StackTrace.fromError(this.source, config.libOptions).then(h);
+        h(StackTrace.getSync(this.source, config$2.libOptions));
+        if (config$2.useSourcemap) {
+            this.asyncPrintable = StackTrace.fromError(this.source, config$2.libOptions).then(h);
         } else {
             this.asyncPrintable = Promise.resolve(this.printable);
         }
@@ -331,18 +348,18 @@ class JFactoryTrace_LIB_STACKTRACE extends JFactoryTrace {
 // ---------------------------------------------------------------------------------------------------------------------
 
 let tracer;
-if ( JFACTORY_TRACE) {
+if (JFACTORY_TRACE) {
 
     tracer = {
 
         captureTraceSource(omitAboveFunctionName, omitSelf, stackTraceLimit) {
-            return new(config.tracer || JFactoryTrace)(omitAboveFunctionName, omitSelf, stackTraceLimit)
+            return new(config$2.tracer || JFactoryTrace)(omitAboveFunctionName, omitSelf, stackTraceLimit)
         },
 
         attachTrace(
             targetObject, traceSource /* or omitAboveFunctionName */,
-            traceLogKey = config.keys[0], traceSourceKey = config.keys[1],
-            label = config.label
+            traceLogKey = config$2.keys[0], traceSourceKey = config$2.keys[1],
+            label = config$2.label
         ) {
             if (typeof traceSource !== "object") {
                 traceSource = this.captureTraceSource(traceSource || "attachTrace", !traceSource);
@@ -414,16 +431,16 @@ const jFactoryTrace = tracer;
 // Config
 // ---------------------------------------------------------------------------------------------------------------------
 
-const config = jFactoryCfg("JFACTORY_CFG_JFactoryTrace");
+const config$2 = jFactoryCfg("JFACTORY_CFG_JFactoryTrace");
 
-if ( JFACTORY_TRACE) {
-    config.keys = ["$dev_traceLog", "$dev_traceSource"];
+if (JFACTORY_TRACE) {
+    config$2.keys = ["$dev_traceLog", "$dev_traceSource"];
     if (typeof StackTrace === "object") {
-        config.tracer = JFactoryTrace_LIB_STACKTRACE;
-        config.useSourcemap = false;
+        config$2.tracer = JFactoryTrace_LIB_STACKTRACE;
+        config$2.useSourcemap = false;
     }
     jFactoryBootstrap_onBoot(function() {
-        if (config.tracer === JFactoryTrace_LIB_STACKTRACE) {
+        if (config$2.tracer === JFactoryTrace_LIB_STACKTRACE) {
             console.log("JFactoryTrace: Stacktrace.js support enabled; performances will be affected");
         }
     });
@@ -578,7 +595,7 @@ const config$1 = jFactoryCfg("JFACTORY_CFG_JFactoryError", {
  * @return {*|JFactoryExpect}
  */
 function JFactoryExpect(label, value) {
-     jFactoryBootstrap_expected();
+    jFactoryBootstrap_expected();
     if (new.target) {
         this.label = label;
         this.value = value;
@@ -1133,7 +1150,7 @@ jFactoryBootstrap_onBoot(function() {
 // Status: Beta
 // ---------------------------------------------------------------------------------------------------------------------
 
-const moduleGenId = () => ++moduleGenId.uid; moduleGenId.uid = 0;
+const moduleGenId$1 = () => ++moduleGenId$1.uid; moduleGenId$1.uid = 0;
 
 class JFactoryAbout {
     constructor(owner, about = {}) {
@@ -1152,7 +1169,7 @@ class JFactoryAbout {
 
         let name;
         let fingerprint;
-        let uid = moduleGenId();
+        let uid = moduleGenId$1();
 
         if (about.name) {
             name = about.name;
@@ -1193,7 +1210,7 @@ class JFactoryAbout {
 // #limitation# async functions always returns a native Promise even if returning an extended Promise
 // #limitation# async functions always returns a pending Promise even if returning a resolved Promise
 
-const moduleGenId$1 = () => ++moduleGenId$1.uid; moduleGenId$1.uid = 0;
+const moduleGenId = () => ++moduleGenId.uid; moduleGenId.uid = 0;
 
 // ---------------------------------------------------------------------------------------------------------------------
 // JFactoryPromise
@@ -1202,13 +1219,13 @@ const moduleGenId$1 = () => ++moduleGenId$1.uid; moduleGenId$1.uid = 0;
 class JFactoryPromise extends Promise {
 
     constructor({ name, config, traceSource }, executor) {
-         jFactoryBootstrap_expected();
+        jFactoryBootstrap_expected();
 
         if (arguments.length === 1) {
             [name, config, executor] = [null, null, arguments[0]];
         }
 
-        const chainId = moduleGenId$1();
+        const chainId = moduleGenId();
         config = { ...JFactoryPromise.DEFAULT_CONFIG, ...config };
         name = name || "unnamed";
 
@@ -1471,7 +1488,7 @@ class JFactoryPromise extends Promise {
         }
 
         newPromise = Object.assign(super.then(wrappedFulfilled, wrappedRejected), this);
-        moduleGenId$1.uid--; // reverse because not a new chain
+        moduleGenId.uid--; // reverse because not a new chain
         newPromise.$type = type;
 
         Object.defineProperties(newPromise, {
@@ -2791,11 +2808,11 @@ const SYMBOL_ENABLED = Symbol();
 class JFactoryLogger {
 
     constructor(options) {
-        if ( options) {
+        if (options) {
             JFactoryExpect("JFactoryLogger(options)", options)
                 .properties(Object.getOwnPropertyNames(JFactoryLogger.DEFAULT_CONFIG));
         }
-        helper_defaultsDeep(this, options, config$2);
+        helper_defaultsDeep(this, options, config);
         this.installAccessor("log");
         this.installAccessor("warn");
         this.installAccessor("error");
@@ -2869,7 +2886,7 @@ class JFactoryLogger {
 }
 
 // #limitation# To preserve the line number, we can only use native functions, like bind
-// #limitation# Because we use bind(), only the style of the first element can be efficiently defined
+// #limitation# Because we use bind(), only the style of the first element can be defined efficiently
 
 JFactoryLogger.FORMATTER_NATIVE = {
     log: logger => logger.console.log.bind(logger.console, logger.label + ">"),
@@ -2919,7 +2936,7 @@ JFactoryLogger.DEFAULT_CONFIG = /** @lends JFactoryLogger# */ {
     }
 };
 
-const config$2 = jFactoryCfg("JFACTORY_CFG_JFactoryLogger", JFactoryLogger.DEFAULT_CONFIG);
+const config = jFactoryCfg("JFACTORY_CFG_JFactoryLogger", JFactoryLogger.DEFAULT_CONFIG);
 
 // ---------------------------------------------------------------------------------------------------------------------
 // JFactoryTime
@@ -3232,6 +3249,8 @@ class JFactoryComponent extends JFactoryCoreObject {
 
 /** @return {JFactoryComponent} */
 const jFactory = (name, properties) => Object.assign(new JFactoryComponent(name), properties);
+
+// ---------------------------------------------------------------------------------------------------------------------
 
 // ---------------------------------------------------------------------------------------------------------------------
 // Trait Object
@@ -3886,6 +3905,8 @@ jFactory.TraitService = TraitService;
 jFactory.TraitTask = TraitTask;
 
 // ---------------------------------------------------------------------------------------------------------------------
+
+// ---------------------------------------------------------------------------------------------------------------------
 // Trait Fetch
 // ---------------------------------------------------------------------------------------------------------------------
 
@@ -4220,7 +4241,7 @@ class TraitDOM {
             domId = true;
         }
 
-        if ( this.$.dom.has(id)) {
+        if (this.$.dom.has(id)) {
             throw new JFACTORY_ERR_KEY_DUPLICATED({ target: "$dom(id)", given: id })
         }
 
@@ -4270,7 +4291,7 @@ class TraitDOM {
             domId = true;
         }
 
-        if ( this.$.dom.has(id)) {
+        if (this.$.dom.has(id)) {
             throw new JFACTORY_ERR_KEY_DUPLICATED({ target: "$domFetch(id)", given: id })
         }
 
@@ -4358,7 +4379,7 @@ class TraitCSS {
             cssId = true;
         }
 
-        if ( this.$.css.has(id)) {
+        if (this.$.css.has(id)) {
             throw new JFACTORY_ERR_KEY_DUPLICATED({ target: "$css(id)", given: id })
         }
 
@@ -4384,7 +4405,7 @@ class TraitCSS {
             cssId = true;
         }
 
-        if ( this.$.css.has(id)) {
+        if (this.$.css.has(id)) {
             throw new JFACTORY_ERR_KEY_DUPLICATED({ target: "$cssFetch(id)", given: id })
         }
 
@@ -4491,7 +4512,7 @@ class TraitLibVue {
             JFactoryExpect("vue", vue).type(Object);
         }
 
-        if ( this.$.vue.has(id)) {
+        if (this.$.vue.has(id)) {
             throw new JFACTORY_ERR_KEY_DUPLICATED({ target: "$vue(id)", given: id })
         }
 
@@ -4553,7 +4574,7 @@ class TraitLibReact {
             JFactoryExpect("container", container).type(HTMLElement, jQuery);
         }
 
-        if ( this.$.react.has(id)) {
+        if (this.$.react.has(id)) {
             throw new JFACTORY_ERR_KEY_DUPLICATED({ target: "$react(id)", given: id })
         }
 
@@ -4619,7 +4640,8 @@ jFactory.TraitCSS = TraitCSS;
 jFactory.TraitLibVue = TraitLibVue;
 jFactory.TraitLibReact = TraitLibReact;
 
+// ---------------------------------------------------------------------------------------------------------------------
 jFactoryBootstrap(true);
 
-export { JFACTORY_BOOT, JFACTORY_CFG, JFACTORY_CLI, JFACTORY_COMPAT_AbortController, JFACTORY_COMPAT_MutationObserver, JFACTORY_COMPAT_Request, JFACTORY_COMPAT_fetch, JFACTORY_DEBUG, JFACTORY_DEV, JFACTORY_ERR_INVALID_CALL, JFACTORY_ERR_INVALID_VALUE, JFACTORY_ERR_KEY_DUPLICATED, JFACTORY_ERR_KEY_MISSING, JFACTORY_ERR_PROMISE_EXPIRED, JFACTORY_ERR_REQUEST_ERROR, JFACTORY_LOG, JFACTORY_NAME, JFACTORY_REPL, JFACTORY_TRACE, JFACTORY_VER, JFactoryAbout, JFactoryComponent, JFactoryCoreObject, JFactoryError, JFactoryEventSelector, JFactoryEventSelectorParser, JFactoryEvents, JFactoryEventsManager, JFactoryExpect, JFactoryFetch, JFactoryFunctionComposer, JFactoryFunctionConditional, JFactoryFunctionExpirable, JFactoryFunctionWrappable, JFactoryLogger, JFactoryObject, JFactoryPromise, JFactoryPromiseChain, JFactoryPromisePath, JFactoryPromiseSync, JFactoryTime, JFactoryTimeTrace, JFactoryTrace, JFactoryTrace_LIB_STACKTRACE, JFactoryTraits, NOOP, TraitAbout, TraitCSS, TraitCore, TraitDOM, TraitEvents, TraitFetch, TraitInterval, TraitLibReact, TraitLibVue, TraitLog, TraitMutation, TraitService, TraitState, TraitTask, TraitTimeout, assignPrivate, assignPrivateMember, helper_camelCase, helper_defaultsDeep, helper_deferred, helper_get, helper_isNative, helper_isNumber, helper_isPlainObject, helper_isString, helper_lowerFirst, helper_setFunctionName, helper_template, helper_url_abs, helper_useragent, jFactory, jFactoryBootstrap, jFactoryBootstrap_expected, jFactoryBootstrap_onBoot, jFactoryCfg, jFactoryCompat_require, jFactoryCompat_run, jFactoryEnv, jFactoryFunctionConditional, jFactoryFunctionExpirable, jFactoryFunctionWrappable, jFactoryTrace, jFactoryTraits, jQuery };
-//# sourceMappingURL=jFactory-devel.mjs.js.map
+export { JFACTORY_BOOT, JFACTORY_CFG, JFACTORY_CLI, JFACTORY_COMPAT_AbortController, JFACTORY_COMPAT_MutationObserver, JFACTORY_COMPAT_Request, JFACTORY_COMPAT_fetch, JFACTORY_DEV, JFACTORY_ERR_INVALID_CALL, JFACTORY_ERR_INVALID_VALUE, JFACTORY_ERR_KEY_DUPLICATED, JFACTORY_ERR_KEY_MISSING, JFACTORY_ERR_PROMISE_EXPIRED, JFACTORY_ERR_REQUEST_ERROR, JFACTORY_LOG, JFACTORY_NAME, JFACTORY_REPL, JFACTORY_TRACE, JFACTORY_VER, JFactoryAbout, JFactoryComponent, JFactoryCoreObject, JFactoryError, JFactoryEventSelector, JFactoryEventSelectorParser, JFactoryEvents, JFactoryEventsManager, JFactoryExpect, JFactoryFetch, JFactoryFunctionComposer, JFactoryFunctionConditional, JFactoryFunctionExpirable, JFactoryFunctionWrappable, JFactoryLogger, JFactoryObject, JFactoryPromise, JFactoryPromiseChain, JFactoryPromisePath, JFactoryPromiseSync, JFactoryTime, JFactoryTimeTrace, JFactoryTrace, JFactoryTrace_LIB_STACKTRACE, JFactoryTraits, NOOP, TraitAbout, TraitCSS, TraitCore, TraitDOM, TraitEvents, TraitFetch, TraitInterval, TraitLibReact, TraitLibVue, TraitLog, TraitMutation, TraitService, TraitState, TraitTask, TraitTimeout, assignPrivate, assignPrivateMember, helper_camelCase, helper_defaultsDeep, helper_deferred, helper_get, helper_isNative, helper_isNumber, helper_isPlainObject, helper_isString, helper_lowerFirst, helper_setFunctionName, helper_template, helper_url_abs, helper_useragent, jFactory, jFactoryBootstrap, jFactoryBootstrap_expected, jFactoryBootstrap_onBoot, jFactoryCfg, jFactoryCompat_require, jFactoryCompat_run, jFactoryFunctionConditional, jFactoryFunctionExpirable, jFactoryFunctionWrappable, jFactoryTrace, jFactoryTraits, jQuery };
+//# sourceMappingURL=jFactory-devel.mjs.map

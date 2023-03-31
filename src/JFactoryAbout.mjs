@@ -1,5 +1,3 @@
-/*! jFactory, (c) 2019-2021, Stéphane Plazis, http://github.com/jfactory-es/jfactory */
-
 import { JFACTORY_DEV } from "./jFactory-env.mjs";
 import { helper_camelCase } from "./jFactory-helpers.mjs";
 import { JFactoryExpect } from "./JFactoryExpect.mjs";

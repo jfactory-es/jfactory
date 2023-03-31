@@ -1,17 +1,10 @@
-/*! jFactory, (c) 2019-2021, Stéphane Plazis, http://github.com/jfactory-es/jfactory */
-
 import { JFACTORY_DEV } from "./jFactory-env.mjs";
 import { jFactoryCompat_run } from "./jFactory-compat.mjs";
 
-// #JFACTORY_IF NPM /*
-const _ = globalThis._;
-const $ = globalThis.$;
-// #JFACTORY_IF NPM */
-// #JFACTORY_IF NPM import _ from "lodash";
-// #JFACTORY_IF NPM import $ from "jquery";
+const _ = globalThis._ || require('lodash');
+const $ = globalThis.$ || require('jquery');
 
 if (JFACTORY_DEV) {
-    // #JFACTORY_IF NPM /*
     jFactoryCompat_run([
         {
             name: "lodash",
@@ -26,7 +19,6 @@ if (JFACTORY_DEV) {
             info: "http://github.com/jfactory-es/jfactory/blob/master/docs/ref-import.md"
         }
     ]);
-    // #JFACTORY_IF NPM */
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

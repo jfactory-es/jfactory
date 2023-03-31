@@ -1,5 +1,3 @@
-/*! jFactory, (c) 2019-2021, Stéphane Plazis, http://github.com/jfactory-es/jfactory */
-
 import { JFACTORY_DEV } from "./jFactory-env.mjs";
 import { JFACTORY_TRACE } from "./jFactory-env.mjs";
 import { NOOP, helper_useragent } from "./jFactory-helpers.mjs";
