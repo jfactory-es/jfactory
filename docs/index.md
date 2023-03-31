@@ -36,12 +36,12 @@ jFactory components are able to :
 - log messages in console with controllable loggers
 - improve the Promise chains (Awaitable/Expirable promise tree)
 - easily create/load CSS & DOM and clone from \<template>
-
+<!--
 ## Supported APIs <img height="20" src="https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg"> <img height="20" src="https://vuejs.org/images/logo.png"> <img height="20" src="https://jfactory-es.github.io/jfactory/img/HTML5.png">
 
 jFactory supports **Vue.js**, **React**, and **HTML5 WebComponents** allowing components to automatically **uninstall** and **reinstall** their views.
 See [Playground](playground/README.md).
-
+-->
 ## Overview
 
 In a nutshell, jFactory provides methods to register listeners, views, dom, css, requests and asynchronous tasks that will be automatically stopped (including subpromise trees) and removed at opposite service state change (install/uninstall, enable/disable).
