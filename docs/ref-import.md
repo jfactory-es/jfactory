@@ -2,10 +2,20 @@
 
 # Importing jFactory
 
-## Import as \<script\> 
+* [Import from NPM module](#import-from-npm)
+* [Import from \<script\>](#import-from-script) for immediate testing
+* [Import from Raw source](#import-from-raw-source)
 
-! NOT THE RECOMMENDED USAGE !\
-For immediate testing in html file:
+## Production and Development modules
+
+The development version `jFactory-devel.*` provides input validation tests, debug tools, and logs.
+In development mode, you must see a startup message in the console.
+
+## Import from \<script\>
+
+**! NOT RECOMMENDED !**\
+_Use this form of import for quick library testing. For your projects, it's recommended to use the NPM module to reduce the library's footprint._
+
 
 ```html
 <!doctype html>
@@ -27,21 +37,21 @@ For immediate testing in html file:
             this.$log("enable")
         }
     });
-    module.$install(true)
+    module.$install(true);
 
     JFactoryPromise.resolve('ok')
-        .then(r => console.log(r))
+        .then(r => console.log(r));
 </script>
 </body>
 </html>
 ```
 
-## Import as node_modules (NPM) 
+## Import from NPM
 
-This recommended installation allows you to use a bundler like Webpack to benefit from TreeShacking.
-The package uses [peer dependencies](https://stackoverflow.com/a/34645112) to maximize optimizations with your project (so you need to install them manually). 
+To minimize the size of your imports, we recommend using a bundler like Webpack with TreeShaking enabled. This will allow you to import only the necessary code and reduce the overall footprint of your project.
 
-> See also [babel-plugin-lodash](https://github.com/lodash/babel-plugin-lodash) to reduce the size of lodash.
+To take advantage of these optimizations, the package uses [peer dependencies](https://stackoverflow.com/a/34645112), which you'll need to manually install in your project. By using peer dependencies, you can ensure that your project and jFactory benefits from the same optimized versions of the required dependencies.
+Also, plugins like [lodash-webpack-plugin](https://github.com/lodash/lodash-webpack-plugin) can help to reduce the size of lodash.
 
 ```
 npm add lodash jquery 
@@ -50,9 +60,9 @@ npm add jfactory
 
 Now you can import the module in your project files:
 
-#### Manual import
+#### Force a specific import
 
-You can import a specific module using one of these lines:
+To force a specific module, use one of these lines:
 
 ```javascript
 const { jFactory } = require('jfactory/dist/jFactory.umd.js') // production
@@ -61,24 +71,24 @@ import { jFactory } from "jfactory/dist/jFactory.mjs.js" // production
 import { jFactory } from "jfactory/dist/jFactory-devel.mjs.js" // development
 ```
 
-#### Automatic import  
+#### Conditional loading (Automatic import)  
 
-You can import a contextualized module using one of these lines:
+The conditional loading feature enables automatic switching between development and production modules, based on your project's build mode.
 
 ```javascript
 const { jFactory } = require("jfactory")   
 import { jFactory } from "jfactory"  
 ```
 
-This uses the `process.env.NODE_ENV` and [Tree Shaking](https://webpack.js.org/guides/tree-shaking/) to contextually 
+This uses the `process.env.NODE_ENV` to contextually 
 import the `production` or the `development` module at compile time.
 
-Note that if you are using Weback, it configures `NODE_ENV` with the value of its [`mode`](https://webpack.js.org/configuration/mode/) 
-option, so you shouldn't need to set it: your project will automatically use the production module 
+Note that Weback configures `NODE_ENV` with the value of its [`mode`](https://webpack.js.org/configuration/mode/) 
+option, so you shouldn't need to configure anything: your project will automatically use the production module 
 if webpack is configured for production.
 
 **Restriction:** Because the "automatic import" is a CommonJS file, it may not work when imported from an ES6 ".mjs" file. 
-In this case, you may need to use the [manual import](#nodejs-manual-import).
+In this case, you may need to use the [manual import](#nodejs-manual-import) or use a conditionnal ES6 import(). 
 
 <!--
 _Additional note_: 
@@ -101,7 +111,7 @@ _Additional note_:
 >```
 -->
 
-## Import as raw source
+## Import from raw source
 
 jFactory can also be used from its source files (/src/index.mjs).
 ```shell
@@ -110,17 +120,16 @@ git clone https://github.com/jfactory-es/jfactory
 
 ```html
 <script>
-    JFACTORY_ENV_DEV = true
+    JFACTORY_ENV_DEV = true // enable developer mode
     // ... see /src/jFactory-env.mjs
 </script>
 <script type="module" src="src/index.mjs"></script>
-<!-- or from a module: import { jFactory } from "./src/index.mjs" -->
 ```
 
-## Development module
-
-The development version `jFactory-devel.*` provides additional debug tools and logs. 
-You must see a log in the console when loaded. If not, see manual import. 
+Or as ES6 import:
+```javascript
+import { jFactory } from "./src/index.mjs"
+```
 
 ## See also
 
