@@ -1,6 +1,14 @@
 name: Node CI
 
-on: [push]
+on:
+  push:
+    paths:
+      - 'dist/**/*'
+      - 'scripts/**/*'
+      - 'src/**/*'
+      - 'test/**/*'
+      - 'package.json'
+      - '*.js'
 
 jobs:
   build:
@@ -20,6 +28,8 @@ jobs:
     - name: npm install, build, and test
       run: |
         npm ci
+        npm run test:bundle:prod
+        npm run test:bundle:dev
         npm run build
         npm run test:bundle:prod
         npm run test:bundle:dev
