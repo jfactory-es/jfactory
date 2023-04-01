@@ -25,12 +25,16 @@ including views, nested promises, requests, listeners, DOM and CSS.</b>
 - **Keep track in DevTools** of all named subscriptions (listeners, timers, requests, promises, dom, css...)
 - Improve promise chains with **Awaitable/Expirable nested Promise trees**.
 
+<br>
+
 <div align="center">
 
 | [Installation](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-import.md) | [Documentation](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-index.md)                                                                                                                                |
  |----------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| ```npm add lodash jquery jfactory```                                                   | [Traits](https://github.com/jfactory-es/jfactory/tree/master/docs/ref-index.md#traits-component-features) / [Classes](https://github.com/jfactory-es/jfactory/tree/master/docs/ref-index.md#classes-internal-library) |
-
+<!--
+ | ```npm add lodash jquery jfactory```                                                   | [Traits](https://github.com/jfactory-es/jfactory/tree/master/docs/ref-index.md#traits-component-features) / [Classes](https://github.com/jfactory-es/jfactory/tree/master/docs/ref-index.md#classes-internal-library) |
+-->
+ 
 [Playground](playground/README.md) -
 [Starter Kit](https://github.com/jfactory-es/jfactory-starterkit)
 
