@@ -62,13 +62,13 @@ Now you can import the module in your project files:
 
 #### Force a specific import
 
-To force a specific module, use one of these lines:
+To force a specific version (development/production), use one of these lines:
 
 ```javascript
-const { jFactory } = require('jfactory/dist/jFactory.umd.js') // production
-const { jFactory } = require('jfactory/dist/jFactory-devel.umd.js') // development
-import { jFactory } from "jfactory/dist/jFactory.mjs.js" // production
-import { jFactory } from "jfactory/dist/jFactory-devel.mjs.js" // development
+const { jFactory } = require('jfactory/dist/jFactory.umd.js') // production, umd.js
+const { jFactory } = require('jfactory/dist/jFactory-devel.umd.js') // development, umd.js
+import { jFactory } from "jfactory/dist/jFactory.mjs" // production, ES6 .mjs
+import { jFactory } from "jfactory/dist/jFactory-devel.mjs" // development, ES6 .mjs
 ```
 
 #### Conditional loading (Automatic import)  
