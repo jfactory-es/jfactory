@@ -13,20 +13,59 @@ including views, nested promises, requests, listeners, DOM and CSS.</b>
 
 # jFactory
 
-**Why?** Imagine a feature that uses views, css, event listeners, requests and asynchronous processing with nested promise trees.
-jFactory groups all this together into a component that provides the methods `$install(), $enable(), $disable() and $uninstall()`. Now, you can safely stop, unload or restart the component, making your asynchronous application easier to control and clean.
+- Easily transform any Object or Class into robust web components.
+- Implement an awaitable **Component Lifecycle** - install, enable, disable, and uninstall.
+- **Subscribe for side effects** such as CSS, DOM, event listeners, observers, timers, requests, and nested promise trees.
+- **Automatically await subscriptions** at each phase of the component lifecycle (loading CSS, requests, promise trees...).
+- **Automatically switch off subscriptions** at the opposite phase of the component lifecycle (install --> uninstall, enable --> disable).
+- Prevent expired asynchronous calls, such as nested promise trees and requests.
+- Debug with ease using filterable nested loggers.
+- **Keep track in DevTools** of all named subscriptions (listeners, timers, requests, promises, dom, css...)
+- Improve promise chains with **Awaitable/Expirable nested Promise trees**.
 
-* [Documentation](https://github.com/jfactory-es/jfactory/tree/master/docs/index.md) / [Traits](https://github.com/jfactory-es/jfactory/tree/master/docs/ref-index.md#traits-component-features) / [Classes](https://github.com/jfactory-es/jfactory/tree/master/docs/ref-index.md#classes-internal-library)
-* [Installation](https://github.com/jfactory-es/jfactory/tree/master/docs/ref-import.md) / [Starter Kit](https://github.com/jfactory-es/jfactory-starterkit)
+\
 
-## Abstract
+<div align="center">
+ 
+ | Installation                         | Documentation                                                                                                                                                                                                                                                                                      |
+ |--------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+ | ```npm add lodash jquery jfactory``` | [Index](https://github.com/jfactory-es/jfactory/tree/master/docs/index.md) / [Traits](https://github.com/jfactory-es/jfactory/tree/master/docs/ref-index.md#traits-component-features) / [Classes](https://github.com/jfactory-es/jfactory/tree/master/docs/ref-index.md#classes-internal-library) |
 
-jFactory components are able to :
-- operate like a service (install, enable, disable, uninstall)
-- automatically switch off subscribed css, dom, event listeners, observers, timers, requests, promise chains and views.
-- automatically prevent expired asynchronous calls (promise subtrees, event handlers...)
-- automatically ensure that the promise chains are completed at service state change (awaitable)
-- keep track in DevTools of all running subscriptions (listeners, timers, requests, promises, dom, css...)
-- log messages in console with controllable loggers
-- improve the Promise chains (Awaitable/Expirable promise tree)
-- easily create/load CSS & DOM and clone from \<template>
+</div>
+
+## Overview
+
+Components **[can be extended from any Class](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-components.md)**,
+or more simply by using an Object Literal through the shortcut [`jFactory()`](ref-components.md#create-a-component-literal):
+
+```javascript
+let component = jFactory("myComponent", {
+
+  onInstall() {
+    this.$domFetch("myDom", "asset.html", "body");
+    this.$cssFetch("myCss", "asset.css");
+  },
+
+  onEnable() {
+    this.$interval("myUpdater", 1000, () =>
+      this.$fetchJSON("myRequest", "asset.json")
+        .then(data => this.$log("updated", data))
+    );
+    this.$on("click", "#bt-switch", () => this.mySwitchHandler());
+    this.$on("click", "#bt-close", () => this.myCloseHandler());
+  },
+
+  async mySwitchHandler() {
+    await (this.$.states.enabled ? this.$disable() : this.$enable());
+    this.$log(this.$.states.enabled);
+  },
+
+  myCloseHandler() {
+    this.$uninstall();
+  }
+
+})
+
+await component.$install();
+await component.$enable();
+```
