@@ -33,8 +33,9 @@ You can create your Class component by inheriting from JFactoryComponent (which 
 import { JFactoryComponent } from "jfactory";
 
 class MyComponentClass extends JFactoryComponent {
-    constructor(name) {
+    constructor(name, arg1) {
         super(name);
+        this.arg1 = arg1;
     }
 }
 
