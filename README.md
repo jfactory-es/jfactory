@@ -17,19 +17,18 @@ including views, nested promises, requests, listeners, DOM and CSS.</b>
 - Implement an awaitable **Component Lifecycle** - install, enable, disable, and uninstall.
 - **Subscribe for side effects** such as CSS, DOM, event listeners, observers, timers, requests, and nested promise trees.
 - **Automatically await subscriptions** at each phase of the component lifecycle (loading CSS, requests, promise trees...).
-- **Automatically switch off subscriptions** at the opposite phase of the component lifecycle (install --> uninstall, enable --> disable).
+- **Automatically switch off subscriptions** at the opposite phase of the component lifecycle (install >> uninstall, enable >> disable).
 - Prevent expired asynchronous calls, such as nested promise trees and requests.
-- Debug with ease using filterable nested loggers.
+- Debug with ease using component filterable nested loggers.
 - **Keep track in DevTools** of all named subscriptions (listeners, timers, requests, promises, dom, css...)
 - Improve promise chains with **Awaitable/Expirable nested Promise trees**.
 
-\
-
+<br>
 <div align="center">
  
- | Installation                         | Documentation                                                                                                                                                                                                                                                                                      |
- |--------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
- | ```npm add lodash jquery jfactory``` | [Index](https://github.com/jfactory-es/jfactory/tree/master/docs/index.md) / [Traits](https://github.com/jfactory-es/jfactory/tree/master/docs/ref-index.md#traits-component-features) / [Classes](https://github.com/jfactory-es/jfactory/tree/master/docs/ref-index.md#classes-internal-library) |
+ | [Installation](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-import.md) | [Documentation](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-index.md)                                                                                                                                |
+ |----------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+ | ```npm add lodash jquery jfactory```                                                   | [Traits](https://github.com/jfactory-es/jfactory/tree/master/docs/ref-index.md#traits-component-features) / [Classes](https://github.com/jfactory-es/jfactory/tree/master/docs/ref-index.md#classes-internal-library) |
 
 </div>
 
