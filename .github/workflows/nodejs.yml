@@ -9,7 +9,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18.x]
+        node-version: [18.x, 19.x]
 
     steps:
     - uses: actions/checkout@v1
@@ -20,6 +20,7 @@ jobs:
     - name: npm install, build, and test
       run: |
         npm ci
+        npm run build
         npm run test:bundle:prod
         npm run test:bundle:dev
       env:
