@@ -3,10 +3,7 @@
 <img width="140" src="https://jfactory-es.github.io/jfactory/img/jFactory.png">
 
 Easily modularize your javascript application into cancelable components.<br>
-<!--
-<b>Everything they initialize can be monitored, stopped and removed automatically,<br>
-including views, nested promises, requests, listeners, DOM and CSS.</b>
--->
+
 [![GitHub version](https://img.shields.io/github/package-json/v/jfactory-es/jfactory.svg?label=git)](https://github.com/jfactory-es/jfactory)
 [![npm version](https://img.shields.io/npm/v/jfactory.svg)](https://www.npmjs.com/package/jfactory)
 [![Tests](https://github.com/jfactory-es/jfactory/workflows/Node%20CI/badge.svg)](#implementation)
@@ -14,6 +11,7 @@ including views, nested promises, requests, listeners, DOM and CSS.</b>
 </div>
 
 # jFactory
+<img align="right" src="https://jfactory-es.github.io/jfactory/img/pic1.png">
 
 - Easily transform any Object or Class into robust web components.
 - Implement an awaitable **Component Lifecycle** - install, enable, disable, and uninstall.
@@ -30,10 +28,7 @@ including views, nested promises, requests, listeners, DOM and CSS.</b>
 <div align="center">
 
 | [Installation](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-import.md) | [Documentation](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-index.md)                                                                                                                                |
- |----------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-<!--
- | ```npm add lodash jquery jfactory```                                                   | [Traits](https://github.com/jfactory-es/jfactory/tree/master/docs/ref-index.md#traits-component-features) / [Classes](https://github.com/jfactory-es/jfactory/tree/master/docs/ref-index.md#classes-internal-library) |
--->
+|----------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
  
 [Playground](playground/README.md) -
 [Starter Kit](https://github.com/jfactory-es/jfactory-starterkit)
@@ -44,10 +39,6 @@ including views, nested promises, requests, listeners, DOM and CSS.</b>
 ## Learning
 
 jFactory is an easy-to-learn library. Unlike a framework, it does not impose an architecture: you are free to use only what you need.
--->
-<!--
-All the [methods are listed here](ref-index.md#traits-component-features). \
-See also the [Playground](playground/README.md) and the [Starter Kit](https://github.com/jfactory-es/jfactory-starterkit)
 -->
 
 ## Overview
@@ -87,93 +78,18 @@ await component.$install();
 await component.$enable();
 ```
 
-
 <!--
-
-**Why?** Imagine a feature that uses views, css, event listeners, requests and asynchronous processing with nested promise trees.
-jFactory groups all this together into a component that provides the methods `$install(), $enable(), $disable() and $uninstall()`. Now, you can safely stop, unload or restart the component, making your asynchronous application easier to control and clean.
-
-
-* [Installation](ref-import.md) / [Starter Kit](https://github.com/jfactory-es/jfactory-starterkit)
-* [Playground](playground/README.md)
-* [Documentation](ref-index.md) / [Traits](ref-index.md#traits-component-features) / [Classes](ref-index.md#classes-internal-library)
-* [Overriding](ref-overriding.md)
-
-```
-npm add lodash jquery jfactory
-```
-
-## Abstract
-
-jFactory components are able to :
-- operate like a service (install, enable, disable, uninstall)
-- automatically switch off subscribed css, dom, event listeners, observers, timers, requests, promise chains and views.
-- automatically prevent expired asynchronous calls (promise subtrees, event handlers...)
-- automatically ensure that the promise chains are completed at service state change (awaitable)
-- keep track in DevTools of all running subscriptions (listeners, timers, requests, promises, dom, css...)
-- log messages in console with controllable loggers
-- improve the Promise chains (Awaitable/Expirable promise tree)
-- easily create/load CSS & DOM and clone from \<template>
 
 ## Supported APIs <img height="20" src="https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg"> <img height="20" src="https://vuejs.org/images/logo.png"> <img height="20" src="https://jfactory-es.github.io/jfactory/img/HTML5.png">
 
 jFactory supports **Vue.js**, **React**, and **HTML5 WebComponents** allowing components to automatically **uninstall** and **reinstall** their views.
 See [Playground](playground/README.md).
 
-## Overview
-
-In a nutshell, jFactory provides methods to register listeners, views, dom, css, requests and asynchronous tasks that will be automatically stopped (including subpromise trees) and removed at opposite service state change (install/uninstall, enable/disable).
-
-Components **[can be created from any Class](ref-components.md)**,
-or more simply by using an Object Literal through the shortcut [`jFactory()`](ref-components.md#create-a-component-literal):
-
-```javascript
-let component = jFactory("myComponent", {
-
-  onInstall() {
-    // create, insert and register a DOM container
-    // (jFactory can also use templates, vue and react, load assets...)
-    this.$dom("#containerDiv", '<div>', "body")
-      .append(
-        '<button id="bt-switch">switch</button>' +
-        '<button id="bt-close">close</button>');
-
-    // load a CSS asynchronously
-    this.$cssFetch("myCss", "asset.css");
-
-    this.$on("click", "#bt-switch", () => this.mySwitchHandler());
-    this.$on("click", "#bt-close", () => this.myCloseHandler());
-  },
-
-  onEnable() {
-    this.$interval("myUpdater", 1000, () =>
-      this.$fetchJSON("myRequest", "asset.json")
-        .then(data => this.$log("updated", data))
-    );
-  },
-
-  async mySwitchHandler() {
-    await (this.$.states.enabled ? this.$disable() : this.$enable());
-    this.$log(this.$.states.enabled);
-  },
-
-  myCloseHandler() {
-    // stop and remove:
-    // dom container, css, listeners, intervals, requests, promises...
-    this.$uninstall();
-  }
-})
-
-// install and enable the component
-await component.$install(true);
-```
-
-* [Documentation]()
 -->
 
 ## Patterns
 
-- Registry:<img align="right" src="https://jfactory-es.github.io/jfactory/img/pic1.png"> all component subscriptions (listeners, promises, timers, fetch, dom...) are explorable in a registry, allowing quick visual inspections in DevTools.
+- Registry: all component subscriptions (listeners, promises, timers, fetch, dom...) are explorable in a registry, allowing quick visual inspections in DevTools.
 
 - [Tasks](TraitTask.md): asynchronous processes can be registered as expirable tasks that block the current Service State Change, guaranteeing that everything is resolved before completing it, including all subpromises.
 

@@ -56,12 +56,9 @@ Returns: [`JFactoryPromise`](JFactoryPromise.md)
 >
 >Removes any promise previously created by `$task()` if their [Remove Phase](TraitService-Phases.md#remove-phase) match the given `phase`.
 
-<!--
-### `$taskPromiseAll(autoComplete)`
->
->
->
--->
+### `$taskPromiseAll(autoComplete = false)`
+> Returns a Promise that fulfills when all the registered tasks fulfill.\
+> If `autoComplete` is true, the [chainAutoComplete](#chain-completion--abortion) is enabled on all tasks.
 
 ## Usages
 <!--
