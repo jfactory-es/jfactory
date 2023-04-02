@@ -1,5 +1,5 @@
 /*!
- * jFactory-devel v1.8.0-alpha 2023-03-31
+ * jFactory-devel v1.8.0-alpha 2023-04-02
  * https://github.com/jfactory-es/jfactory
  * (c) 2019-2023 Stephane Plazis
  * License: https://raw.githubusercontent.com/jfactory-es/jfactory/master/LICENSE.txt
@@ -126,8 +126,8 @@
         }
     }
 
-    const _ = globalThis._ || require('lodash');
-    const $ = globalThis.$ || require('jquery');
+    const _ = globalThis._ || (typeof require !=="undefined" && require('lodash'));
+    const $ = globalThis.$ || (typeof require !=="undefined" && require('jquery'));
 
     {
         jFactoryCompat_run([
@@ -3463,7 +3463,7 @@
                 }
             }
             if (pending.length) {
-                return Promise.all(pending);
+                return JFactoryPromise.all(pending);
             } else {
                 return JFactoryPromiseSync.resolve()
             }

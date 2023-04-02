@@ -12,6 +12,7 @@ including views, nested promises, requests, listeners, DOM and CSS.</b>
 </div>
 
 # jFactory
+<img align="right" src="https://jfactory-es.github.io/jfactory/img/pic1.png">
 
 - Easily transform any Object or Class into robust web components.
 - Implement an awaitable **Component Lifecycle** - install, enable, disable, and uninstall.
@@ -24,14 +25,10 @@ including views, nested promises, requests, listeners, DOM and CSS.</b>
 - Improve promise chains with **Awaitable/Expirable nested Promise trees**.
 - [...Read full presentation here](https://github.com/jfactory-es/jfactory/blob/master/docs/index.md)
 <div align="center">
-
-
  
  | [Installation](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-import.md) | [Documentation](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-index.md)                                                                                                                                |
  |----------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
  | ```npm add lodash jquery jfactory```                                                   | [Traits](https://github.com/jfactory-es/jfactory/tree/master/docs/ref-index.md#traits-component-features) / [Classes](https://github.com/jfactory-es/jfactory/tree/master/docs/ref-index.md#classes-internal-library) |
-
-
 
 </div>
 
