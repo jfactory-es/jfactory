@@ -1,8 +1,8 @@
 import { JFACTORY_DEV } from "./jFactory-env.mjs";
 import { jFactoryCompat_run } from "./jFactory-compat.mjs";
 
-const _ = globalThis._ || require('lodash');
-const $ = globalThis.$ || require('jquery');
+const _ = globalThis._ || (typeof require !=="undefined" && require('lodash'));
+const $ = globalThis.$ || (typeof require !=="undefined" && require('jquery'));
 
 if (JFACTORY_DEV) {
     jFactoryCompat_run([

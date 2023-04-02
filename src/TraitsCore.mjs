@@ -223,7 +223,7 @@ export class TraitTask {
             }
         }
         if (pending.length) {
-            return Promise.all(pending);
+            return JFactoryPromise.all(pending);
         } else {
             return JFactoryPromiseSync.resolve()
         }
