@@ -1,6 +1,6 @@
 [jFactory](index.md) > [Reference](ref-index.md) > Importing jFactory 
 
-# Importing jFactory
+# Installing jFactory
 
 * [Import from NPM module](#import-from-npm)
 * [Import from \<script\>](#import-from-script) for immediate testing
@@ -49,12 +49,11 @@ _Use this form of import for quick library testing. For your projects, it's reco
 ## Import from NPM
 
 To minimize the size of your imports, we recommend using a bundler like Webpack with TreeShaking enabled. This will allow you to import only the necessary code and reduce the overall footprint of your project.
-
+<!--
 To take advantage of these optimizations, the package uses [peer dependencies](https://stackoverflow.com/a/34645112), which you'll need to manually install in your project. By using peer dependencies, you can ensure that your project and jFactory benefits from the same optimized versions of the required dependencies.
 Also, plugins like [lodash-webpack-plugin](https://github.com/lodash/lodash-webpack-plugin) can help to reduce the size of lodash.
-
+-->
 ```
-npm add lodash jquery 
 npm add jfactory
 ```
 

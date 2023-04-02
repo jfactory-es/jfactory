@@ -12,8 +12,8 @@ Easily modularize your javascript application into cancelable components.<br>
 
 # jFactory
 <img align="right" src="https://jfactory-es.github.io/jfactory/img/pic1.png">
+Easily transform any Object or Class into robust web components.
 
-- Easily transform any Object or Class into robust web components.
 - Implement an awaitable **Component Lifecycle** - install, enable, disable, and uninstall.
 - **Subscribe for side effects** such as CSS, DOM, event listeners, observers, timers, requests, and nested promise trees.
 - **Automatically await subscriptions** at each phase of the component lifecycle (loading CSS, requests, promise trees...).
