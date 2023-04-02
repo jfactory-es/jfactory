@@ -12,19 +12,20 @@ including views, nested promises, requests, listeners, DOM and CSS.</b>
 </div>
 
 # jFactory
-Easily transform any Object or Class into robust web components.
 
-<img align="right" src="https://jfactory-es.github.io/jfactory/img/pic1.png">
+[//]: # (Easily transform any Object or Class into robust component.)
+[//]: # (<img align="right" src="https://jfactory-es.github.io/jfactory/img/pic1.png">)
+[//]: # (- Prevent expired asynchronous calls, such as nested promise trees and requests.)
+[//]: # (- Improve promise chains with **Awaitable/Expirable nested Promise trees**.)
 
-- Implement an awaitable **Component Lifecycle** - install, enable, disable, and uninstall.
-- **Subscribe for side effects** such as CSS, DOM, event listeners, observers, timers, requests, and nested promise trees.
-- **Automatically await subscriptions** at each phase of the component lifecycle (loading CSS, requests, promise trees...).
-- **Automatically switch off subscriptions** at the opposite phase of the component lifecycle (install >> uninstall, enable >> disable).
-- Prevent expired asynchronous calls, such as nested promise trees and requests.
-- Debug with ease using component filterable nested loggers.
-- **Keep track in DevTools** of all named subscriptions (listeners, timers, requests, promises, dom, css...)
-- Improve promise chains with **Awaitable/Expirable nested Promise trees**.
-- [...Read full presentation here](https://github.com/jfactory-es/jfactory/blob/master/docs/index.md)
+- **Component lifecycles:** Effortlessly implement asynchronous `install`, `enable`, `disable`, and `uninstall` functionality.
+- **Automatically subscribe the side effects** when adding CSS, DOM, event listeners, observers, timers, requests, nested promise trees...
+- **Automatically switch off subscriptions** at the opposite phase of the component lifecycle : `uninstall` reverts `install`, `disable` reverts `enable`.
+- **Automatically await subscriptions** when calling `await component.$install()` and `await component.$enable()`.
+- **DevTools:** Component-level logging, name-prefixed logs, filters, sub loggers with inheritance. 
+- **Debugging:** Everything is named. Keep track of all running subscriptions (listeners, timers, requests, promises, dom, css...).
+- [...and much more, take a closer look](https://github.com/jfactory-es/jfactory/blob/master/docs/index.md).
+
 <div align="center">
  
  | [Installation](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-import.md) | [Documentation](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-index.md)                                                                                                                                |
