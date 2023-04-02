@@ -21,7 +21,7 @@ including views, nested promises, requests, listeners, DOM and CSS.</b>
 - **Component lifecycles:** Effortlessly implement asynchronous `install`, `enable`, `disable`, and `uninstall` functionality.
 - **Automatically subscribe the side effects** when adding CSS, DOM, event listeners, observers, timers, requests, nested promise trees...
 - **Automatically switch off subscriptions** at the opposite phase of the component lifecycle : `uninstall` reverts `install`, `disable` reverts `enable`.
-- **Automatically await subscriptions** when calling `await component.$install()` and `await component.$enable()`.
+- **Automatically await subscriptions** when calling `install` and `enable`.
 - **DevTools:** Component-level logging, name-prefixed logs, filters, sub loggers with inheritance. 
 - **Debugging:** Everything is named. Keep track of all running subscriptions (listeners, timers, requests, promises, dom, css...).
 - [...and much more, take a closer look](https://github.com/jfactory-es/jfactory/blob/master/docs/index.md).

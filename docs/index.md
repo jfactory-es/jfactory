@@ -1,14 +1,20 @@
+
 <div align="center" markdown="1">
 <img width="140" src="https://jfactory-es.github.io/jfactory/img/jFactory.png">
-</div>
 
-[//]: # (Easily modularize your javascript application into cancelable components.<br>)
+Easily modularize your javascript application into cancelable components.<br>
+
 [//]: # (Easily transform any Object or Class into robust component.)
 
-# jFactory [![GitHub version](https://img.shields.io/github/package-json/v/jfactory-es/jfactory.svg?label=git)](https://github.com/jfactory-es/jfactory) [![npm version](https://img.shields.io/npm/v/jfactory.svg)](https://www.npmjs.com/package/jfactory) [![Tests](https://github.com/jfactory-es/jfactory/workflows/Node%20CI/badge.svg)](#implementation)
+[![GitHub version](https://img.shields.io/github/package-json/v/jfactory-es/jfactory.svg?label=git)](https://github.com/jfactory-es/jfactory)
+[![npm version](https://img.shields.io/npm/v/jfactory.svg)](https://www.npmjs.com/package/jfactory)
+[![Tests](https://github.com/jfactory-es/jfactory/workflows/Node%20CI/badge.svg)](#implementation)
 
-Easily transform any Object or Class into robust web components.
+</div>
 
+# jFactory
+
+[//]: # (Easily transform any Object or Class into robust web components.)
 [//]: # (<img align="right" src="https://jfactory-es.github.io/jfactory/img/pic1.png">)
 
 - Implement an awaitable **Component Lifecycle** - install, enable, disable, and uninstall.
