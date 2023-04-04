@@ -8,14 +8,14 @@
 
 ## Production and Development modules
 
-The development version `jFactory-devel.*` provides input validation tests, debug tools, and logs.
-In development mode, you must see a startup message in the console.
+jFactory provides a development version with additional input validation tests, debug tools, and logs.
+When using the development package, you must see a startup message in the console.
 
 ## Import from \<script\>
 
-**! NOT RECOMMENDED !**\
-_Use this form of import for quick library testing. For your projects, it's recommended to use the NPM module to reduce the library's footprint._
+**! NOT RECOMMENDED !**
 
+_The `jFactory.umd.js` file is a fully bundled export. Use this for quick library testing, or on non-bundled websites. For web applications, it is recommended to use the NPM module to reduce the library's footprint with TreeShaking (see the next section)._
 
 ```html
 <!doctype html>
@@ -26,7 +26,7 @@ _Use this form of import for quick library testing. For your projects, it's reco
     <script src="https://cdn.jsdelivr.net/npm/lodash/lodash.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery/jquery.min.js"></script>
     <!-- loading jFactory (development) from a cdn -->
-    <script src="https://cdn.jsdelivr.net/npm/jfactory@1.7.7/dist/jFactory-devel.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jfactory@1.8.0/dist/jFactory-devel.umd.js"></script>
 </head>
 <body>
 <script>
@@ -48,7 +48,7 @@ _Use this form of import for quick library testing. For your projects, it's reco
 
 ## Import from NPM
 
-To minimize the size of your imports, we recommend using a bundler like Webpack with TreeShaking enabled. This will allow you to import only the necessary code and reduce the overall footprint of your project.
+We recommend using a bundler with TreeShaking enabled, like Webpack in production mode. This will allow you to import only the necessary code from jFactory and dependencies, and reduce the overall footprint of your application.
 <!--
 To take advantage of these optimizations, the package uses [peer dependencies](https://stackoverflow.com/a/34645112), which you'll need to manually install in your project. By using peer dependencies, you can ensure that your project and jFactory benefits from the same optimized versions of the required dependencies.
 Also, plugins like [lodash-webpack-plugin](https://github.com/lodash/lodash-webpack-plugin) can help to reduce the size of lodash.
@@ -57,37 +57,42 @@ Also, plugins like [lodash-webpack-plugin](https://github.com/lodash/lodash-webp
 npm add jfactory
 ```
 
-Now you can import the module in your project files:
-
-#### Force a specific import
-
-To force a specific version (development/production), use one of these lines:
-
-```javascript
-const { jFactory } = require('jfactory/dist/jFactory.umd.js') // production, umd.js
-const { jFactory } = require('jfactory/dist/jFactory-devel.umd.js') // development, umd.js
-import { jFactory } from "jfactory/dist/jFactory.mjs" // production, ES6 .mjs
-import { jFactory } from "jfactory/dist/jFactory-devel.mjs" // development, ES6 .mjs
-```
+This package provides ES6 modules optimized for `production` or `development`, 
+automatically selected by a conditional loader :  
 
 #### Conditional loading (Automatic import)  
 
-The conditional loading feature enables automatic switching between development and production modules, based on your project's build mode.
+```javascript
+import { jFactory } from "jfactory"
+```
+```javascript
+const { jFactory } = require("jfactory") 
+```
+This [conditional loading](https://github.com/jfactory-es/jfactory/blob/master/dist/index.js) is based on `process.env.NODE_ENV` to switch between `development` and `production` modules.
+
+Note that Webpack configures `NODE_ENV` with the value of its [`mode`](https://webpack.js.org/configuration/mode/) 
+option, so you shouldn't need to configure anything : Your project will automatically use the production module 
+if webpack is configured for production. Otherwise, just set `process.env.NODE_ENV` to `development` or `production`. 
+
+*Restriction:* Because the "automatic import" is a CommonJS file, it may not work when imported from an ES6 ".mjs" file. 
+In this case, you may need to load a specific version (see below) or use a conditional ES6 import(). 
+
+#### Force a specific import
+
+To ignore the loader and force a specific version (development or production), use one of these lines:
 
 ```javascript
-const { jFactory } = require("jfactory")   
-import { jFactory } from "jfactory"  
+import { jFactory } from "jfactory/es" // production version, ES6
 ```
-
-This uses the `process.env.NODE_ENV` to contextually 
-import the `production` or the `development` module at compile time.
-
-Note that Weback configures `NODE_ENV` with the value of its [`mode`](https://webpack.js.org/configuration/mode/) 
-option, so you shouldn't need to configure anything: your project will automatically use the production module 
-if webpack is configured for production.
-
-**Restriction:** Because the "automatic import" is a CommonJS file, it may not work when imported from an ES6 ".mjs" file. 
-In this case, you may need to use the [manual import](#nodejs-manual-import) or use a conditionnal ES6 import(). 
+```javascript
+import { jFactory } from "jfactory/es/devel" // development version, ES6
+```
+```javascript
+const  { jFactory } = require('jfactory/es/index.mjs') // production loaded with require()
+```
+```javascript
+const  { jFactory } = require('jfactory/es/devel/index.mjs') // development loaded with require()
+```
 
 <!--
 _Additional note_: 
@@ -112,7 +117,7 @@ _Additional note_:
 
 ## Import from raw source
 
-jFactory can also be used from its source files (/src/index.mjs).
+jFactory can also be used from its unbundled source files (/src/index.mjs).
 ```shell
 git clone https://github.com/jfactory-es/jfactory
 ```
