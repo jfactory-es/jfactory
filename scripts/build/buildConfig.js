@@ -40,8 +40,7 @@ let banner = fs.readFileSync("./scripts/build/dist-banner-b.txt", "utf8");
 const commonOutput = {
   generatedCode : "es2015",
   interop: "esModule",
-  exports: 'named',
-  dir: 'dist',
+  exports: 'named'
 }
 
 module.exports = {
@@ -84,31 +83,24 @@ module.exports = {
         plugins: [
           terserPlugin(terserOptions)
         ],
+        dir: 'dist',
         ...commonOutput
       },
       {
         format: 'es',
-        entryFileNames: project.prodName + ".mjs",
+        entryFileNames: "[name].mjs",
         banner: replace(banner, getReplaceValues(false)),
+        preserveModules: true,
         plugins: [
-          terserPlugin(terserOptions)
+          // terserPlugin(terserOptions)
         ],
+        dir: 'dist/es',
         ...commonOutput
       }
     ]
   },
 
   outputDevel() {
-    // const terserOptions= {
-    //   compress : false,
-    //   keep_classnames: true,
-    //   keep_fnames: true,
-    //   mangle: false,
-    //   output: {
-    //     beautify: true,
-    //     comments: 'all'
-    //   }
-    // };
     return [
       {
         format: 'umd',
@@ -116,6 +108,7 @@ module.exports = {
         name: "jFactoryModule",
         banner: replace(banner, getReplaceValues(true)),
         sourcemap: true,
+        dir: 'dist',
         plugins: [
           // terserPlugin(terserOptions)
         ],
@@ -123,12 +116,14 @@ module.exports = {
       },
       {
         format: 'es',
-        entryFileNames: project.develName + ".mjs",
+        entryFileNames: "[name].mjs",
         banner: replace(banner, getReplaceValues(true)),
         sourcemap: true,
+        preserveModules: true,
         plugins: [
           // terserPlugin(terserOptions)
         ],
+        dir: 'dist/es/devel',
         ...commonOutput
       }
     ]

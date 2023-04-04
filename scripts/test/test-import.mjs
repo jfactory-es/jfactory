@@ -1,16 +1,17 @@
 import './polyfill-fetch.js'
 global.JFACTORY_ENV_LOG = false;
 
-// const bundle = 'umd.js'
-const bundle = 'mjs'
-
 let lib;
+if (process.env.AUTO) {
+    lib = "../../dist/index.js";
+    console.log('Testing PROD BUNDLE '+lib);
+}
 if (process.env.PROD_BUNDLE) {
-    lib = "../../dist/jFactory." + bundle;
+    lib = "../../dist/es";
     console.log('Testing PROD BUNDLE '+lib);
 }
 else if (process.env.DEV_BUNDLE) {
-    lib = "../../dist/jFactory-devel." + bundle;
+    lib = "../../dist/es/devel";
     console.log('Testing DEV BUNDLE '+lib);
 }
 else {

@@ -7,8 +7,10 @@ export const JFACTORY_VER   = env("JFACTORY_ENV_VER") ?? "(custom build)";
 // Contextualize jFactory for bundle, raw source or partial export usage
 // ---------------------------------------------------------------------------------------------------------------------
 // JFACTORY_ENV_* are optional globals that allow contextualization at startup.
-// Note that our constructor replaces some 'env("JFACTORY_ENV_*")' with hard-coded primitives (name, version, dev mode).
+// Bundler can replace some 'env("JFACTORY_ENV_*")' with hard-coded primitives to improve tree shaking
 // See https://github.com/jfactory-es/jfactory/blob/master/docs/ref-overriding.md
+// ---------------------------------------------------------------------------------------------------------------------
+// Status: Beta, HasSideEffects
 // ---------------------------------------------------------------------------------------------------------------------
 
 export const JFACTORY_CLI   = env("JFACTORY_ENV_CLI") ?? isNode();

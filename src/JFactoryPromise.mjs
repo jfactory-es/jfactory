@@ -454,7 +454,7 @@ export class JFactoryPromise extends Promise {
                 promise.__onFulfilled__(promise.$chain.chainRoot.$chain.errorExpired)
             }
             else if (abort) {
-                promise.$isAborted = true;/*!silent;*/
+                promise.$isAborted = true;
             } else {
                 if (!silent) {
                     throw new JFACTORY_ERR_INVALID_CALL({

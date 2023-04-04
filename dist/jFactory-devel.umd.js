@@ -1,5 +1,5 @@
 /*!
- * jFactory-devel v1.8.0-alpha 2023-04-02
+ * jFactory-devel v1.8.0-alpha 2023-04-04
  * https://github.com/jfactory-es/jfactory
  * (c) 2019-2023 Stephane Plazis
  * License: https://raw.githubusercontent.com/jfactory-es/jfactory/master/LICENSE.txt
@@ -19,8 +19,10 @@
     // Contextualize jFactory for bundle, raw source or partial export usage
     // ---------------------------------------------------------------------------------------------------------------------
     // JFACTORY_ENV_* are optional globals that allow contextualization at startup.
-    // Note that our constructor replaces some 'env("JFACTORY_ENV_*")' with hard-coded primitives (name, version, dev mode).
+    // Bundler can replace some 'env("JFACTORY_ENV_*")' with hard-coded primitives to improve tree shaking
     // See https://github.com/jfactory-es/jfactory/blob/master/docs/ref-overriding.md
+    // ---------------------------------------------------------------------------------------------------------------------
+    // Status: Beta, HasSideEffects
     // ---------------------------------------------------------------------------------------------------------------------
 
     const JFACTORY_CLI   = env("JFACTORY_ENV_CLI") ?? isNode();
@@ -126,8 +128,36 @@
         }
     }
 
-    const _ = globalThis._ || (typeof require !=="undefined" && require('lodash'));
+    // ---------------------------------------------------------------------------------------------------------------------
+    // jFactory Helpers
+    // ---------------------------------------------------------------------------------------------------------------------
+    // Centralize helpers and externals in one module
+    // ---------------------------------------------------------------------------------------------------------------------
+    // Status: Beta
+    // ---------------------------------------------------------------------------------------------------------------------
+
+    // -------------------------------------
+    // Imports jquery from global or package
+    // -------------------------------------
+
     const $ = globalThis.$ || (typeof require !=="undefined" && require('jquery'));
+
+    // -------------------------------------
+    // Imports lodash from global or package
+    // -------------------------------------
+
+    // Individual importation improves the tree shaking
+    // This is supposed to be equivalent to babel-plugin-lodash
+    const _ = globalThis._ || {
+        isString : require('lodash/isString'),
+        isNumber : require('lodash/isNumber'),
+        isPlainObject : require('lodash/isPlainObject'),
+        defaultsDeep : require('lodash/defaultsDeep'),
+        lowerFirst : require('lodash/lowerFirst'),
+        get : require('lodash/get'),
+        template : require('lodash/template'),
+        camelCase : require('lodash/camelCase'),
+    };
 
     {
         jFactoryCompat_run([
@@ -145,14 +175,6 @@
             }
         ]);
     }
-
-    // ---------------------------------------------------------------------------------------------------------------------
-    // jFactory Helpers
-    // ---------------------------------------------------------------------------------------------------------------------
-    // Centralize helpers and externals in one module
-    // ---------------------------------------------------------------------------------------------------------------------
-    // Status: Beta
-    // ---------------------------------------------------------------------------------------------------------------------
 
     const jQuery = $;
 
@@ -257,7 +279,7 @@
     // ---------------------------------------------------------------------------------------------------------------------
     // JFactoryTrace 1.7
     // ---------------------------------------------------------------------------------------------------------------------
-    // Status: Beta
+    // Status: Beta, HasSideEffects
     // ---------------------------------------------------------------------------------------------------------------------
     // - #limitation# Error.stack is not standardized
     // - #limitation# Error.stack is not source-mapped
@@ -594,7 +616,7 @@
     // ---------------------------------------------------------------------------------------------------------------------
     // A small input/output validation tool
     // ---------------------------------------------------------------------------------------------------------------------
-    // Status: Alpha, Draft
+    // Status: Alpha, Draft, HasSideEffects
     // ---------------------------------------------------------------------------------------------------------------------
 
     /**
@@ -1021,7 +1043,7 @@
     // ---------------------------------------------------------------------------------------------------------------------
     // JFactoryObject
     // ---------------------------------------------------------------------------------------------------------------------
-    // Status: Alpha
+    // Status: Alpha, HasSideEffects
     // ---------------------------------------------------------------------------------------------------------------------
 
     class JFactoryObject {
@@ -1654,7 +1676,7 @@
                     promise.__onFulfilled__(promise.$chain.chainRoot.$chain.errorExpired);
                 }
                 else if (abort) {
-                    promise.$isAborted = true;/*!silent;*/
+                    promise.$isAborted = true;
                 } else {
                     if (!silent) {
                         throw new JFACTORY_ERR_INVALID_CALL({
@@ -3260,6 +3282,8 @@
 
     // ---------------------------------------------------------------------------------------------------------------------
     // Trait Object
+    // ---------------------------------------------------------------------------------------------------------------------
+    // Status: Beta, HasSideEffects
     // ---------------------------------------------------------------------------------------------------------------------
 
     class TraitCore {

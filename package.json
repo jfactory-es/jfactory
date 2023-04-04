@@ -72,5 +72,14 @@
     "semver": "^7.3.8",
     "sinon": "^15.0.2",
     "vitest": "^0.29.8"
-  }
+  },
+  "sideEffects": false,
+  "//": [
+    "./src/index.mjs",
+    "./src/jFactory-env.mjs",
+    "./src/JFactoryExpect.mjs",
+    "./src/JFactoryObject.mjs",
+    "./src/JFactoryTrace.mjs",
+    "./src/TraitsCore.mjs"
+  ]
 }

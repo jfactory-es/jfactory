@@ -1,8 +1,36 @@
 import { JFACTORY_DEV } from "./jFactory-env.mjs";
 import { jFactoryCompat_run } from "./jFactory-compat.mjs";
 
-const _ = globalThis._ || (typeof require !=="undefined" && require('lodash'));
+// ---------------------------------------------------------------------------------------------------------------------
+// jFactory Helpers
+// ---------------------------------------------------------------------------------------------------------------------
+// Centralize helpers and externals in one module
+// ---------------------------------------------------------------------------------------------------------------------
+// Status: Beta
+// ---------------------------------------------------------------------------------------------------------------------
+
+// -------------------------------------
+// Imports jquery from global or package
+// -------------------------------------
+
 const $ = globalThis.$ || (typeof require !=="undefined" && require('jquery'));
+
+// -------------------------------------
+// Imports lodash from global or package
+// -------------------------------------
+
+// Individual importation improves the tree shaking
+// This is supposed to be equivalent to babel-plugin-lodash
+const _ = globalThis._ || {
+    isString : require('lodash/isString'),
+    isNumber : require('lodash/isNumber'),
+    isPlainObject : require('lodash/isPlainObject'),
+    defaultsDeep : require('lodash/defaultsDeep'),
+    lowerFirst : require('lodash/lowerFirst'),
+    get : require('lodash/get'),
+    template : require('lodash/template'),
+    camelCase : require('lodash/camelCase'),
+};
 
 if (JFACTORY_DEV) {
     jFactoryCompat_run([
@@ -20,14 +48,6 @@ if (JFACTORY_DEV) {
         }
     ]);
 }
-
-// ---------------------------------------------------------------------------------------------------------------------
-// jFactory Helpers
-// ---------------------------------------------------------------------------------------------------------------------
-// Centralize helpers and externals in one module
-// ---------------------------------------------------------------------------------------------------------------------
-// Status: Beta
-// ---------------------------------------------------------------------------------------------------------------------
 
 export const jQuery = $;
 
