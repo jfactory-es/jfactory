@@ -5,8 +5,8 @@ Easily modularize your application into cancelable components.<br>
 <b>Everything they initialize can be monitored, stopped and removed automatically,<br>
 including views, nested promises, requests, listeners, DOM and CSS.</b>
 
-[![GitHub version](https://img.shields.io/github/package-json/v/jfactory-es/jfactory.svg?label=git)](https://github.com/jfactory-es/jfactory)
 [![npm version](https://img.shields.io/npm/v/jfactory.svg)](https://www.npmjs.com/package/jfactory)
+[![GitHub version](https://img.shields.io/github/package-json/v/jfactory-es/jfactory.svg?label=git)](https://github.com/jfactory-es/jfactory)
 [![Tests](https://github.com/jfactory-es/jfactory/workflows/Node%20CI/badge.svg)](#implementation)
 
 </div>
@@ -18,7 +18,7 @@ including views, nested promises, requests, listeners, DOM and CSS.</b>
 [//]: # (- Prevent expired asynchronous calls, such as nested promise trees and requests.)
 [//]: # (- Improve promise chains with **Awaitable/Expirable nested Promise trees**.)
 
-- **Component lifecycles:** Effortlessly implement asynchronous `install`, `enable`, `disable`, and `uninstall` functionality.
+- **Component lifecycles:** asynchronous `install`, `enable`, `disable`, and `uninstall` functionality.
 - **Automatically subscribe the side effects** when adding CSS, DOM, event listeners, observers, timers, requests, nested promise trees...
 - **Automatically switch off subscriptions** at the opposite phase of the component lifecycle : `uninstall` reverts `install`, `disable` reverts `enable`.
 - **Automatically await subscriptions** when calling `install` and `enable`.
