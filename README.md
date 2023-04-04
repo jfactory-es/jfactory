@@ -19,7 +19,7 @@ including views, nested promises, requests, listeners, DOM and CSS.</b>
 [//]: # (- Improve promise chains with **Awaitable/Expirable nested Promise trees**.)
 
 - **Component lifecycles**: Provides asynchronous `install`, `enable`, `disable`, and `uninstall` functionality.
-- **Automatically subscribes** in a registry when adding CSS, DOM, event listeners, observers, timers, requests, nested promise trees, ...
+- **Automatically subscribes** in a registry when adding CSS, DOM, event listeners, observers, timers, requests, nested promise trees...
 - **Automatically await pending subscriptions** when calling `await install` and `await enable`, everything is parallelized into tasks.
 - **Automatically switch off subscriptions** at the opposite phase of the component lifecycle : `uninstall` reverts `install`, `disable` reverts `enable`.
 - **Lifecycles events**: Listen to phase changes. Prepare or clean up asynchronously what you need before automation. 
@@ -30,7 +30,8 @@ including views, nested promises, requests, listeners, DOM and CSS.</b>
 - [...and much more, take a closer look](https://github.com/jfactory-es/jfactory/blob/master/docs/index.md).
 
 <div align="center">
- 
+<br>
+
  | [Installation](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-import.md) | [Documentation](https://github.com/jfactory-es/jfactory/blob/master/docs/ref-index.md)                                                                                                                                |
  |----------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
  | ```npm add jfactory```                                                                 | [Traits](https://github.com/jfactory-es/jfactory/tree/master/docs/ref-index.md#traits-component-features) / [Classes](https://github.com/jfactory-es/jfactory/tree/master/docs/ref-index.md#classes-internal-library) |
