@@ -4,12 +4,8 @@ module.exports = defineConfig({
     test: {
       name: "jFactory Test Suite",
       setupFiles: '/scripts/test/test-mock-srv.mjs',
-      include: ['**/test/index.js'], // Comment this to test everything as separated tests
-      forceRerunTriggers: [
-        '**/dev/**',
-        '**/src/**',
-        '**/package.json/**', '**/vitest.config.*/**', '**/vite.config.*/**'
-      ],
+      include: ['**/test/index.js'], // bulk mode : use the index.js, modules loaded once
+      // include: ['./test/*.test.js'], // separated mode : modules loaded for each test
       environment: 'jsdom',
       environmentOptions: {
         jsdom: {

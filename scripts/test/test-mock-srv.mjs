@@ -17,7 +17,7 @@ export const restHandlers = [
     }),
     rest.get('https://api.test.local/asset.css', function(req, res, ctx) {
         return res(ctx.status(200), ctx.text("#dom1 {visibility: hidden;}"))
-    }),
+    })
 ]
 
 const server = setupServer(...restHandlers)
