@@ -2,3 +2,4 @@ _*
 .env
 .idea
 node_modules
+/test/app/

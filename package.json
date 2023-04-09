@@ -40,21 +40,24 @@
     "library",
     "framework"
   ],
-  "main": "dist/index.js",
+  "main": "es/index.js",
+  "files": [
+    "es/**",
+    "umd/**",
+    "src/**"
+  ],
   "devEngines": {
     "node": ">=18.x"
   },
-  "files": [
-    "dist/**",
-    "src/**"
-  ],
   "scripts": {
     "build": "node scripts/build.js",
-    "watch:raw": "npx vitest",
-    "watch:raw:ui": "npx vitest --ui",
-    "test:raw": "npx vitest run",
-    "test:bundle:prod": "PROD_BUNDLE=true npx vitest run",
-    "test:bundle:dev": "DEV_BUNDLE=true npx vitest run"
+    "test:source": "MODE=SOURCE npx vitest run",
+    "test:es:prod": "MODE=ES_PROD npx vitest run",
+    "test:es:dev": "MODE=ES_DEVEL npx vitest run",
+    "test:umd:prod": "MODE=UMD_PROD npx vitest run",
+    "test:umd:dev": "MODE=UMD_DEVEL npx vitest run",
+    "watch:source": "MODE=SOURCE npx vitest",
+    "watch:source:ui": "MODE=SOURCE npx vitest --ui"
   },
   "peerDependencies": {
     "jquery": "^3",
@@ -66,20 +69,13 @@
     "@vitest/ui": "^0.29.8",
     "ansi-colors": "^4.1.3",
     "jsdom": "^21.1.1",
-    "msw": "^1.1.1",
+    "msw": "^1.2.1",
     "node-fetch": "^4.0.0-beta.4",
     "rollup": "^3.20.2",
     "semver": "^7.3.8",
-    "sinon": "^15.0.2",
+    "sinon": "^15.0.3",
     "vitest": "^0.29.8"
   },
-  "sideEffects": false,
-  "//": [
-    "./src/index.mjs",
-    "./src/jFactory-env.mjs",
-    "./src/JFactoryExpect.mjs",
-    "./src/JFactoryObject.mjs",
-    "./src/JFactoryTrace.mjs",
-    "./src/TraitsCore.mjs"
-  ]
+  "/experimental/": {
+  }
 }

@@ -28,10 +28,10 @@ jobs:
     - name: npm install, build, and test
       run: |
         npm ci
-        npm run test:bundle:prod
-        npm run test:bundle:dev
+        npm run test:es:prod
+        npm run test:es:dev
         npm run build
-        npm run test:bundle:prod
-        npm run test:bundle:dev
+        npm run test:es:prod
+        npm run test:es:dev
       env:
         CI: true
