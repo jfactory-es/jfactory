@@ -1,12 +1,13 @@
-import { JFACTORY_ERR_INVALID_CALL } from "./JFactoryError.mjs";
-import { JFactoryTraits } from "./JFactoryTraits.mjs";
-import { jFactoryFunctionWrappable } from "./JFactoryFunction.mjs";
-
-// ---------------------------------------------------------------------------------------------------------------------
-// jFactoryTraits
-// ---------------------------------------------------------------------------------------------------------------------
-// Status: Beta
-// ---------------------------------------------------------------------------------------------------------------------
+/**
+ * -----------------------------------------------------------------------------------------------------------------
+ * jFactory Traits
+ * -----------------------------------------------------------------------------------------------------------------
+ * Status: Beta
+ * -----------------------------------------------------------------------------------------------------------------
+ */
+import { JFACTORY_ERR_INVALID_CALL } from "./lib/JFactoryError.mjs";
+import { JFactoryTraits } from "./lib/JFactoryTraits.mjs";
+import { jFactoryFunctionWrappable } from "./lib/JFactoryFunction.mjs";
 
 export function jFactoryTraits(callerInstance, callerConstructor) {
     return new JFactoryTraits(callerInstance, callerConstructor, {

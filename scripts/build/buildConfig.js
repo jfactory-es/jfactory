@@ -35,12 +35,26 @@ function getReplaceValues(devel = false) {
   }
 }
 
-let banner = fs.readFileSync("./scripts/build/dist-banner-b.txt", "utf8");
+let banner = fs.readFileSync("./scripts/build/banner.txt", "utf8");
 
+const path = require('path');
 const commonOutput = {
-  generatedCode : "es2015",
-  interop: "esModule",
-  exports: 'named'
+  generatedCode: {
+    preset: 'es2015',
+    arrowFunctions: true,
+    constBindings: true,
+    objectShorthand: true,
+  },
+  exports: 'named',
+  globals : function(name) {
+    if (name === "jquery") {
+      return "$"
+    } else {
+      if (name.indexOf('lodash/')===0) {
+        return '_.'+path.parse(name).name
+      }
+    }
+  }
 }
 
 module.exports = {
@@ -48,6 +62,10 @@ module.exports = {
   input({ devel = false, input = 'src/index.mjs' }) {
     return {
       input,
+      treeshake: {
+        moduleSideEffects : [
+        ]
+      },
       plugins: [
         replacePlugin({
           delimiters: ["", ""],
@@ -56,45 +74,47 @@ module.exports = {
         })
       ],
       external : [
-        'lodash',
-        'jquery',
+        "jquery",
+        "lodash/isString.js",
+        "lodash/isNumber.js",
+        "lodash/isPlainObject.js",
+        "lodash/defaultsDeep.js",
+        "lodash/lowerFirst.js",
+        "lodash/get.js",
+        "lodash/template.js",
+        "lodash/camelCase.js",
       ]
     }
   },
 
   outputProd() {
     const terserOptions= {
-      mangle: {
-        // Fix a mysterious bug in nodejs v18.15.0
-        // Node probably tries to detect "exports." in the umd module
-        // otherwise import() returns the module in a "default" property
-        reserved: ['exports']
-      },
-      output: {
-        comments: 'some',
-      }
     };
     return [
       {
         format: 'umd',
-        entryFileNames: project.prodName + ".umd.js",
+        entryFileNames: project.prodName + ".js",
         name: "jFactoryModule",
         banner: replace(banner, getReplaceValues(false)),
         plugins: [
           terserPlugin(terserOptions)
         ],
-        dir: 'dist',
+        dir: 'umd',
         ...commonOutput
       },
       {
         format: 'es',
         entryFileNames: "[name].mjs",
-        banner: replace(banner, getReplaceValues(false)),
+        banner: function(chunk) {
+          return chunk.fileName === "index.mjs" ? replace(banner, getReplaceValues(true)) : "";
+        },
+        // !! modules must be preserved to allow module Tree Shaking in application bundler
         preserveModules: true,
+        preserveModulesRoot: 'src',
         plugins: [
           // terserPlugin(terserOptions)
         ],
-        dir: 'dist/es',
+        dir: 'es',
         ...commonOutput
       }
     ]
@@ -104,11 +124,11 @@ module.exports = {
     return [
       {
         format: 'umd',
-        entryFileNames: project.develName + ".umd.js",
+        entryFileNames: project.develName + ".js",
         name: "jFactoryModule",
         banner: replace(banner, getReplaceValues(true)),
-        sourcemap: true,
-        dir: 'dist',
+        // sourcemap: true,
+        dir: 'umd',
         plugins: [
           // terserPlugin(terserOptions)
         ],
@@ -117,13 +137,17 @@ module.exports = {
       {
         format: 'es',
         entryFileNames: "[name].mjs",
-        banner: replace(banner, getReplaceValues(true)),
-        sourcemap: true,
+        // sourcemap: true,
+        banner: function(chunk) {
+          return chunk.fileName === "index.mjs" ? replace(banner, getReplaceValues(true)) : "";
+        },
+        // !! modules must be preserved to allow module Tree Shaking in application bundler
         preserveModules: true,
+        preserveModulesRoot: 'src',
         plugins: [
           // terserPlugin(terserOptions)
         ],
-        dir: 'dist/es/devel',
+        dir: 'es/devel',
         ...commonOutput
       }
     ]
@@ -135,7 +159,19 @@ module.exports = {
         format: 'cjs',
         entryFileNames: "index.js",
         banner: replace(banner, getReplaceValues(false)),
-        dir: 'dist',
+        dir: 'es',
+      }
+    ]
+  },
+
+  outputTestApp() {
+    return [
+      {
+        format: 'es',
+        entryFileNames: "[name].mjs",
+        // helps to check which modules are exported
+        preserveModules: true,
+        dir: 'test/app',
       }
     ]
   }

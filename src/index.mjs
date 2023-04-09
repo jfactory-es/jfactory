@@ -1,16 +1,16 @@
-// ---------------------------------------------------------------------------------------------------------------------
-// jFactory entry file (see package.json scripts to compile the /dist)
-// ---------------------------------------------------------------------------------------------------------------------
-// Almost everything is exported; The resulting modules should be imported by a bundler that supports Tree Shacking.
-// ---------------------------------------------------------------------------------------------------------------------
-// Status: HasSideEffects
-// ---------------------------------------------------------------------------------------------------------------------
+/**
+ * -----------------------------------------------------------------------------------------------------------------
+ * jFactory entry file (see package.json scripts to compile)
+ * -----------------------------------------------------------------------------------------------------------------
+ * The ES version is exported as separated modules to benefit from module Tree Shaking
+ * -----------------------------------------------------------------------------------------------------------------
+ */
 
-export * from "./indexLibs.mjs";
-export * from "./jFactory-traits.mjs";
-export * from "./TraitsCore.mjs";
-export * from "./TraitsComponents.mjs";
-export * from "./jFactory.mjs";
+export * from "./lib/index.mjs";
+export * from "./jFactory-env.mjs";
+export * from "./jFactory-config.mjs";
+export * from "./jFactory-helpers.mjs";
+export * from "./jFactory.mjs"
 
 import { jFactoryBootstrap } from "./jFactory-bootstrap.mjs";
 jFactoryBootstrap(true)

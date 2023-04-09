@@ -1,20 +1,21 @@
-import { JFACTORY_DEV, JFACTORY_CLI, JFACTORY_REPL } from "./jFactory-env.mjs";
-import { jFactoryCfg } from "./jFactory-env.mjs";
+/**
+ * -----------------------------------------------------------------------------------------------------------------
+ * JFactoryLogger
+ * -----------------------------------------------------------------------------------------------------------------
+ * A contextual logger that prepends a label and allows runtime filtering while preserving the caller line number
+ * -----------------------------------------------------------------------------------------------------------------
+ * logger.createSubLogger(label) create a sub-logger of logger; "logger" can be a sub-logger.
+ * logger.disable() disable console for itself and sub-loggers
+ * logger.disallow('log') disallow logger.log() only
+ * logger.disallow('log', subLogger.label) disallow sub-logger.log() only. This is callable from any logger/sub-logger
+ * -----------------------------------------------------------------------------------------------------------------
+ * Status : Beta
+ * -----------------------------------------------------------------------------------------------------------------
+ */
+import { JFACTORY_DEV, JFACTORY_CLI, JFACTORY_REPL } from "../jFactory-env.mjs";
+import { jFactoryCfg } from "../jFactory-config.mjs";
 import { JFactoryExpect } from "./JFactoryExpect.mjs";
-import { helper_defaultsDeep, helper_isNative, NOOP } from "./jFactory-helpers.mjs";
-
-// ---------------------------------------------------------------------------------------------------------------------
-// JFactoryLogger 1.7
-// ---------------------------------------------------------------------------------------------------------------------
-// A contextual logger that prepends a label and allows runtime filtering while preserving the caller line number
-// ---------------------------------------------------------------------------------------------------------------------
-// logger.createSubLogger(label) create a sub-logger of logger; "logger" can be a sub-logger.
-// logger.disable() disable console for itself and sub-loggers
-// logger.disallow('log') disallow logger.log() only
-// logger.disallow('log', subLogger.label) disallow sub-logger.log() only. This is callable from any logger/sub-logger
-// ---------------------------------------------------------------------------------------------------------------------
-// Status : Beta
-// ---------------------------------------------------------------------------------------------------------------------
+import { helper_defaultsDeep, helper_isNative, NOOP } from "../jFactory-helpers.mjs";
 
 const SYMBOL_ENABLED = Symbol();
 
@@ -25,7 +26,7 @@ export class JFactoryLogger {
             JFactoryExpect("JFactoryLogger(options)", options)
                 .properties(Object.getOwnPropertyNames(JFactoryLogger.DEFAULT_CONFIG))
         }
-        helper_defaultsDeep(this, options, config);
+        helper_defaultsDeep(this, options, CONFIG);
         this.installAccessor("log");
         this.installAccessor("warn");
         this.installAccessor("error")
@@ -149,4 +150,8 @@ JFactoryLogger.DEFAULT_CONFIG = /** @lends JFactoryLogger# */ {
     }
 };
 
-const config = jFactoryCfg("JFACTORY_CFG_JFactoryLogger", JFactoryLogger.DEFAULT_CONFIG);
+// -----------------------------------------------------------------------------------------------------------------
+// Config JFactoryLogger
+// -----------------------------------------------------------------------------------------------------------------
+
+const CONFIG = /*#__PURE__*/jFactoryCfg("JFactoryLogger", JFactoryLogger.DEFAULT_CONFIG);

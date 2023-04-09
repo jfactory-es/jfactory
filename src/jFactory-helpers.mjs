@@ -1,64 +1,38 @@
-import { JFACTORY_DEV } from "./jFactory-env.mjs";
-import { jFactoryCompat_run } from "./jFactory-compat.mjs";
+/**
+ * -----------------------------------------------------------------------------------------------------------------
+ * jFactory Helpers
+ * -----------------------------------------------------------------------------------------------------------------
+ * Centralize helpers and externals in one module
+ * -----------------------------------------------------------------------------------------------------------------
+ * Status: Beta
+ * -----------------------------------------------------------------------------------------------------------------
+ */
 
-// ---------------------------------------------------------------------------------------------------------------------
-// jFactory Helpers
-// ---------------------------------------------------------------------------------------------------------------------
-// Centralize helpers and externals in one module
-// ---------------------------------------------------------------------------------------------------------------------
-// Status: Beta
-// ---------------------------------------------------------------------------------------------------------------------
+// --------------
+// jQuery
+// --------------
 
-// -------------------------------------
-// Imports jquery from global or package
-// -------------------------------------
+export { default as jQuery } from 'jquery';
 
-const $ = globalThis.$ || (typeof require !=="undefined" && require('jquery'));
-
-// -------------------------------------
-// Imports lodash from global or package
-// -------------------------------------
+// --------------
+// Lodash
+// --------------
 
 // Individual importation improves the tree shaking
 // This is supposed to be equivalent to babel-plugin-lodash
-const _ = globalThis._ || {
-    isString : require('lodash/isString'),
-    isNumber : require('lodash/isNumber'),
-    isPlainObject : require('lodash/isPlainObject'),
-    defaultsDeep : require('lodash/defaultsDeep'),
-    lowerFirst : require('lodash/lowerFirst'),
-    get : require('lodash/get'),
-    template : require('lodash/template'),
-    camelCase : require('lodash/camelCase'),
-};
+// Please update the bundler config to avoid warning
+export { default as helper_camelCase } from 'lodash/camelCase.js';
+export { default as helper_get } from 'lodash/get.js';
+export { default as helper_lowerFirst } from 'lodash/lowerFirst.js';
+export { default as helper_template } from 'lodash/template.js';
+export { default as helper_isString } from 'lodash/isString.js';
+export { default as helper_isNumber } from 'lodash/isNumber.js';
+export { default as helper_isPlainObject } from 'lodash/isPlainObject.js';
+export { default as helper_defaultsDeep } from 'lodash/defaultsDeep.js';
 
-if (JFACTORY_DEV) {
-    jFactoryCompat_run([
-        {
-            name: "lodash",
-            test: () => _,
-            strict: true,
-            info: "http://github.com/jfactory-es/jfactory/blob/master/docs/ref-import.md"
-        },
-        {
-            name: "jquery",
-            test: () => $,
-            strict: true,
-            info: "http://github.com/jfactory-es/jfactory/blob/master/docs/ref-import.md"
-        }
-    ]);
-}
-
-export const jQuery = $;
-
-export const helper_isString = _.isString;
-export const helper_isNumber = _.isNumber;
-export const helper_isPlainObject = _.isPlainObject;
-export const helper_defaultsDeep = _.defaultsDeep;
-export const helper_lowerFirst = _.lowerFirst;
-export const helper_get = _.get;
-export const helper_template = _.template;
-export const helper_camelCase = _.camelCase;
+// --------------
+// Helpers
+// --------------
 
 export const NOOP = () => {};
 export const helper_setFunctionName = (name, f) => Object.defineProperty(f, "name", { value: name });

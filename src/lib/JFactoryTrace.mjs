@@ -1,24 +1,25 @@
-import { JFACTORY_DEV } from "./jFactory-env.mjs";
-import { JFACTORY_TRACE } from "./jFactory-env.mjs";
-import { NOOP, helper_useragent } from "./jFactory-helpers.mjs";
-import { jFactoryCfg } from "./jFactory-env.mjs";
-import { jFactoryBootstrap_onBoot } from "./jFactory-bootstrap.mjs";
-
-// ---------------------------------------------------------------------------------------------------------------------
-// JFactoryTrace 1.7
-// ---------------------------------------------------------------------------------------------------------------------
-// Status: Beta, HasSideEffects
-// ---------------------------------------------------------------------------------------------------------------------
-// - #limitation# Error.stack is not standardized
-// - #limitation# Error.stack is not source-mapped
-// - #limitation# bug https://bugzilla.mozilla.org/show_bug.cgi?id=1584244
-// - #limitation# StackTrace.js resolves sourcemaps. Unfortunately, it doesn't work with "webpack:" protocol
-//   see https://github.com/stacktracejs/stacktrace.js/issues/209
-// ---------------------------------------------------------------------------------------------------------------------
-// https://github.com/mozilla/source-map/
-// https://www.stacktracejs.com/
-// https://github.com/novocaine/sourcemapped-stacktrace
-// ---------------------------------------------------------------------------------------------------------------------
+/**
+ * -----------------------------------------------------------------------------------------------------------------
+ * JFactoryTrace
+ * -----------------------------------------------------------------------------------------------------------------
+ * Status: Beta, HasSideEffects
+ * -----------------------------------------------------------------------------------------------------------------
+ * - #limitation# Error.stack is not standardized
+ * - #limitation# Error.stack is not source-mapped
+ * - #limitation# bug https://bugzilla.mozilla.org/show_bug.cgi?id=1584244
+ * - #limitation# StackTrace.js resolves sourcemaps. Unfortunately, it doesn't work with "webpack:" protocol
+ *   see https://github.com/stacktracejs/stacktrace.js/issues/209
+ * -----------------------------------------------------------------------------------------------------------------
+ * https://github.com/mozilla/source-map/
+ * https://www.stacktracejs.com/
+ * https://github.com/novocaine/sourcemapped-stacktrace
+ * -----------------------------------------------------------------------------------------------------------------
+ */
+import { JFACTORY_DEV } from "../jFactory-env.mjs";
+import { JFACTORY_TRACE } from "../jFactory-env.mjs";
+import { NOOP, helper_useragent } from "../jFactory-helpers.mjs";
+import { jFactoryCfg } from "../jFactory-config.mjs";
+import { jFactoryBootstrap_onBoot } from "../jFactory-bootstrap.mjs";
 
 export class JFactoryTrace {
 
@@ -64,9 +65,9 @@ export class JFactoryTrace_LIB_STACKTRACE extends JFactoryTrace {
             )
         }
 
-        h(StackTrace.getSync(this.source, config.libOptions));
-        if (config.useSourcemap) {
-            this.asyncPrintable = StackTrace.fromError(this.source, config.libOptions).then(h)
+        h(StackTrace.getSync(this.source, CONFIG.libOptions));
+        if (CONFIG.useSourcemap) {
+            this.asyncPrintable = StackTrace.fromError(this.source, CONFIG.libOptions).then(h)
         } else {
             this.asyncPrintable = Promise.resolve(this.printable)
         }
@@ -97,11 +98,11 @@ export class JFactoryTrace_LIB_STACKTRACE extends JFactoryTrace {
     }
 }
 
-// ---------------------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------------
 // jFactoryTrace
-// ---------------------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------------
 // Status: Beta
-// ---------------------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------------
 
 let tracer;
 if (JFACTORY_DEV && JFACTORY_TRACE) {
@@ -109,13 +110,13 @@ if (JFACTORY_DEV && JFACTORY_TRACE) {
     tracer = {
 
         captureTraceSource(omitAboveFunctionName, omitSelf, stackTraceLimit) {
-            return new(config.tracer || JFactoryTrace)(omitAboveFunctionName, omitSelf, stackTraceLimit)
+            return new(CONFIG.tracer || JFactoryTrace)(omitAboveFunctionName, omitSelf, stackTraceLimit)
         },
 
         attachTrace(
             targetObject, traceSource /* or omitAboveFunctionName */,
-            traceLogKey = config.keys[0], traceSourceKey = config.keys[1],
-            label = config.label
+            traceLogKey = CONFIG.keys[0], traceSourceKey = CONFIG.keys[1],
+            label = CONFIG.label
         ) {
             if (typeof traceSource !== "object") {
                 traceSource = this.captureTraceSource(traceSource || "attachTrace", !traceSource);
@@ -183,20 +184,20 @@ if (JFACTORY_DEV && JFACTORY_TRACE) {
 
 export const jFactoryTrace = tracer;
 
-// ---------------------------------------------------------------------------------------------------------------------
-// Config
-// ---------------------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------------
+// Config JFactoryTrace
+// -----------------------------------------------------------------------------------------------------------------
 
-const config = jFactoryCfg("JFACTORY_CFG_JFactoryTrace");
+const CONFIG = /*#__PURE__*/jFactoryCfg("JFactoryTrace");
 
 if (JFACTORY_DEV && JFACTORY_TRACE) {
-    config.keys = ["$dev_traceLog", "$dev_traceSource"];
+    CONFIG.keys = ["$dev_traceLog", "$dev_traceSource"];
     if (typeof StackTrace === "object") {
-        config.tracer = JFactoryTrace_LIB_STACKTRACE;
-        config.useSourcemap = false;
+        CONFIG.tracer = JFactoryTrace_LIB_STACKTRACE;
+        CONFIG.useSourcemap = false;
     }
     jFactoryBootstrap_onBoot(function() {
-        if (config.tracer === JFactoryTrace_LIB_STACKTRACE) {
+        if (CONFIG.tracer === JFactoryTrace_LIB_STACKTRACE) {
             console.log("JFactoryTrace: Stacktrace.js support enabled; performances will be affected")
         }
     })

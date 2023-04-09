@@ -1,12 +1,13 @@
-import { helper_get, helper_isNative, helper_lowerFirst, helper_template } from "./jFactory-helpers.mjs";
-import { jFactoryCfg } from "./jFactory-env.mjs";
+/**
+ * -----------------------------------------------------------------------------------------------------------------
+ * JFactoryError
+ * -----------------------------------------------------------------------------------------------------------------
+ * Status: Beta
+ * -----------------------------------------------------------------------------------------------------------------
+ */
+import { helper_get, helper_isNative, helper_lowerFirst, helper_template } from "../jFactory-helpers.mjs";
+import { jFactoryCfg } from "../jFactory-config.mjs";
 import { jFactoryTrace } from "./JFactoryTrace.mjs";
-
-// ---------------------------------------------------------------------------------------------------------------------
-// JFactoryError
-// ---------------------------------------------------------------------------------------------------------------------
-// Status: Beta
-// ---------------------------------------------------------------------------------------------------------------------
 
 export class JFactoryError extends Error {
     constructor(message = "unspecified error", data = null) {
@@ -26,7 +27,7 @@ export class JFactoryError extends Error {
     }
 
     static getId(object) {
-        return object[config.keys.find(key => {
+        return object[CONFIG.keys.find(key => {
             let val = helper_get(object, key);
             return val || val === 0
         })]
@@ -57,8 +58,8 @@ export class JFactoryError extends Error {
                         } else {
                             try {
                                 nv = JSON.stringify(val);
-                                val = nv.length > config.jsonMax
-                                    ? nv.substring(0, config.jsonMax) + "[...]" : nv;
+                                val = nv.length > CONFIG.jsonMax
+                                    ? nv.substring(0, CONFIG.jsonMax) + "[...]" : nv;
                             } catch (e) {
                                 val = "[object " + val.constructor.name + "]"
                             }
@@ -80,7 +81,7 @@ export class JFactoryError extends Error {
         const templateMessage = [];
         for (let part of template.split(";")) {
             let placeholder;
-            let re = config.reg_placeholder
+            let re = CONFIG.regPlaceholder
             re.lastIndex = 0;
             if ((placeholder = re.exec(part))) {
                 do {
@@ -113,11 +114,9 @@ export class JFactoryError extends Error {
     }
 }
 
-// ---------------------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------------
 // JFACTORY_ERR_*
-// ---------------------------------------------------------------------------------------------------------------------
-// Status: Beta
-// ---------------------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------------
 
 const E = JFactoryError.factory;
 
@@ -129,12 +128,12 @@ export const JFACTORY_ERR_REQUEST_ERROR = /*#__PURE__*/E("REQUEST_ERROR", "error
 export const JFACTORY_ERR_KEY_DUPLICATED = /*#__PURE__*/E("KEY_DUPLICATED", "duplicated key for ${target}; Given: ${given}");
 export const JFACTORY_ERR_KEY_MISSING = /*#__PURE__*/E("KEY_MISSING", "missing key for ${target}; Given: ${given}");
 
-// ---------------------------------------------------------------------------------------------------------------------
-// Config
-// ---------------------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------------
+// Config JFactoryError
+// -----------------------------------------------------------------------------------------------------------------
 
-const config = jFactoryCfg("JFACTORY_CFG_JFactoryError", {
-    reg_placeholder: /\${([^}]+)}/g,
+const CONFIG = /*#__PURE__*/jFactoryCfg("JFactoryError", {
+    regPlaceholder: /\${([^}]+)}/g,
     jsonMax: 40,
     keys: ["$.about.name", "$dev_name", "$name", "name", "id"]
 })

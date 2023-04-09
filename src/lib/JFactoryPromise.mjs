@@ -1,16 +1,18 @@
-import { JFACTORY_DEV } from "./jFactory-env.mjs";
+/**
+ * -----------------------------------------------------------------------------------------------------------------
+ * JFactoryPromise
+ * -----------------------------------------------------------------------------------------------------------------
+ * Status: Beta
+ * -----------------------------------------------------------------------------------------------------------------
+ */
+import { JFACTORY_DEV } from "../jFactory-env.mjs";
 import { JFACTORY_ERR_INVALID_CALL, JFACTORY_ERR_PROMISE_EXPIRED } from "./JFactoryError.mjs";
 import { JFactoryExpect } from "./JFactoryExpect.mjs";
 import { jFactoryTrace } from "./JFactoryTrace.mjs";
-import { helper_isNative } from "./jFactory-helpers.mjs";
-import { helper_deferred } from "./jFactory-helpers.mjs";
-import { jFactoryBootstrap_expected } from "./jFactory-bootstrap.mjs";
-
-// ---------------------------------------------------------------------------------------------------------------------
-// JFactoryPromise 1.7
-// ---------------------------------------------------------------------------------------------------------------------
-// Status: Beta
-// ---------------------------------------------------------------------------------------------------------------------
+import { helper_isNative } from "../jFactory-helpers.mjs";
+import { helper_deferred } from "../jFactory-helpers.mjs";
+import { jFactoryBootstrap_expected } from "../jFactory-bootstrap.mjs";
+import { jFactoryCfg } from "../jFactory-config.mjs";
 
 // #limitation# async functions always use the native Promise constructor even if native Promise class is overridden
 // #limitation# async functions always returns a native Promise even if returning an extended Promise
@@ -18,9 +20,9 @@ import { jFactoryBootstrap_expected } from "./jFactory-bootstrap.mjs";
 
 const moduleGenId = () => ++moduleGenId.uid; moduleGenId.uid = 0;
 
-// ---------------------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------------
 // JFactoryPromise
-// ---------------------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------------
 
 export class JFactoryPromise extends Promise {
 
@@ -32,7 +34,7 @@ export class JFactoryPromise extends Promise {
         }
 
         const chainId = moduleGenId();
-        config = { ...JFactoryPromise.DEFAULT_CONFIG, ...config };
+        config = { ...CONFIG, ...config };
         name = name || "unnamed";
 
         if (JFACTORY_DEV) {
@@ -468,13 +470,9 @@ export class JFactoryPromise extends Promise {
     }
 }
 
-JFactoryPromise.DEFAULT_CONFIG = {
-    chainAutoComplete: false
-};
-
-// ---------------------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------------
 // JFactoryPromiseChain
-// ---------------------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------------
 
 export class JFactoryPromiseChain {
 
@@ -520,9 +518,9 @@ export class JFactoryPromiseChain {
     }
 }
 
-// ---------------------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------------
 // JFactoryPromisePath
-// ---------------------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------------
 
 export class JFactoryPromisePath extends Array {
 
@@ -544,12 +542,14 @@ export class JFactoryPromisePath extends Array {
     toString() {return this.printable}
 }
 
-// ---------------------------------------------------------------------------------------------------------------------
-// JFactoryPromiseSync
-// ---------------------------------------------------------------------------------------------------------------------
-// Promise that tries to resolve synchronously
-// allowing synchronous states and result
-// ---------------------------------------------------------------------------------------------------------------------
+/**
+ * -----------------------------------------------------------------------------------------------------------------
+ * JFactoryPromiseSync
+ * -----------------------------------------------------------------------------------------------------------------
+ * Promise that tries to resolve synchronously
+ * allowing synchronous states and result
+ * -----------------------------------------------------------------------------------------------------------------
+ */
 
 export class JFactoryPromiseSync extends Promise {
 
@@ -647,3 +647,11 @@ export class JFactoryPromiseSync extends Promise {
         }
     }
 }
+
+// -----------------------------------------------------------------------------------------------------------------
+// Config JFactoryPromise
+// -----------------------------------------------------------------------------------------------------------------
+
+const CONFIG = /*#__PURE__*/jFactoryCfg("JFactoryPromise", {
+    chainAutoComplete: false
+});

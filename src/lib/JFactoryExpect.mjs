@@ -1,16 +1,17 @@
-import { JFACTORY_DEV } from "./jFactory-env.mjs";
+/**
+ * -----------------------------------------------------------------------------------------------------------------
+ * JFactoryExpect
+ * -----------------------------------------------------------------------------------------------------------------
+ * A small input/output validation tool
+ * -----------------------------------------------------------------------------------------------------------------
+ * Status: Beta, HasSideEffects
+ * -----------------------------------------------------------------------------------------------------------------
+ */
+import { JFACTORY_DEV } from "../jFactory-env.mjs";
 import { JFACTORY_ERR_INVALID_VALUE } from "./JFactoryError.mjs";
-import { helper_isNumber, helper_isPlainObject, helper_isString } from "./jFactory-helpers.mjs";
-import { jFactoryBootstrap_onBoot } from "./jFactory-bootstrap.mjs";
-import { jFactoryBootstrap_expected } from "./jFactory-bootstrap.mjs";
-
-// ---------------------------------------------------------------------------------------------------------------------
-// JFactoryExpect
-// ---------------------------------------------------------------------------------------------------------------------
-// A small input/output validation tool
-// ---------------------------------------------------------------------------------------------------------------------
-// Status: Alpha, Draft, HasSideEffects
-// ---------------------------------------------------------------------------------------------------------------------
+import { helper_isNumber, helper_isPlainObject, helper_isString } from "../jFactory-helpers.mjs";
+import { jFactoryBootstrap_onBoot } from "../jFactory-bootstrap.mjs";
+import { jFactoryBootstrap_expected } from "../jFactory-bootstrap.mjs";
 
 /**
  * @return {*|JFactoryExpect}
