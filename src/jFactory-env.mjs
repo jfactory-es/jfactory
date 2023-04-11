@@ -11,6 +11,7 @@
  * Status: Beta
  * -----------------------------------------------------------------------------------------------------------------
  */
+
 export const JFACTORY_NAME  = /*#__PURE__*/ env("JFACTORY_ENV_NAME") ?? "jFactory";
 export const JFACTORY_VER   = /*#__PURE__*/ env("JFACTORY_ENV_VER") ?? "(custom build)";
 

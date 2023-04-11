@@ -97,7 +97,7 @@ module.exports = {
         name: "jFactoryModule",
         banner: replace(banner, getReplaceValues(false)),
         plugins: [
-          terserPlugin(terserOptions)
+          terserPlugin(/*terserOptions*/)
         ],
         dir: 'umd',
         ...commonOutput
@@ -106,7 +106,7 @@ module.exports = {
         format: 'es',
         entryFileNames: "[name].mjs",
         banner: function(chunk) {
-          return chunk.fileName === "index.mjs" ? replace(banner, getReplaceValues(true)) : "";
+          return chunk.fileName === "index.mjs" ? replace(banner, getReplaceValues(false)) : "";
         },
         // !! modules must be preserved to allow module Tree Shaking in application bundler
         preserveModules: true,
