@@ -1,5 +1,5 @@
 /*!
- * jFactory-devel v1.8.0-alpha 2023-04-11
+ * jFactory-devel v1.8.0-alpha 2023-04-18
  * https://github.com/jfactory-es/jfactory
  * (c) 2019-2023 Stephane Plazis
  * License: https://raw.githubusercontent.com/jfactory-es/jfactory/master/LICENSE.txt

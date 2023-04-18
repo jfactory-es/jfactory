@@ -8,7 +8,6 @@ import { jFactoryCfg } from './jFactory-config.mjs';
  * -----------------------------------------------------------------------------------------------------------------
  */
 
-/** @return {JFactoryComponent|JFactoryCoreObject} */
 const jFactory = function(name, properties) {
     return Object.assign(new (jFactoryCfg('jFactory').baseComponent)(name), properties);
 };

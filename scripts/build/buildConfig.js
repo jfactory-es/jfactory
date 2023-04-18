@@ -93,7 +93,7 @@ module.exports = {
     return [
       {
         format: 'umd',
-        entryFileNames: project.prodName + ".js",
+        entryFileNames: project.prodName + ".umd.js",
         name: "jFactoryModule",
         banner: replace(banner, getReplaceValues(false)),
         plugins: [
@@ -124,7 +124,7 @@ module.exports = {
     return [
       {
         format: 'umd',
-        entryFileNames: project.develName + ".js",
+        entryFileNames: project.develName + ".umd.js",
         name: "jFactoryModule",
         banner: replace(banner, getReplaceValues(true)),
         // sourcemap: true,
