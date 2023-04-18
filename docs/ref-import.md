@@ -1,6 +1,6 @@
 [jFactory](index.md) > [Reference](ref-index.md) > Importing jFactory 
 
-# Installing jFactory
+# Installing jFactory 1.8
 
 * [Import from NPM module](#import-from-npm)
 * [Import from \<script\>](#import-from-script) for immediate testing
@@ -26,7 +26,7 @@ _The `jFactory.umd.js` file is a fully bundled export. Use this for quick librar
     <script src="https://cdn.jsdelivr.net/npm/lodash/lodash.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery/jquery.min.js"></script>
     <!-- loading jFactory (development) from a cdn -->
-    <script src="https://cdn.jsdelivr.net/npm/jfactory@1.8.0/dist/jFactory-devel.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jfactory@1.8.0/umd/jFactory-devel.umd.js"></script>
 </head>
 <body>
 <script>
@@ -68,30 +68,30 @@ import { jFactory } from "jfactory"
 ```javascript
 const { jFactory } = require("jfactory") 
 ```
-This [conditional loading](https://github.com/jfactory-es/jfactory/blob/master/dist/index.js) is based on `process.env.NODE_ENV` to switch between `development` and `production` modules.
+This [conditional loading](https://github.com/jfactory-es/jfactory/blob/master/es/index.js) is based on `process.env.NODE_ENV` to switch between `development` and `production` modules.
 
 Note that Webpack configures `NODE_ENV` with the value of its [`mode`](https://webpack.js.org/configuration/mode/) 
 option, so you shouldn't need to configure anything : Your project will automatically use the production module 
-if webpack is configured for production. Otherwise, just set `process.env.NODE_ENV` to `development` or `production`. 
+if webpack is configured for production. Otherwise, just set `process.env.NODE_ENV` to `"development"` or `"production"`. 
 
-*Restriction:* Because the "automatic import" is a CommonJS file, it may not work when imported from an ES6 ".mjs" file. 
-In this case, you may need to load a specific version (see below) or use a conditional ES6 import(). 
+[//]: # (*Restriction:* Because the "automatic import" is a CommonJS file, it may not work when imported from an ES6 ".mjs" file. )
+[//]: # (In this case, you may need to load a specific version &#40;see below&#41; or to load it from a js file. )
 
 #### Force a specific import
 
-To ignore the loader and force a specific version (development or production), use one of these lines:
+To ignore the loader and force a specific version (development or production), use one of these lines :
 
 ```javascript
 import { jFactory } from "jfactory/es" // production version, ES6
 ```
 ```javascript
-import { jFactory } from "jfactory/es/devel" // development version, ES6
+import { jFactory } from "jfactory/devel" // development version, ES6
 ```
 ```javascript
-const  { jFactory } = require('jfactory/es/index.mjs') // production loaded with require()
+const  { jFactory } = require('jfactory/es') // production loaded with require()
 ```
 ```javascript
-const  { jFactory } = require('jfactory/es/devel/index.mjs') // development loaded with require()
+const  { jFactory } = require('jfactory/devel') // development loaded with require()
 ```
 
 <!--
