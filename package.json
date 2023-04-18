@@ -40,7 +40,8 @@
     "library",
     "framework"
   ],
-  "main": "es/index.js",
+  "main": "./es/index.js",
+  "types": "./src/jFactory.d.mts",
   "exports": {
     ".": "./es/index.js",
     "./es": "./es/index.mjs",

@@ -1,3 +1,10 @@
+## 1.8.0 (2023)
+* feat: starting implementation of a ts definition file 
+* refactor: improved module tree shaking 
+* refactor: module exports
+* refactor: pear dependencies
+* build: dependencies refactored and updated
+
 ## 1.7.7 (Jan 10, 2021)
 * feat: generic external imports
 * feat: warn for missing external dependencies
