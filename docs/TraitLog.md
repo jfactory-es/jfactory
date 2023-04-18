@@ -19,7 +19,8 @@ By default, for all components, logs are :
 * disabled when using the production distribution of jFactory.
 * enabled when using the development distribution of jFactory.
 
-This behavior can be changed by setting jFactoryConfig.TraitLog.enabled = true | false
+
+[//]: # (TODO This behavior can be changed by setting jFactoryConfig.TraitLog.enabled = true | false)
 
 ### Component config
  
