@@ -43,9 +43,9 @@
   "main": "./es/index.js",
   "types": "./src/jFactory.d.mts",
   "exports": {
-    ".": "./es/index.js",
-    "./es": "./es/index.mjs",
-    "./devel": "./es/devel/index.mjs"
+    ".": "./dist/index.js",
+    "./es": "./dist/es/index.mjs",
+    "./devel": "./dist/es-devel/index.mjs"
   },
   "files": [
     "es/**",
@@ -71,16 +71,16 @@
   },
   "devDependencies": {
     "@rollup/plugin-replace": "^5.0.2",
-    "@rollup/plugin-terser": "^0.4.1",
-    "@vitest/ui": "^0.30.0",
+    "@rollup/plugin-terser": "^0.4.3",
+    "@vitest/ui": "^0.31.1",
     "ansi-colors": "^4.1.3",
-    "jsdom": "^21.1.1",
+    "jsdom": "^22.0.0",
     "msw": "^1.2.1",
     "node-fetch": "^4.0.0-beta.4",
-    "rollup": "^3.20.2",
-    "semver": "^7.4.0",
-    "sinon": "^15.0.3",
-    "vitest": "^0.30.0"
+    "rollup": "^3.23.0",
+    "semver": "^7.5.1",
+    "sinon": "^15.1.0",
+    "vitest": "^0.31.1"
   },
   "/experimental/": {
   }

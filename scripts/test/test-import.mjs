@@ -9,16 +9,16 @@ switch (process.env.MODE) {
         lib = "../../src";
         break;
     case "ES_PROD":
-        lib = "../../es";
+        lib = "../../dist/es";
         break;
     case "ES_DEVEL":
-        lib = "../../es/devel";
+        lib = "../../dist/es-devel";
         break;
     case "UMD_PROD":
-        lib = "./umd/jFactory.umd.js";
+        lib = "./dist/umd/jFactory.umd.js";
         break;
     case "UMD_DEVEL":
-        lib = "./umd/jFactory-devel.umd.js";
+        lib = "./dist/umd/jFactory-devel.umd.js";
         break;
     default:
         throw "scripts/test/test-import.mjs : invalid process.env.MODE"

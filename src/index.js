@@ -1,5 +1,5 @@
 if (process.env.NODE_ENV === "development") {
-  module.exports = require("./devel/index.mjs");
+  module.exports = require("./es-devel/index.mjs");
 } else {
-  module.exports = require("./index.mjs");
+  module.exports = require("./es/index.mjs");
 }

@@ -88,8 +88,8 @@ module.exports = {
   },
 
   outputProd() {
-    const terserOptions= {
-    };
+    // const terserOptions= {
+    // };
     return [
       {
         format: 'umd',
@@ -99,7 +99,7 @@ module.exports = {
         plugins: [
           terserPlugin(/*terserOptions*/)
         ],
-        dir: 'umd',
+        dir: 'dist/umd',
         ...commonOutput
       },
       {
@@ -114,7 +114,7 @@ module.exports = {
         plugins: [
           // terserPlugin(terserOptions)
         ],
-        dir: 'es',
+        dir: 'dist/es',
         ...commonOutput
       }
     ]
@@ -128,7 +128,7 @@ module.exports = {
         name: "jFactoryModule",
         banner: replace(banner, getReplaceValues(true)),
         // sourcemap: true,
-        dir: 'umd',
+        dir: 'dist/umd',
         plugins: [
           // terserPlugin(terserOptions)
         ],
@@ -147,7 +147,7 @@ module.exports = {
         plugins: [
           // terserPlugin(terserOptions)
         ],
-        dir: 'es/devel',
+        dir: 'dist/es-devel',
         ...commonOutput
       }
     ]
@@ -159,7 +159,7 @@ module.exports = {
         format: 'cjs',
         entryFileNames: "index.js",
         banner: replace(banner, getReplaceValues(false)),
-        dir: 'es',
+        dir: 'dist',
       }
     ]
   },

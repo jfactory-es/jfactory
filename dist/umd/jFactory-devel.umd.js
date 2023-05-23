@@ -1,5 +1,5 @@
 /*!
- * jFactory-devel v1.8.0-alpha 2023-04-18
+ * jFactory-devel v1.8.0-alpha 2023-05-23
  * https://github.com/jfactory-es/jfactory
  * (c) 2019-2023 Stephane Plazis
  * License: https://raw.githubusercontent.com/jfactory-es/jfactory/master/LICENSE.txt
@@ -71,6 +71,7 @@
      * Status: Beta
      * -----------------------------------------------------------------------------------------------------------------
      */
+
 
     // --------------
     // Helpers
@@ -4715,6 +4716,7 @@
      * The ES version is exported as separated modules to benefit from module Tree Shaking
      * -----------------------------------------------------------------------------------------------------------------
      */
+
     jFactoryBootstrap(true);
 
     exports.helper_get = helper_get;

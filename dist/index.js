@@ -1,5 +1,5 @@
 /*!
- * jFactory v1.8.0-alpha 2023-04-18
+ * jFactory v1.8.0-alpha 2023-05-23
  * https://github.com/jfactory-es/jfactory
  * (c) 2019-2023 Stephane Plazis
  * License: https://raw.githubusercontent.com/jfactory-es/jfactory/master/LICENSE.txt
@@ -7,7 +7,7 @@
 'use strict';
 
 if (process.env.NODE_ENV === "development") {
-  module.exports = require("./devel/index.mjs");
+  module.exports = require("./es-devel/index.mjs");
 } else {
-  module.exports = require("./index.mjs");
+  module.exports = require("./es/index.mjs");
 }
