@@ -26,7 +26,9 @@ _The `jFactory.umd.js` file is a fully bundled export. Use this for quick librar
     <script src="https://cdn.jsdelivr.net/npm/lodash/lodash.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery/jquery.min.js"></script>
     <!-- loading jFactory (development) from a cdn -->
-    <script src="https://cdn.jsdelivr.net/npm/jfactory@1.8.0/umd/jFactory-devel.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jfactory@1.8.0/dist/umd/jFactory-devel.umd.js"></script>
+    <!-- or production: -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/jfactory@1.8.0/dist/umd/jFactory.umd.js"></script> -->
 </head>
 <body>
 <script>
