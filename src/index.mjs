@@ -13,4 +13,5 @@ export * from "./jFactory-helpers.mjs";
 export * from "./jFactory.mjs"
 
 import { jFactoryBootstrap } from "./jFactory-bootstrap.mjs";
-jFactoryBootstrap(true)
+export { jFactoryBootstrap }
+jFactoryBootstrap()

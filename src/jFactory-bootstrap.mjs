@@ -11,9 +11,9 @@ import { jFactoryCompat_run } from "./jFactory-compat.mjs";
 let isLoaded = false;
 let seq = [];
 
-export function jFactoryBootstrap(auto) {
+export function jFactoryBootstrap() {
     if (!isLoaded) {
-        if (auto && !JFACTORY_BOOT) {
+        if (!JFACTORY_BOOT) {
             // auto bootstrap is disabled by env
             return
         }
