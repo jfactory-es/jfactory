@@ -1,7 +1,7 @@
 /*!
- * jFactory-devel v1.8.0-alpha 2023-05-23
+ * jFactory-devel v1.8.0-alpha.2 2024-10-23
  * https://github.com/jfactory-es/jfactory
- * (c) 2019-2023 Stephane Plazis
+ * (c) 2019-2024 Stephane Plazis
  * License: https://raw.githubusercontent.com/jfactory-es/jfactory/master/LICENSE.txt
  */
 (function (global, factory) {
@@ -24,12 +24,12 @@
      * -----------------------------------------------------------------------------------------------------------------
      */
 
-    const JFACTORY_NAME  =  "jFactory-devel" ;
-    const JFACTORY_VER   =  "1.8.0-alpha" ;
+    const JFACTORY_NAME  = "jFactory-devel";
+    const JFACTORY_VER   = "1.8.0-alpha.2";
+    const JFACTORY_DEV   = true; // Developer Mode
 
     const JFACTORY_CLI   = /*#__PURE__*/ env("JFACTORY_ENV_CLI") ?? /*#__PURE__*/ isNode();
     const JFACTORY_REPL  = /*#__PURE__*/ env("JFACTORY_ENV_REPL") ?? /*#__PURE__*/ isPlayground();
-    const JFACTORY_DEV   =  true ; // Developer Mode
     const JFACTORY_LOG   = /*#__PURE__*/ env("JFACTORY_ENV_LOG") ?? JFACTORY_DEV;
     const JFACTORY_TRACE = /*#__PURE__*/ env("JFACTORY_ENV_TRACE") ?? JFACTORY_DEV;
     const JFACTORY_BOOT  = /*#__PURE__*/ env("JFACTORY_ENV_BOOT") ?? true; // Boot jFactory at load
@@ -215,9 +215,9 @@
     let isLoaded = false;
     let seq = [];
 
-    function jFactoryBootstrap(auto) {
+    function jFactoryBootstrap() {
         if (!isLoaded) {
-            if (auto && !JFACTORY_BOOT) {
+            if (!JFACTORY_BOOT) {
                 // auto bootstrap is disabled by env
                 return
             }
@@ -4243,8 +4243,8 @@
 
             {
                 JFactoryExpect("id", id).typeString();
-                JFactoryExpect("jQueryArgument", jQueryArgument).type(String, Object);
-                appendTo && JFactoryExpect("appendTo", appendTo).type(String, Object);
+                JFactoryExpect("jQueryArgument", jQueryArgument).type(String, jQuery, HTMLElement);
+                appendTo && JFactoryExpect("appendTo", appendTo).type(String, jQuery, HTMLElement);
             }
 
             let domId;
@@ -4717,7 +4717,7 @@
      * -----------------------------------------------------------------------------------------------------------------
      */
 
-    jFactoryBootstrap(true);
+    jFactoryBootstrap();
 
     exports.helper_get = helper_get;
     exports.helper_lowerFirst = helper_lowerFirst;
@@ -4774,6 +4774,7 @@
     exports.helper_url_abs = helper_url_abs;
     exports.helper_useragent = helper_useragent;
     exports.jFactory = jFactory;
+    exports.jFactoryBootstrap = jFactoryBootstrap;
     exports.jFactoryCfg = jFactoryCfg;
     exports.jFactoryFunctionConditional = jFactoryFunctionConditional;
     exports.jFactoryFunctionExpirable = jFactoryFunctionExpirable;

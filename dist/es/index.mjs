@@ -1,7 +1,7 @@
 /*!
- * jFactory v1.8.0-alpha 2023-05-23
+ * jFactory v1.8.0-alpha.2 2024-10-23
  * https://github.com/jfactory-es/jfactory
- * (c) 2019-2023 Stephane Plazis
+ * (c) 2019-2024 Stephane Plazis
  * License: https://raw.githubusercontent.com/jfactory-es/jfactory/master/LICENSE.txt
  */
 export { JFACTORY_BOOT, JFACTORY_CLI, JFACTORY_DEV, JFACTORY_LOG, JFACTORY_NAME, JFACTORY_REPL, JFACTORY_TRACE, JFACTORY_VER } from './jFactory-env.mjs';
@@ -40,4 +40,6 @@ export { default as helper_defaultsDeep } from 'lodash/defaultsDeep.js';
  * -----------------------------------------------------------------------------------------------------------------
  */
 
-jFactoryBootstrap(true);
+jFactoryBootstrap();
+
+export { jFactoryBootstrap };

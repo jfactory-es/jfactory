@@ -11,9 +11,9 @@ import { JFACTORY_BOOT } from './jFactory-env.mjs';
 let isLoaded = false;
 let seq = [];
 
-function jFactoryBootstrap(auto) {
+function jFactoryBootstrap() {
     if (!isLoaded) {
-        if (auto && !JFACTORY_BOOT) {
+        if (!JFACTORY_BOOT) {
             // auto bootstrap is disabled by env
             return
         }

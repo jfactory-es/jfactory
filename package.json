@@ -1,11 +1,11 @@
 {
   "name": "jfactory",
-  "version": "1.8.0-alpha",
+  "version": "1.8.0-alpha.2",
   "description": "Easily modularize your application into cancelable components. Everything they initialize can be monitored, stopped and removed automatically, including views, nested promise trees, requests, listeners, DOM and CSS.",
   "author": "Stephane Plazis",
   "license": "SEE LICENSE IN LICENSE.txt",
   "x-licenseUrl": "https://raw.githubusercontent.com/jfactory-es/jfactory/master/LICENSE.txt",
-  "x-copyrightYear": "2019-2023",
+  "x-copyrightYear": "2019-2024",
   "homepage": "https://github.com/jfactory-es/jfactory",
   "repository": {
     "type": "git",
@@ -53,34 +53,42 @@
     "src/**"
   ],
   "devEngines": {
-    "node": ">=18.x"
+    "runtime": {
+      "name": "node",
+      "version": ">=18.x",
+      "onFail": "warn"
+    },
+    "packageManager": {
+      "name": "npm",
+      "onFail": "warn"
+    }
   },
   "scripts": {
     "build": "node scripts/build.js",
-    "test:source": "MODE=SOURCE npx vitest run",
-    "test:es:prod": "MODE=ES_PROD npx vitest run",
-    "test:es:dev": "MODE=ES_DEVEL npx vitest run",
-    "test:umd:prod": "MODE=UMD_PROD npx vitest run",
-    "test:umd:dev": "MODE=UMD_DEVEL npx vitest run",
-    "watch:source": "MODE=SOURCE npx vitest",
-    "watch:source:ui": "MODE=SOURCE npx vitest --ui"
+    "test:source": "JFT_MODE=SOURCE npx vitest run",
+    "test:es:prod": "JFT_MODE=ES_PROD npx vitest run",
+    "test:es:dev": "JFT_MODE=ES_DEVEL npx vitest run",
+    "test:umd:prod": "JFT_MODE=UMD_PROD npx vitest run",
+    "test:umd:dev": "JFT_MODE=UMD_DEVEL npx vitest run",
+    "watch:source": "JFT_MODE=SOURCE npx vitest",
+    "watch:source:ui": "JFT_MODE=SOURCE npx vitest --ui"
   },
   "peerDependencies": {
     "jquery": "^3",
     "lodash": "^4"
   },
   "devDependencies": {
-    "@rollup/plugin-replace": "^5.0.2",
-    "@rollup/plugin-terser": "^0.4.3",
-    "@vitest/ui": "^0.31.1",
+    "@rollup/plugin-replace": "^6.0.1",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@vitest/ui": "^2.1.3",
     "ansi-colors": "^4.1.3",
-    "jsdom": "^22.0.0",
-    "msw": "^1.2.1",
+    "jsdom": "^25.0.1",
+    "msw": "^1.3.5",
     "node-fetch": "^4.0.0-beta.4",
-    "rollup": "^3.23.0",
-    "semver": "^7.5.1",
-    "sinon": "^15.1.0",
-    "vitest": "^0.31.1"
+    "rollup": "^4.24.0",
+    "semver": "^7.6.3",
+    "sinon": "^19.0.2",
+    "vitest": "^2.1.3"
   },
   "/experimental/": {
   }
