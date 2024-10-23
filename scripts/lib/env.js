@@ -1,52 +1,43 @@
+const packageJson = require("../../package.json");
 const colors = require('ansi-colors');
 
-process.env.NODE_ENV || (process.env.NODE_ENV = "production");
-
-function check(/*config*/) {
+function envCheck() {
   const semverSatisfies = require('semver/functions/satisfies');
-  const packageJson = require("../../package.json");
+  const result = {
+    error: [],
+    warn: [],
+  };
+  const pad = 18;
 
-  let pad = 8;
-  let checkNode = semverSatisfies(process.version, packageJson.devEngines.node);
+  // Check Package VERSION
   let checkVer = !(
     packageJson.version.includes("beta") || packageJson.version.includes("alpha")
   );
+  console.log("Package Version".padEnd(pad, " ") + warnIfStr(!checkVer, "v" + packageJson.version));
+  if (!checkVer) {
+    result.warn.push(`This build is not a stable release: ${packageJson.version}`)
+  }
 
-  console.log("Ver".padEnd(pad, " ")    + warnIfStr(!checkVer, "v" + packageJson.version));
-  console.log("Node".padEnd(pad, " ")   + warnIf(!checkNode, process.version, `"${process.version}"`));
-  console.log();
+  // Check package COPYRIGHT
+  const year = new Date().getFullYear().toString();
+  const copyrightYear = packageJson['x-copyrightYear'].split('-');
+  const checkCopyrightYear = copyrightYear[1] === year;
+  console.log("Package Copyright".padEnd(pad, " ")   + warnIfStr(!checkCopyrightYear, packageJson['x-copyrightYear']));
+  if (!checkCopyrightYear) {
+    result.warn.push(`package.json property x-copyrightYear must be updated: ${copyrightYear[1]}`)
+    packageJson['x-copyrightYear'] = copyrightYear[0]+'-'+year;
+  }
 
-  // if (process.env.NODE_ENV === "production" && warnCount) {
-  //   console.log("\n" + colors.red("Production environment check failure"));
-  //   process.exit(1);
-  // }
+  // Check NODE
+  let checkNode = semverSatisfies(process.version, packageJson.devEngines.runtime.version);
+  console.log("Node".padEnd(pad, " ") + warnIf(!checkNode, process.version, `"${process.version}"`));
+  if (!checkNode) {
+    result.warn.push(`This build requires node ${packageJson.devEngines.runtime.version}`)
+  }
+
+  return result;
 }
 
-// function env(key, setDefault) {
-//   let val;
-//   if (process.env.hasOwnProperty(key)) {
-//     val = process.env[key];
-//     switch (val.trim()) {
-//       case "null":
-//         val = null;
-//         break;
-//       case "false":
-//         val = false;
-//         break;
-//       case "true":
-//         val = true;
-//         break;
-//       default:
-//         !isNaN(val) && (val = parseFloat(val))
-//     }
-//   }
-//   if (setDefault !== undefined && val === undefined) {
-//     val = process.env[key] = setDefault
-//   }
-//   return val
-// }
-
-let warnCount = 0;
 function warnIf(test, val, msg, type) {
   if (msg === undefined) msg = val.toString();
   if (type === "string") msg = "\"" + msg + "\"";
@@ -54,7 +45,6 @@ function warnIf(test, val, msg, type) {
     msg = colors.red("(" + typeof val + ") ") + msg;
   }
   if (test) {
-    warnCount++;
     return colors.red(msg)
   } else {
     return colors.green(msg)
@@ -66,5 +56,5 @@ function warnIfStr(test, val, msg) {
 }
 
 module.exports = {
-  check
+  envCheck
 }

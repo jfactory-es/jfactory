@@ -1,5 +1,3 @@
-const cnfMgr = require('./build/buildConfig');
-const { check } = require("./lib/env");
 const { rollup } = require('rollup');
 const colors = require('ansi-colors');
 
@@ -25,8 +23,15 @@ async function build(input, output) {
 
 async function run() {
   try {
+    const { envCheck } = require("./lib/env");
+    console.log("--[Env checking]--".padEnd(80, "-"));
+    let envCheckResult = envCheck();
+
+    console.log();
+
+    // Caution: envCheck() must be run before loading buildConfig
+    const cnfMgr = require('./build/buildConfig');
     console.log("--[Build jFactory]--".padEnd(80, "-"));
-    check();
     const startTime = Date.now();
     await Promise.all([
       build(cnfMgr.input({ devel: false }), cnfMgr.outputProd()),
@@ -40,6 +45,18 @@ async function run() {
     const compilationTime = (endTime - startTime) / 1000;
     console.log("-".repeat(80));
     console.log(`Compilation completed in ${compilationTime} seconds`);
+
+    if (envCheckResult.warn.length) {
+      envCheckResult.warn.forEach((value, index, array)=>{
+        console.warn(colors.red(`Env warning: ${value}`));
+      });
+    }
+    if (envCheckResult.error.length) {
+      envCheckResult.error.forEach((value, index, array)=>{
+        console.error(colors.red(`Env errors: ${value}`));
+      });
+      process.exit(1);
+    }
   } catch (err) {
     console.error(err);
     process.exit(1);

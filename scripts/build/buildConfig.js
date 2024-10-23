@@ -10,7 +10,7 @@ const project = {
   version: packageJson.version,
   repository: packageJson.repository.url,
   homepage: packageJson.homepage,
-  copyrightYear: checkCopyrightYear(packageJson['x-copyrightYear']),
+  copyrightYear: packageJson['x-copyrightYear'],
   license: packageJson['x-licenseUrl'],
   buildId: new Date().toISOString().slice(0, 10)
 };
@@ -192,12 +192,4 @@ function replace(str, match) {
     }
   }
   return str
-}
-
-function checkCopyrightYear(copyrightYear) {
-  if (copyrightYear.split('-')[1] !== new Date().getFullYear().toString()) {
-    console.error("Please check or update property x-copyrightYear in package.json", copyrightYear.split('-')[1]);
-    process.exit(1)
-  }
-  return copyrightYear
 }
