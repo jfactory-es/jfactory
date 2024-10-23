@@ -354,8 +354,8 @@ export class TraitDOM {
 
         if (JFACTORY_DEV) {
             JFactoryExpect("id", id).typeString();
-            JFactoryExpect("jQueryArgument", jQueryArgument).type(String, Object);
-            appendTo && JFactoryExpect("appendTo", appendTo).type(String, Object);
+            JFactoryExpect("jQueryArgument", jQueryArgument).type(String, jQuery, HTMLElement);
+            appendTo && JFactoryExpect("appendTo", appendTo).type(String, jQuery, HTMLElement);
         }
 
         let domId;

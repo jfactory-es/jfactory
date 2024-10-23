@@ -20,8 +20,9 @@ Registers the jQuery selection returned by `$(jQueryArgument)`, with the key `re
 The `jQueryArgument` can be:
 - an HTML string: `"<div></div><div></div>"`
 - a selector: `"#myElement .myClass"`
-- an array of HTMLElements elements: `[HTMLDivElement, HTMLDivElement]`
-- a jQuery selection: `$("#myElement .myClass")` 
+- a jQuery: `$(...)`
+
+[//]: # (- an array of HTMLElements elements: `[HTMLDivElement, HTMLDivElement]`)
 
 See also https://api.jquery.com/jQuery.
  
