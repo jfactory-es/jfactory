@@ -3,7 +3,19 @@ const fs = require('fs');
 
 let lib;
 global.JFACTORY_ENV_LOG = false;
-switch (process.env.MODE) {
+
+if (![
+    "SOURCE",
+    "ES_PROD",
+    "ES_DEVEL",
+    "UMD_PROD",
+    "UMD_DEVEL"
+].includes(process.env.JFT_MODE)) {
+    console.warn(`Test should be run with a valid process.env.JFT_MODE (given: "${process.env.JFT_MODE}")`);
+    process.env.JFT_MODE = "ES_DEVEL"
+}
+
+switch (process.env.JFT_MODE) {
     case "SOURCE":
         global.JFACTORY_ENV_DEV = true;
         lib = "../../src";
@@ -20,12 +32,10 @@ switch (process.env.MODE) {
     case "UMD_DEVEL":
         lib = "./dist/umd/jFactory-devel.umd.js";
         break;
-    default:
-        throw "scripts/test/test-import.mjs : invalid process.env.MODE"
 }
-console.log('Testing ' + process.env.MODE + " " + lib);
+console.log('Testing ' + process.env.JFT_MODE + " " + lib);
 
-if (process.env.MODE === "UMD_DEVEL" || process.env.MODE === "UMD_PROD") {
+if (process.env.JFT_MODE === "UMD_DEVEL" || process.env.JFT_MODE === "UMD_PROD") {
     global._ = require('lodash');
     global.$ = require('jquery');
     // The umd header detects require() and import everything as node modules.
