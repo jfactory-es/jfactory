@@ -12,12 +12,12 @@
  * -----------------------------------------------------------------------------------------------------------------
  */
 
-export const JFACTORY_NAME  = /*#__PURE__*/ env("JFACTORY_ENV_NAME") ?? "jFactory";
-export const JFACTORY_VER   = /*#__PURE__*/ env("JFACTORY_ENV_VER") ?? "(custom build)";
+export const JFACTORY_NAME  = env("JFACTORY_ENV_NAME") ?? "jFactory";
+export const JFACTORY_VER   = env("JFACTORY_ENV_VER") ?? "(custom build)";
+export const JFACTORY_DEV   = env("JFACTORY_ENV_DEV") ?? false; // Developer Mode
 
 export const JFACTORY_CLI   = /*#__PURE__*/ env("JFACTORY_ENV_CLI") ?? /*#__PURE__*/ isNode();
 export const JFACTORY_REPL  = /*#__PURE__*/ env("JFACTORY_ENV_REPL") ?? /*#__PURE__*/ isPlayground();
-export const JFACTORY_DEV   = /*#__PURE__*/ env("JFACTORY_ENV_DEV") ?? false; // Developer Mode
 export const JFACTORY_LOG   = /*#__PURE__*/ env("JFACTORY_ENV_LOG") ?? JFACTORY_DEV;
 export const JFACTORY_TRACE = /*#__PURE__*/ env("JFACTORY_ENV_TRACE") ?? JFACTORY_DEV;
 export const JFACTORY_BOOT  = /*#__PURE__*/ env("JFACTORY_ENV_BOOT") ?? true; // Boot jFactory at load
