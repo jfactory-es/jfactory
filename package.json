@@ -1,9 +1,9 @@
 {
   "name": "jfactory",
   "version": "1.8.0-alpha.2",
-  "description": "Easily modularize your application into cancelable components. Everything they initialize can be monitored, stopped and removed automatically, including views, nested promise trees, requests, listeners, DOM and CSS.",
-  "author": "Stephane Plazis",
-  "license": "SEE LICENSE IN LICENSE.txt",
+  "description": "Automatically monitor, stop, and clean up everything. Easily modularize your app with cancelable components. Everything they initialize, including views, requests, listeners, DOM elements, CSS, and nested promise trees, can be efficiently monitored, stopped, and removed.",
+  "author": "Stephane Plazis <sp.jfactory@gmail.com>",
+  "license": "SEE LICENSE IN LICENSE.md",
   "x-licenseUrl": "https://raw.githubusercontent.com/jfactory-es/jfactory/master/LICENSE.txt",
   "x-copyrightYear": "2019-2024",
   "homepage": "https://github.com/jfactory-es/jfactory",
@@ -48,9 +48,7 @@
     "./devel": "./dist/es-devel/index.mjs"
   },
   "files": [
-    "es/**",
-    "umd/**",
-    "src/**"
+    "dist"
   ],
   "devEngines": {
     "runtime": {
