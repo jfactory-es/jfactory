@@ -62,7 +62,7 @@
     }
   },
   "scripts": {
-    "build": "node scripts/build.js",
+    "build": "node scripts/build/build.js",
     "test:source": "JFT_MODE=SOURCE npx vitest run",
     "test:es:prod": "JFT_MODE=ES_PROD npx vitest run",
     "test:es:dev": "JFT_MODE=ES_DEVEL npx vitest run",
