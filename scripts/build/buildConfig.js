@@ -15,7 +15,7 @@ const project = {
   buildId: new Date().toISOString().slice(0, 10)
 };
 
-function getReplaceValues(devel = false) {
+function getComputedValues(devel = false) {
   return {
     ...stringify({
       'env("JFACTORY_ENV_NAME")': devel ? project.develName : project.prodName,
@@ -35,7 +35,7 @@ function getReplaceValues(devel = false) {
   }
 }
 
-let banner = fs.readFileSync("./scripts/build/banner.txt", "utf8");
+let banner = fs.readFileSync("./src/tpl/banner.txt", "utf8");
 
 const path = require('path');
 const commonOutput = {
@@ -70,7 +70,7 @@ module.exports = {
         replacePlugin({
           delimiters: ["", ""],
           preventAssignment: true,
-          values: getReplaceValues(devel)
+          values: getComputedValues(devel)
         })
       ],
       external : [
@@ -95,7 +95,7 @@ module.exports = {
         format: 'umd',
         entryFileNames: project.prodName + ".umd.js",
         name: "jFactoryModule",
-        banner: replace(banner, getReplaceValues(false)),
+        banner: replace(banner, getComputedValues(false)),
         plugins: [
           terserPlugin(/*terserOptions*/)
         ],
@@ -106,7 +106,7 @@ module.exports = {
         format: 'es',
         entryFileNames: "[name].mjs",
         banner: function(chunk) {
-          return chunk.fileName === "index.mjs" ? replace(banner, getReplaceValues(false)) : "";
+          return chunk.fileName === "index.mjs" ? replace(banner, getComputedValues(false)) : "";
         },
         // !! modules must be preserved to allow module Tree Shaking in application bundler
         preserveModules: true,
@@ -126,7 +126,7 @@ module.exports = {
         format: 'umd',
         entryFileNames: project.develName + ".umd.js",
         name: "jFactoryModule",
-        banner: replace(banner, getReplaceValues(true)),
+        banner: replace(banner, getComputedValues(true)),
         // sourcemap: true,
         dir: 'dist/umd',
         plugins: [
@@ -139,7 +139,7 @@ module.exports = {
         entryFileNames: "[name].mjs",
         // sourcemap: true,
         banner: function(chunk) {
-          return chunk.fileName === "index.mjs" ? replace(banner, getReplaceValues(true)) : "";
+          return chunk.fileName === "index.mjs" ? replace(banner, getComputedValues(true)) : "";
         },
         // !! modules must be preserved to allow module Tree Shaking in application bundler
         preserveModules: true,
@@ -158,7 +158,7 @@ module.exports = {
       {
         format: 'cjs',
         entryFileNames: "index.js",
-        banner: replace(banner, getReplaceValues(false)),
+        banner: replace(banner, getComputedValues(false)),
         dir: 'dist',
       }
     ]

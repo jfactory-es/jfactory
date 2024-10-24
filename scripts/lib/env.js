@@ -24,8 +24,8 @@ function envCheck() {
   const checkCopyrightYear = copyrightYear[1] === year;
   console.log("Package Copyright".padEnd(pad, " ")   + warnIfStr(!checkCopyrightYear, packageJson['x-copyrightYear']));
   if (!checkCopyrightYear) {
-    result.warn.push(`package.json property x-copyrightYear must be updated: ${copyrightYear[1]}`)
-    packageJson['x-copyrightYear'] = copyrightYear[0]+'-'+year;
+    result.error.push(`package.json property x-copyrightYear must be updated: ${copyrightYear[1]}`)
+    // packageJson['x-copyrightYear'] = copyrightYear[0]+'-'+year;
   }
 
   // Check NODE

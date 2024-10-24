@@ -23,14 +23,14 @@ async function build(input, output) {
 
 async function run() {
   try {
-    const { envCheck } = require("./lib/env");
+    const { envCheck } = require("../lib/env");
     console.log("--[Env checking]--".padEnd(80, "-"));
     let envCheckResult = envCheck();
 
     console.log();
 
     // Caution: envCheck() must be run before loading buildConfig
-    const cnfMgr = require('./build/buildConfig');
+    const cnfMgr = require('./buildConfig');
     console.log("--[Build jFactory]--".padEnd(80, "-"));
     const startTime = Date.now();
     await Promise.all([
