@@ -171,7 +171,7 @@ module.exports = {
         entryFileNames: "[name].mjs",
         // helps to check which modules are exported
         preserveModules: true,
-        dir: 'test/app',
+        dir: 'dist/_test_export',
       }
     ]
   }

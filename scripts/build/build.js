@@ -29,17 +29,21 @@ async function run() {
 
     console.log();
 
-    // Caution: envCheck() must be run before loading buildConfig
     const cnfMgr = require('./buildConfig');
     console.log("--[Build jFactory]--".padEnd(80, "-"));
     const startTime = Date.now();
+
+    // Build packages
     await Promise.all([
       build(cnfMgr.input({ devel: false }), cnfMgr.outputProd()),
       build(cnfMgr.input({ devel: true  }), cnfMgr.outputDevel()),
       build(cnfMgr.input({ devel: true, input: 'src/index.js' }), cnfMgr.outputIndex()),
     ]);
 
-    await build(cnfMgr.input({ devel: true, input: 'scripts/test/test-app.mjs' }), cnfMgr.outputTestApp())
+    // Build apps
+    await build(cnfMgr.input({
+      devel: true, input: 'test/app/promise/app-promise.mjs'
+    }), cnfMgr.outputTestApp())
 
     const endTime = Date.now();
     const compilationTime = (endTime - startTime) / 1000;
