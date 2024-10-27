@@ -28,26 +28,25 @@ async function build(options, logs) {
 
 async function run(filename = 'rollup.jfactory.config.cjs') {
   try {
-    console.log('--[' + colors.bold('Env') + ']--'.padEnd(80, '-') + '\n');
+    const COL = process.stdout.isTTY ? process.stdout.columns : 80;
+    console.log(`--[${colors.bold('Env')}]--`.padEnd(COL, '-') + '\n');
     let envCheckResult = envCheck();
     console.log();
 
-    console.log('--[' + colors.bold('Build') + ']--'.padEnd(80, '-') + '\n');
+    console.log(`--[${colors.bold('Build')}]--`.padEnd(COL, '-'));
     const startTime = Date.now();
+
+    let _log = console.log;
+    let _log_buff = [];
+    console.log = a => _log_buff.push(a);
 
     loadConfigFile(
       path.resolve(__dirname, filename),
       {}
     )
       .then(async ({ options, warnings }) => {
-        if (warnings.count) {
-          console.log(`${warnings.count} warnings`);
-          warnings.flush();
-        }
-
         let pending = [];
         let logs = {}
-
         for (const optionsObj of options) {
           pending.push(build(optionsObj, logs));
         }
@@ -55,6 +54,9 @@ async function run(filename = 'rollup.jfactory.config.cjs') {
         await Promise.all(pending);
         const endTime = Date.now();
         const compilationTime = (endTime - startTime) / 1000;
+
+        console.log = _log;
+        _log_buff.length && console.log('\n' + _log_buff.join('\n'));
 
         for (const [key, logEntries] of Object.entries(logs)) {
           console.log(`\n[${colors.bold(key)}]`);
@@ -81,7 +83,9 @@ async function run(filename = 'rollup.jfactory.config.cjs') {
           process.exit(1);
         }
         if (warnings.count) {
-          console.log(colors.red(`Compilation warnings: ${warnings.count}`));
+          console.log(colors.red(`Compilation warnings: ${warnings.count}\n`));
+          warnings.flush();
+          process.exit(1);
         }
       })
 
