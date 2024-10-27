@@ -3,6 +3,7 @@ name: Node CI
 on:
   push:
     paths:
+      - '.github/workflows/nodejs.yml'
       - 'dist/**/*'
       - 'scripts/**/*'
       - 'src/**/*'
