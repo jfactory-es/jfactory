@@ -28,13 +28,22 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - name: npm install, build, and test
+
+    - name: Install dependencies
+      run: npm ci
+    - name: Run pre-build tests
       run: |
-        npm ci
         npm run test:source
         npm run test:es:prod
         npm run test:es:dev
-        npm run build
+      env:
+        CI: true
+    - name: Build project
+      run: npm run build
+      env:
+        CI: true
+    - name: Run post-build tests
+      run: |
         npm run test:source
         npm run test:es:prod
         npm run test:es:dev
