@@ -70,18 +70,18 @@ async function run(filename = 'rollup.jfactory.config.cjs') {
         console.log(`Compilation completed in ${compilationTime} seconds`);
 
         if (envCheckResult.warn.length) {
-          envCheckResult.warn.forEach(value => {
+          for (const value of envCheckResult.warn) {
             console.warn(colors.red(`Env warning: ${value}`));
-          });
+          }
         }
         if (envCheckResult.error.length) {
-          envCheckResult.error.forEach(value => {
+          for (const value of envCheckResult.error) {
             console.error(colors.red(`Env errors: ${value}`));
-          });
+          }
           process.exit(1);
         }
         if (warnings.count) {
-          console.error(colors.red(`Compilation warnings: ${warnings.count}`));
+          console.warn(colors.red(`Compilation warnings: ${warnings.count}`));
         }
       })
 
