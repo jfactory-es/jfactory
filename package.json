@@ -63,6 +63,7 @@
   },
   "scripts": {
     "build": "node scripts/build/build.js",
+    "build-test-export": "node scripts/build/build.js rollup.test_export.config.cjs",
     "test:source": "JFT_MODE=SOURCE npx vitest run",
     "test:es:prod": "JFT_MODE=ES_PROD npx vitest run",
     "test:es:dev": "JFT_MODE=ES_DEVEL npx vitest run",
@@ -86,7 +87,8 @@
     "rollup": "^4.24.0",
     "semver": "^7.6.3",
     "sinon": "^19.0.2",
-    "vitest": "^2.1.3"
+    "vitest": "^2.1.3",
+    "eslint": "^9.13.0"
   },
   "/experimental/": {
   }
