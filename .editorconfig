@@ -1,6 +1,6 @@
 root = true
 
-[*.{js,mjs}]
+[*.{js,cjs,mjs}]
 charset = utf-8
 end_of_line = lf
 indent_style = space
@@ -11,9 +11,9 @@ insert_final_newline = false
 indent_size = 2
 tab_width = 2
 
-[test/*.js]
-indent_size = 4
-tab_width = 4
+[*.cjs]
+indent_size = 2
+tab_width = 2
 
 [*.mjs]
 indent_size = 4
