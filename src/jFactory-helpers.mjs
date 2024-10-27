@@ -12,7 +12,7 @@
 // jQuery
 // --------------
 
-export { default as jQuery } from 'jquery';
+export { default as jQuery } from "jquery";
 
 // --------------
 // Lodash
@@ -20,15 +20,18 @@ export { default as jQuery } from 'jquery';
 
 // Individual importation improves the tree shaking
 // This is supposed to be equivalent to babel-plugin-lodash
-// Please update the bundler config to avoid warning
-export { default as helper_camelCase } from 'lodash/camelCase.js';
-export { default as helper_get } from 'lodash/get.js';
-export { default as helper_lowerFirst } from 'lodash/lowerFirst.js';
-export { default as helper_template } from 'lodash/template.js';
-export { default as helper_isString } from 'lodash/isString.js';
-export { default as helper_isNumber } from 'lodash/isNumber.js';
-export { default as helper_isPlainObject } from 'lodash/isPlainObject.js';
-export { default as helper_defaultsDeep } from 'lodash/defaultsDeep.js';
+
+// CAUTION
+// Please ensure that the bundler configuration is updated accordingly
+// to prevent unexpected build errors, see "external" in /scripts/build/buildConfig.js
+export { default as helper_camelCase } from "lodash/camelCase.js";
+export { default as helper_get } from "lodash/get.js";
+export { default as helper_lowerFirst } from "lodash/lowerFirst.js";
+export { default as helper_template } from "lodash/template.js";
+export { default as helper_isString } from "lodash/isString.js";
+export { default as helper_isNumber } from "lodash/isNumber.js";
+export { default as helper_isPlainObject } from "lodash/isPlainObject.js";
+export { default as helper_defaultsDeep } from "lodash/defaultsDeep.js";
 
 // --------------
 // Helpers

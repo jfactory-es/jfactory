@@ -1,11 +1,13 @@
-const fs = require("fs");
-const packageJson = require("../../package.json");
-const terserPlugin = require("@rollup/plugin-terser");
-const replacePlugin = require("@rollup/plugin-replace");
+const packageJson = require('../../package.json');
+const replace = require('../lib/utils').replace;
+const stringify = require('../lib/utils').stringify;
+const replacePlugin = require('@rollup/plugin-replace');
+const path = require('path');
+const fs = require('fs');
 
 const project = {
-  prodName : "jFactory",
-  develName: "jFactory-devel",
+  prodName: 'jFactory',
+  develName: 'jFactory-devel',
   author: packageJson.author,
   version: packageJson.version,
   repository: packageJson.repository.url,
@@ -15,12 +17,104 @@ const project = {
   buildId: new Date().toISOString().slice(0, 10)
 };
 
+const commonInput = function(devel = false) {
+  return {
+    treeshake: {
+      moduleSideEffects: []
+    },
+    external: [
+      'jquery',
+      'lodash/isString.js',
+      'lodash/isNumber.js',
+      'lodash/isPlainObject.js',
+      'lodash/defaultsDeep.js',
+      'lodash/lowerFirst.js',
+      'lodash/get.js',
+      'lodash/template.js',
+      'lodash/camelCase.js'
+    ],
+    plugins: [
+      replacePlugin({
+        delimiters: ['', ''],
+        preventAssignment: true,
+        values: devel ? computedValuesDevel : computedValuesProd
+      })
+    ]
+  }
+}
+
+const commonOutput = {
+  generatedCode: {
+    preset: 'es2015',
+    arrowFunctions: true,
+    constBindings: true,
+    objectShorthand: true
+  },
+  exports: 'named',
+  globals: function(name) {
+    if (name === 'jquery') {
+      return '$'
+    } else {
+      if (name.indexOf('lodash/') === 0) {
+        return '_.' + path.parse(name).name
+      }
+    }
+  }
+}
+
+const commonOutputUMD = function(devel = false) {
+  return {
+    format: 'umd',
+    dir: 'dist/umd',
+    name: 'jFactoryModule',
+    entryFileNames: project[devel ? 'develName' : 'prodName'] + '.umd.js',
+    banner: devel ?  bannerDevel : bannerProd,
+    ...commonOutput
+  }
+}
+
+const commonOutputES = function(devel = false) {
+  return {
+    format: 'es',
+    entryFileNames: '[name].mjs',
+    // !! modules must be preserved to allow module Tree Shaking in application bundler
+    preserveModules: true,
+    preserveModulesRoot: 'src',
+    plugins: [
+      // terserPlugin(terserOptions)
+    ],
+    dir: devel ? 'dist/es-devel' : 'dist/es',
+    banner: function(chunk) {
+      return chunk.fileName === 'index.mjs' ? devel ? bannerDevel : bannerProd : '';
+    },
+    ...commonOutput
+  }
+}
+
+const DEVELOPMENT = true;
+const PRODUCTION = false;
+
+const computedValuesProd  = getComputedValues(PRODUCTION);
+const computedValuesDevel = getComputedValues(DEVELOPMENT);
+const banner = fs.readFileSync('./src/tpl/banner.txt', 'utf8');
+const bannerProd = replace(banner, computedValuesProd);
+const bannerDevel = replace(banner, computedValuesDevel);
+
+module.exports = {
+  PRODUCTION,
+  DEVELOPMENT,
+  commonInput,
+  commonOutputES,
+  commonOutputUMD,
+  bannerProd
+}
+
 function getComputedValues(devel = false) {
   return {
     ...stringify({
       'env("JFACTORY_ENV_NAME")': devel ? project.develName : project.prodName,
       'env("JFACTORY_ENV_VER")': project.version,
-      'env("JFACTORY_ENV_DEV")': devel,
+      'env("JFACTORY_ENV_DEV")': devel
     }),
     $JFACTORY_NAME: devel ? project.develName : project.prodName,
     $JFACTORY_PROD_NAME: project.prodName,
@@ -31,165 +125,6 @@ function getComputedValues(devel = false) {
     $JFACTORY_HOMEPAGE: project.homepage,
     $JFACTORY_COPYRIGHT_YEAR: project.copyrightYear,
     $JFACTORY_LICENSE: project.license,
-    $JFACTORY_BUILD_ID: project.buildId,
+    $JFACTORY_BUILD_ID: project.buildId
   }
-}
-
-let banner = fs.readFileSync("./src/tpl/banner.txt", "utf8");
-
-const path = require('path');
-const commonOutput = {
-  generatedCode: {
-    preset: 'es2015',
-    arrowFunctions: true,
-    constBindings: true,
-    objectShorthand: true,
-  },
-  exports: 'named',
-  globals : function(name) {
-    if (name === "jquery") {
-      return "$"
-    } else {
-      if (name.indexOf('lodash/')===0) {
-        return '_.'+path.parse(name).name
-      }
-    }
-  }
-}
-
-module.exports = {
-
-  input({ devel = false, input = 'src/index.mjs' }) {
-    return {
-      input,
-      treeshake: {
-        moduleSideEffects : [
-        ]
-      },
-      plugins: [
-        replacePlugin({
-          delimiters: ["", ""],
-          preventAssignment: true,
-          values: getComputedValues(devel)
-        })
-      ],
-      external : [
-        "jquery",
-        "lodash/isString.js",
-        "lodash/isNumber.js",
-        "lodash/isPlainObject.js",
-        "lodash/defaultsDeep.js",
-        "lodash/lowerFirst.js",
-        "lodash/get.js",
-        "lodash/template.js",
-        "lodash/camelCase.js",
-      ]
-    }
-  },
-
-  outputProd() {
-    // const terserOptions= {
-    // };
-    return [
-      {
-        format: 'umd',
-        entryFileNames: project.prodName + ".umd.js",
-        name: "jFactoryModule",
-        banner: replace(banner, getComputedValues(false)),
-        plugins: [
-          terserPlugin(/*terserOptions*/)
-        ],
-        dir: 'dist/umd',
-        ...commonOutput
-      },
-      {
-        format: 'es',
-        entryFileNames: "[name].mjs",
-        banner: function(chunk) {
-          return chunk.fileName === "index.mjs" ? replace(banner, getComputedValues(false)) : "";
-        },
-        // !! modules must be preserved to allow module Tree Shaking in application bundler
-        preserveModules: true,
-        preserveModulesRoot: 'src',
-        plugins: [
-          // terserPlugin(terserOptions)
-        ],
-        dir: 'dist/es',
-        ...commonOutput
-      }
-    ]
-  },
-
-  outputDevel() {
-    return [
-      {
-        format: 'umd',
-        entryFileNames: project.develName + ".umd.js",
-        name: "jFactoryModule",
-        banner: replace(banner, getComputedValues(true)),
-        // sourcemap: true,
-        dir: 'dist/umd',
-        plugins: [
-          // terserPlugin(terserOptions)
-        ],
-        ...commonOutput
-      },
-      {
-        format: 'es',
-        entryFileNames: "[name].mjs",
-        // sourcemap: true,
-        banner: function(chunk) {
-          return chunk.fileName === "index.mjs" ? replace(banner, getComputedValues(true)) : "";
-        },
-        // !! modules must be preserved to allow module Tree Shaking in application bundler
-        preserveModules: true,
-        preserveModulesRoot: 'src',
-        plugins: [
-          // terserPlugin(terserOptions)
-        ],
-        dir: 'dist/es-devel',
-        ...commonOutput
-      }
-    ]
-  },
-
-  outputIndex() {
-    return [
-      {
-        format: 'cjs',
-        entryFileNames: "index.js",
-        banner: replace(banner, getComputedValues(false)),
-        dir: 'dist',
-      }
-    ]
-  },
-
-  outputTestApp() {
-    return [
-      {
-        format: 'es',
-        entryFileNames: "[name].mjs",
-        // helps to check which modules are exported
-        preserveModules: true,
-        dir: 'dist/_test_export',
-      }
-    ]
-  }
-}
-
-function stringify(replaceValues){
-  return Object.entries(replaceValues).reduce((acc, [key, value]) => {
-    acc[key] = JSON.stringify(value);
-    return acc;
-  }, {})
-}
-
-function replace(str, match) {
-  for (const [search, replace] of Object.entries(match)) {
-    let s = str.split(search);
-    if (s.length > 1) {
-      str = s.join(replace)
-    }
-  }
-  return str
 }
