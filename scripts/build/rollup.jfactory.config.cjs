@@ -1,4 +1,6 @@
 const terserPlugin = require('@rollup/plugin-terser');
+const copy = require('rollup-plugin-copy');
+
 const {
   PRODUCTION,
   DEVELOPMENT,
@@ -15,10 +17,23 @@ module.exports = [
   // ----------------------------------------------------------------------------------
   {
     input: 'src/index.js',
+    plugins: [
+      copy({
+        targets: [
+          {
+            src: 'src/jFactory.d.mts',
+            dest: 'dist'
+          }
+        ],
+        verbose: true,
+        copyOnce: true
+      })
+    ],
     output: {
       format: 'cjs',
       entryFileNames: 'index.js',
       banner: bannerProd,
+      strict: false,
       dir: 'dist'
     }
   },

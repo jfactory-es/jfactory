@@ -32,7 +32,7 @@ async function run(filename = 'rollup.jfactory.config.cjs') {
     let envCheckResult = envCheck();
     console.log();
 
-    console.log('--[' + colors.bold('Build') + ']--'.padEnd(80, '-'));
+    console.log('--[' + colors.bold('Build') + ']--'.padEnd(80, '-') + '\n');
     const startTime = Date.now();
 
     loadConfigFile(

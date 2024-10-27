@@ -40,8 +40,8 @@
     "library",
     "framework"
   ],
-  "main": "./es/index.js",
-  "types": "./src/jFactory.d.mts",
+  "main": "./dist/index.js",
+  "types": "./dist/jFactory.d.mts",
   "exports": {
     ".": "./dist/index.js",
     "./es": "./dist/es/index.mjs",
@@ -81,16 +81,16 @@
     "@rollup/plugin-terser": "^0.4.4",
     "@vitest/ui": "^2.1.3",
     "ansi-colors": "^4.1.3",
+    "cross-env": "^7.0.3",
+    "eslint": "^9.13.0",
     "jsdom": "^25.0.1",
     "msw": "^1.3.5",
     "node-fetch": "^4.0.0-beta.4",
     "rollup": "^4.24.0",
+    "rollup-plugin-copy": "^3.5.0",
     "semver": "^7.6.3",
     "sinon": "^19.0.2",
-    "vitest": "^2.1.3",
-    "eslint": "^9.13.0",
-    "cross-env": "^7.0.3"
+    "vitest": "^2.1.3"
   },
-  "/experimental/": {
-  }
+  "/experimental/": {}
 }
