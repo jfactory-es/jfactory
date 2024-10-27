@@ -38,8 +38,5 @@ jobs:
         npm run test:source
         npm run test:es:prod
         npm run test:es:dev
-    - name: Generate test report
-      run: jest --ci --reporters=jest-junit
-      if: always() # to make sure it runs even if tests fail
       env:
         CI: true
