@@ -13,11 +13,12 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
-
     strategy:
       matrix:
-        node-version: [18.x, 19.x]
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node-version: [18.x, 20.x, 22.x]
+
+    runs-on: ${{ matrix.os }}
 
     steps:
     - uses: actions/checkout@main
@@ -29,10 +30,15 @@ jobs:
     - name: npm install, build, and test
       run: |
         npm ci
+        npm run test:source
         npm run test:es:prod
         npm run test:es:dev
         npm run build
+        npm run test:source
         npm run test:es:prod
         npm run test:es:dev
+    - name: Generate test report
+      run: jest --ci --reporters=jest-junit
+      if: always() # to make sure it runs even if tests fail
       env:
         CI: true
