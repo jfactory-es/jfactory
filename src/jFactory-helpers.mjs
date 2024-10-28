@@ -39,8 +39,8 @@ export { default as helper_defaultsDeep } from "lodash/defaultsDeep.js";
 
 export const NOOP = () => {};
 export const helper_setFunctionName = (name, f) => Object.defineProperty(f, "name", { value: name });
-const helper_url_abs_a = /*#__PURE__*/document.createElement("a");
-export const helper_url_abs = url => { helper_url_abs_a.href = url; return helper_url_abs_a.href }
+const helper_url_base = typeof window !== "undefined" && window.location ? window.location.href : "http://localhost";
+export const helper_url_abs = url => new URL(url, helper_url_base).href
 
 export const helper_isNative = function(f) {
     return typeof f === "function" && Function.prototype.toString.call(f).indexOf("[native code]") !== -1
