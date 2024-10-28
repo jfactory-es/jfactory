@@ -18,8 +18,10 @@ export function jFactoryBootstrap() {
             return
         }
         if (JFACTORY_DEV) {
-            console.log(`${JFACTORY_NAME} ${JFACTORY_VER} running in development mode; performances may be affected`);
-            !JFACTORY_LOG && console.log("jFactory: logs disabled");
+            console.log(
+                `${JFACTORY_NAME} ${JFACTORY_VER} running in development mode. This incurs a performance overhead.`
+            );
+            !JFACTORY_LOG && console.log("jFactory: logs disabled by JFACTORY_LOG.");
             jFactoryCompat_run()
         }
         init();
