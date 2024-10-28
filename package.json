@@ -45,7 +45,9 @@
   "exports": {
     ".": "./dist/index.js",
     "./es": "./dist/es/index.mjs",
-    "./devel": "./dist/es-devel/index.mjs"
+    "./es-devel": "./dist/es-devel/index.cjs",
+    "./cjs": "./dist/cjs/index.mjs",
+    "./cjs-devel": "./dist/cjs-devel/index.cjs"
   },
   "files": [
     "dist"
@@ -67,6 +69,8 @@
     "test:source": "cross-env JFT_MODE=SOURCE npx vitest run",
     "test:es:prod": "cross-env JFT_MODE=ES_PROD npx vitest run",
     "test:es:dev": "cross-env JFT_MODE=ES_DEVEL npx vitest run",
+    "test:cjs:prod": "cross-env JFT_MODE=CJS_PROD npx vitest run",
+    "test:cjs:dev": "cross-env JFT_MODE=CJS_DEVEL npx vitest run",
     "test:umd:prod": "cross-env JFT_MODE=UMD_PROD npx vitest run",
     "test:umd:dev": "cross-env JFT_MODE=UMD_DEVEL npx vitest run",
     "watch:source": "cross-env JFT_MODE=SOURCE npx vitest",

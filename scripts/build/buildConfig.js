@@ -17,7 +17,7 @@ const project = {
   buildId: new Date().toISOString().slice(0, 10)
 };
 
-const commonInput = function(devel = false) {
+const commonOptions = function(devel = false) {
   return {
     treeshake: {
       moduleSideEffects: []
@@ -73,6 +73,21 @@ const commonOutputUMD = function(devel = false) {
   }
 }
 
+const commonOutputCJS = function(devel = false) {
+  return {
+    format: 'cjs',
+    entryFileNames: '[name].cjs',
+    plugins: [
+      // terserPlugin(terserOptions)
+    ],
+    dir: devel ? 'dist/cjs-devel' : 'dist/cjs',
+    banner: function(chunk) {
+      return chunk.fileName === 'index.mjs' ? devel ? bannerDevel : bannerProd : '';
+    },
+    ...commonOutput
+  }
+}
+
 const commonOutputES = function(devel = false) {
   return {
     format: 'es',
@@ -103,9 +118,10 @@ const bannerDevel = replace(banner, computedValuesDevel);
 module.exports = {
   PRODUCTION,
   DEVELOPMENT,
-  commonInput,
-  commonOutputES,
+  commonOptions,
   commonOutputUMD,
+  commonOutputCJS,
+  commonOutputES,
   bannerProd
 }
 

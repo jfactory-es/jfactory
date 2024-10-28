@@ -4,19 +4,20 @@ const copy = require('rollup-plugin-copy');
 const {
   PRODUCTION,
   DEVELOPMENT,
-  commonInput,
-  commonOutputES,
+  commonOptions,
   commonOutputUMD,
+  commonOutputCJS,
+  commonOutputES,
   bannerProd
 } = require('./buildConfig.js');
 
 module.exports = [
 
   // ----------------------------------------------------------------------------------
-  // index.js
+  // index.cjs
   // ----------------------------------------------------------------------------------
   {
-    input: 'src/index.js',
+    input: 'src/index-loader.cjs',
     plugins: [
       copy({
         targets: [
@@ -29,13 +30,15 @@ module.exports = [
         copyOnce: true
       })
     ],
-    output: {
-      format: 'cjs',
-      entryFileNames: 'index.js',
-      banner: bannerProd,
-      strict: false,
-      dir: 'dist'
-    }
+    output: [
+      {
+        format: 'cjs',
+        entryFileNames: 'index.js',
+        banner: bannerProd,
+        strict: false,
+        dir: 'dist'
+      }
+    ]
   },
 
   // ----------------------------------------------------------------------------------
@@ -43,19 +46,23 @@ module.exports = [
   // ----------------------------------------------------------------------------------
   {
     input: 'src/index.mjs',
+    ...commonOptions(PRODUCTION),
     output: [
       {
         ...commonOutputUMD(PRODUCTION),
-        // sourcemap: true,
+        sourcemap: true,
         plugins: [
           terserPlugin(/*terserOptions*/)
         ]
       },
       {
         ...commonOutputES(PRODUCTION)
+      },
+      {
+        ...commonOutputCJS(PRODUCTION),
+        sourcemap: true
       }
-    ],
-    ...commonInput(PRODUCTION)
+    ]
   },
 
   // ----------------------------------------------------------------------------------
@@ -63,15 +70,19 @@ module.exports = [
   // ----------------------------------------------------------------------------------
   {
     input: 'src/index.mjs',
+    ...commonOptions(DEVELOPMENT),
     output: [
       {
-        ...commonOutputUMD(DEVELOPMENT)
+        ...commonOutputUMD(DEVELOPMENT),
+        sourcemap: true
       },
       {
         ...commonOutputES(DEVELOPMENT)
-        // sourcemap: true,
+      },
+      {
+        ...commonOutputCJS(DEVELOPMENT),
+        sourcemap: true
       }
-    ],
-    ...commonInput(DEVELOPMENT)
+    ]
   }
 ];
