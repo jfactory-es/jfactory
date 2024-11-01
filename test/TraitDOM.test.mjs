@@ -3,11 +3,18 @@
 // ---------------------------------------------------------------------------------------------------------------------
 
 import {
+    jFactoryModule,
     jQuery as $,
     describe, it, expect, afterEach,
-    wait,
-    jFactory, JFactoryFetch, JFactoryPromise, JFACTORY_ERR_PROMISE_EXPIRED
+    wait
 } from "../scripts/test/test-import.mjs";
+
+const {
+    jFactory,
+    JFactoryFetch,
+    JFactoryPromise,
+    JFACTORY_ERR_PROMISE_EXPIRED
+} = jFactoryModule;
 
 describe("Trait DOM", function() {
 

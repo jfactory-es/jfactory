@@ -3,10 +3,16 @@
 // ---------------------------------------------------------------------------------------------------------------------
 
 import {
+    jFactoryModule,
     describe, it, expect,
-    wait,
-    jFactory, JFactoryPromise, JFACTORY_ERR_PROMISE_EXPIRED
+    wait
 } from "../scripts/test/test-import.mjs";
+
+const {
+    jFactory,
+    JFactoryPromise,
+    JFACTORY_ERR_PROMISE_EXPIRED
+} = jFactoryModule;
 
 describe("Trait Timeout", function() {
 

@@ -2,11 +2,15 @@
 // TraitEvents
 // ---------------------------------------------------------------------------------------------------------------------
 
-const $ = require("jquery");
 import {
-    describe, it, expect,
-    jFactory
+    jFactoryModule,
+    jQuery as $,
+    describe, it, expect
 } from "../scripts/test/test-import.mjs";
+
+const {
+    jFactory
+} = jFactoryModule;
 
 describe("TraitEvents", function() {
 

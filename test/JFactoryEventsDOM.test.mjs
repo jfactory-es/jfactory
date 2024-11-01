@@ -1,13 +1,16 @@
-const $ = require("jquery");
-
 // ---------------------------------------------------------------------------------------------------------------------
 // JFactoryEvents DOM
 // ---------------------------------------------------------------------------------------------------------------------
 
 import {
-    describe, it, expect,
-    JFactoryEvents,
+    jFactoryModule,
+    jQuery as $,
+    describe, it, expect
 } from "../scripts/test/test-import.mjs";
+
+const {
+    JFactoryEvents
+} = jFactoryModule;
 
 describe("JFactoryEvents DOM", function() {
     let jFactoryEvent = new JFactoryEvents();

@@ -3,10 +3,16 @@
 // ---------------------------------------------------------------------------------------------------------------------
 
 import {
+    jFactoryModule,
     describe, it, expect,
-    wait,
-    jFactory, JFactoryComponent, JFactoryPromise
+    wait
 } from "../scripts/test/test-import.mjs";
+
+const {
+    jFactory,
+    JFactoryComponent,
+    JFactoryPromise
+} = jFactoryModule;
 
 // class SyncComponent extends JFactoryComponent {
 //     constructor(...args) {

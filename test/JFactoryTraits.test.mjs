@@ -3,9 +3,11 @@
 // ---------------------------------------------------------------------------------------------------------------------
 
 import {
-    describe, it, expect,
-    JFactoryTraits
+    jFactoryModule,
+    describe, it, expect
 } from "../scripts/test/test-import.mjs";
+
+const { JFactoryTraits } = jFactoryModule;
 
 describe("JFactoryTraits", function() {
 

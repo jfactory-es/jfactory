@@ -3,10 +3,14 @@
 // ---------------------------------------------------------------------------------------------------------------------
 
 import {
+    jFactoryModule,
     describe, it, expect,
-    wait,
-    jFactory
+    wait
 } from "../scripts/test/test-import.mjs";
+
+const {
+    jFactory
+} = jFactoryModule;
 
 describe("Trait Interval", function() {
 

@@ -3,10 +3,16 @@
 // ---------------------------------------------------------------------------------------------------------------------
 
 import {
+    jFactoryModule,
     describe, it, expect,
-    wait,
-    jFactory, JFactoryPromise, JFACTORY_ERR_PROMISE_EXPIRED
+    wait
 } from "../scripts/test/test-import.mjs";
+
+const {
+    jFactory,
+    JFactoryPromise,
+    JFACTORY_ERR_PROMISE_EXPIRED
+} = jFactoryModule;
 
 describe("Trait Tasks", function() {
 
@@ -73,8 +79,7 @@ describe("Trait Tasks", function() {
     });
 
     it("should phaseRemove", async function() {
-        let f = () => {};
-        let component = jFactory("component", {
+        let component = jFactory('component', {
             onInstall() {this.p1 = this.$task("p1", wait(0))},
             onEnable() {this.p2 = this.$task("p2", wait(0))},
             onDisable() {this.p3 = this.$task("p3", wait(0))},

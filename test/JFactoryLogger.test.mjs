@@ -3,9 +3,13 @@
 // ---------------------------------------------------------------------------------------------------------------------
 
 import {
-    describe, it, expect,
-    JFactoryLogger
+    jFactoryModule,
+    describe, it, expect
 } from "../scripts/test/test-import.mjs";
+
+const {
+    JFactoryLogger
+} = jFactoryModule;
 
 describe("JFactoryLogger", function() {
     let logger;

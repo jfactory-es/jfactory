@@ -3,9 +3,15 @@
 // ---------------------------------------------------------------------------------------------------------------------
 
 import {
-    describe, it, expect,
-    JFactoryPromise, JFACTORY_ERR_INVALID_CALL, JFACTORY_ERR_PROMISE_EXPIRED
+    jFactoryModule,
+    describe, it, expect
 } from "../scripts/test/test-import.mjs";
+
+const {
+    JFactoryPromise,
+    JFACTORY_ERR_INVALID_CALL,
+    JFACTORY_ERR_PROMISE_EXPIRED
+} = jFactoryModule;
 
 describe("JFactoryPromise", function() {
 

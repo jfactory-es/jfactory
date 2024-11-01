@@ -3,14 +3,18 @@
 // ---------------------------------------------------------------------------------------------------------------------
 
 import {
+    jFactoryModule,
     describe, it, expect,
-    wait,
+    wait
+} from "../scripts/test/test-import.mjs";
+
+const {
     JFACTORY_DEV,
     JFactoryCoreObject,
     JFactoryError,
     JFactoryEvents,
     JFactoryEventsManager
-} from "../scripts/test/test-import.mjs";
+} = jFactoryModule;
 
 describe("JFactoryEvents", function() {
     let coreClass = new JFactoryCoreObject("test");

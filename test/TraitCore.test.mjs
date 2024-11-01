@@ -3,9 +3,13 @@
 // ---------------------------------------------------------------------------------------------------------------------
 
 import {
-    describe, it, expect,
-    jFactory
+    jFactoryModule,
+    describe, it, expect
 } from "../scripts/test/test-import.mjs";
+
+const {
+    jFactory
+} = jFactoryModule;
 
 describe("Trait Core", function() {
     it("should auto index", async function() {

@@ -3,9 +3,13 @@
 // ---------------------------------------------------------------------------------------------------------------------
 
 import {
-    describe, it, expect,
-    JFactoryObject
+    jFactoryModule,
+    describe, it, expect
 } from "../scripts/test/test-import.mjs";
+
+const {
+    JFactoryObject
+} = jFactoryModule;
 
 describe("JFactoryObject", function() {
     it("should prevent prototype pollution", function() {

@@ -3,12 +3,15 @@
 // ---------------------------------------------------------------------------------------------------------------------
 
 import {
+    jFactoryModule,
+    jQuery as $,
     describe, it, expect, afterEach, beforeEach,
-    wait,
-    jFactory
+    wait
 } from "../scripts/test/test-import.mjs";
 
-const $ = require("jquery");
+const {
+    jFactory
+} = jFactoryModule;
 
 describe("Trait Mutation", function() {
 

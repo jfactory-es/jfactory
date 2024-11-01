@@ -3,11 +3,17 @@
 // ---------------------------------------------------------------------------------------------------------------------
 
 import {
+    jFactoryModule,
     jQuery as $,
     describe, it, expect, afterEach, beforeEach,
-    wait,
-    jFactory, JFactoryPromise, JFACTORY_ERR_PROMISE_EXPIRED
+    wait
 } from "../scripts/test/test-import.mjs";
+
+const {
+    jFactory,
+    JFactoryPromise,
+    JFACTORY_ERR_PROMISE_EXPIRED
+} = jFactoryModule;
 
 describe("Trait CSS", function() {
 

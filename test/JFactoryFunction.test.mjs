@@ -1,12 +1,16 @@
 import {
+    jFactoryModule,
     describe, it, expect,
+    wait
+} from "../scripts/test/test-import.mjs";
+
+const {
     JFactoryPromise,
     JFactoryFunctionComposer,
     jFactoryFunctionWrappable,
     jFactoryFunctionConditional,
-    jFactoryFunctionExpirable,
-    wait
-} from "../scripts/test/test-import.mjs";
+    jFactoryFunctionExpirable
+} = jFactoryModule;
 
 describe("JFactoryFunction", function() {
 
