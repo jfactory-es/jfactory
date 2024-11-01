@@ -7,7 +7,7 @@ import {
     jQuery as $,
     describe, it, expect, afterEach, beforeEach,
     wait
-} from "../scripts/test/test-import.mjs";
+} from "../../scripts/test/test-import.mjs";
 
 const {
     jFactory

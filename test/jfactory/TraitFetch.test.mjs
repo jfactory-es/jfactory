@@ -6,7 +6,7 @@ import {
     jFactoryModule,
     describe, it, expect,
     wait
-} from "../scripts/test/test-import.mjs";
+} from "../../scripts/test/test-import.mjs";
 
 const {
     jFactory,

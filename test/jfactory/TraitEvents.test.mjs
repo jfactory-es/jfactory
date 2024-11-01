@@ -6,7 +6,7 @@ import {
     jFactoryModule,
     jQuery as $,
     describe, it, expect
-} from "../scripts/test/test-import.mjs";
+} from "../../scripts/test/test-import.mjs";
 
 const {
     jFactory

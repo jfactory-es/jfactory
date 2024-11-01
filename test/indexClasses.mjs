@@ -1,7 +1,7 @@
-import "./JFactoryEvents.test.mjs";
-import "./JFactoryEventsDOM.test.mjs";
-import "./JFactoryFunction.test.mjs";
-import "./JFactoryLogger.test.mjs";
-import "./JFactoryObject.test.mjs";
-import "./JFactoryPromise.test.mjs";
-import "./JFactoryTraits.test.mjs";
+import "./jfactory/JFactoryEvents.test.mjs";
+import "./jfactory/JFactoryEventsDOM.test.mjs";
+import "./jfactory/JFactoryFunction.test.mjs";
+import "./jfactory/JFactoryLogger.test.mjs";
+import "./jfactory/JFactoryObject.test.mjs";
+import "./jfactory/JFactoryPromise.test.mjs";
+import "./jfactory/JFactoryTraits.test.mjs";
