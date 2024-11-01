@@ -39,7 +39,7 @@ switch (process.env.JFACTORY_ENV) {
     break;
 }
 
-export const wait = (t, value) => new Promise(resolve => setTimeout(() => resolve(value), t));
+export const wait = (t, value) => new Promise(resolve => {setTimeout(() => resolve(value), t)});
 
 export const jFactoryModule = await import(src);
 const { setPromiseAdapter } = require('../../test/promises-aplus-fork/lib/programmaticRunner');
@@ -49,4 +49,4 @@ export { default as jQuery } from 'jquery';
 export { specify } from './polyfill-specify.js';
 export { describe, it, expect, assert, afterEach, beforeEach } from 'vitest';
 
-require('process').on('unhandledRejection', (err) => { console.debug('unhandledRejection', err) });
+require('process').on('unhandledRejection', err => { console.debug('unhandledRejection', err) });
