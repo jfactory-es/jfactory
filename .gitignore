@@ -24,3 +24,4 @@ _*
 *.local
 node_modules
 /test/export-compiled/
+/dist/test/
