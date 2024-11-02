@@ -1,12 +1,14 @@
 import js from '@eslint/js';
 import stylisticJs from '@stylistic/eslint-plugin-js';
+import jFactoryESLintPlugIn from './scripts/lint/eslint-plugin.mjs';
 import globals from 'globals';
 
 export default [
   js.configs.recommended,
   {
     plugins: {
-      '@stylistic/js': stylisticJs
+      '@stylistic/js': stylisticJs,
+      jFactoryESLintPlugIn
     },
     languageOptions: {
       ecmaVersion: 'latest'
@@ -64,7 +66,11 @@ export default [
         named: 'never',
         asyncArrow: 'always'
       }],
-      '@stylistic/js/semi': ['warn', 'always', {
+      // '@stylistic/js/semi': ['warn', 'always', {
+      //   omitLastInOneLineBlock: true,
+      //   omitLastInOneLineClassBody: true
+      // }],
+      'jFactoryESLintPlugIn/semi-FORK:optional-semi-before-parens-braces': ['error', 'always', {
         omitLastInOneLineBlock: true,
         omitLastInOneLineClassBody: true
       }],
