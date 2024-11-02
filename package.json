@@ -4,7 +4,7 @@
   "description": "Automatically monitor, stop, and clean up everything. Easily modularize your app with cancelable components. Everything they initialize, including views, requests, listeners, DOM elements, CSS, and nested promise trees, can be efficiently monitored, stopped, and removed.",
   "author": "Stephane Plazis <sp.jfactory@gmail.com>",
   "license": "SEE LICENSE IN LICENSE.md",
-  "x-licenseUrl": "https://raw.githubusercontent.com/jfactory-es/jfactory/master/LICENSE.txt",
+  "x-licenseUrl": "https://raw.githubusercontent.com/jfactory-es/jfactory/master/LICENSE.md",
   "x-copyrightYear": "2019-2024",
   "homepage": "https://github.com/jfactory-es/jfactory",
   "repository": {
@@ -75,9 +75,9 @@
     }
   },
   "scripts": {
-    "build": "node scripts/build/build.js",
-    "build-loader": "node scripts/build/build.js rollup-loader.config.cjs",
-    "build-test-export": "node scripts/build/build.js rollup-test_export.config.cjs",
+    "build": "node scripts/build/build.cjs",
+    "build-loader": "node scripts/build/build.cjs rollup-loader.config.cjs",
+    "build-test-export": "node scripts/build/build.cjs rollup-test_export.config.cjs",
     "test:source": "cross-env JFACTORY_ENV=SOURCE npx vitest run",
     "test:es:prod": "cross-env JFACTORY_ENV=ES_PROD npx vitest run",
     "test:es:dev": "cross-env JFACTORY_ENV=ES_DEVEL npx vitest run",
