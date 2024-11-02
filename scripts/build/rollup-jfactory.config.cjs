@@ -1,5 +1,6 @@
-const terserPlugin = require('@rollup/plugin-terser');
+const del = require('rollup-plugin-delete');
 const copy = require('rollup-plugin-copy');
+const terser = require('@rollup/plugin-terser');
 
 const {
   PRODUCTION,
@@ -7,18 +8,32 @@ const {
   commonOptions,
   commonOutputUMD,
   commonOutputCJS,
-  commonOutputES,
-  bannerProd
-} = require('./buildConfig.js');
+  commonOutputES
+} = require('./rollup.config.js');
 
 module.exports = [
 
   // ----------------------------------------------------------------------------------
-  // index.cjs
+  // Production
   // ----------------------------------------------------------------------------------
   {
-    input: 'src/index-loader.cjs',
+    input: 'src/index.mjs',
+    ...commonOptions(PRODUCTION),
     plugins: [
+      del({
+        targets: [
+          'dist/*'
+          // 'dist/cjs',
+          // 'dist/cjs-devel',
+          // 'dist/es',
+          // 'dist/es-devel',
+          // 'dist/umd',
+          // 'dist/cjs-devel',
+          // 'dist/index.js',
+          // 'dist/jFactory.d.mts'
+        ],
+        runOnce: true
+      }),
       copy({
         targets: [
           {
@@ -29,38 +44,20 @@ module.exports = [
         verbose: true,
         copyOnce: true
       })
-    ],
-    output: [
-      {
-        format: 'cjs',
-        entryFileNames: 'index.js',
-        banner: bannerProd,
-        strict: false,
-        dir: 'dist'
-      }
-    ]
-  },
-
-  // ----------------------------------------------------------------------------------
-  // Production
-  // ----------------------------------------------------------------------------------
-  {
-    input: 'src/index.mjs',
-    ...commonOptions(PRODUCTION),
+    ].concat(commonOptions(PRODUCTION).plugins),
     output: [
       {
         ...commonOutputUMD(PRODUCTION),
         sourcemap: true,
         plugins: [
-          terserPlugin(/*terserOptions*/)
+          terser(/*terserOptions*/)
         ]
       },
       {
         ...commonOutputES(PRODUCTION)
       },
       {
-        ...commonOutputCJS(PRODUCTION),
-        sourcemap: true
+        ...commonOutputCJS(PRODUCTION)
       }
     ]
   },
@@ -80,8 +77,7 @@ module.exports = [
         ...commonOutputES(DEVELOPMENT)
       },
       {
-        ...commonOutputCJS(DEVELOPMENT),
-        sourcemap: true
+        ...commonOutputCJS(DEVELOPMENT)
       }
     ]
   }

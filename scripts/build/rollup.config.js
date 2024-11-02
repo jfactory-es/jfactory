@@ -20,7 +20,8 @@ const project = {
 const commonOptions = function(devel = false) {
   return {
     treeshake: {
-      moduleSideEffects: []
+      preset: 'recommended'
+      // moduleSideEffects: []
     },
     external: [
       'jquery',
@@ -50,7 +51,8 @@ const commonOutput = {
     constBindings: true,
     objectShorthand: true
   },
-  exports: 'named',
+  // interop: 'auto',
+  // exports: 'named',
   globals: function(name) {
     if (name === 'jquery') {
       return '$'
@@ -77,12 +79,12 @@ const commonOutputCJS = function(devel = false) {
   return {
     format: 'cjs',
     entryFileNames: '[name].cjs',
-    plugins: [
-      // terserPlugin(terserOptions)
-    ],
+    // !! modules must be preserved to allow module Tree Shaking in application bundler
+    preserveModules: true,
+    preserveModulesRoot: 'src',
     dir: devel ? 'dist/cjs-devel' : 'dist/cjs',
     banner: function(chunk) {
-      return chunk.fileName === 'index.mjs' ? devel ? bannerDevel : bannerProd : '';
+      return chunk.fileName === 'index.cjs' ? devel ? bannerDevel : bannerProd : '';
     },
     ...commonOutput
   }
@@ -95,12 +97,15 @@ const commonOutputES = function(devel = false) {
     // !! modules must be preserved to allow module Tree Shaking in application bundler
     preserveModules: true,
     preserveModulesRoot: 'src',
-    plugins: [
-      // terserPlugin(terserOptions)
-    ],
     dir: devel ? 'dist/es-devel' : 'dist/es',
     banner: function(chunk) {
-      return chunk.fileName === 'index.mjs' ? devel ? bannerDevel : bannerProd : '';
+      if (chunk.fileName === 'index.mjs') {
+        return devel ? bannerDevel : bannerProd;
+      } else {
+        if (chunk.fileName === 'jFactory-env.mjs') {
+          return 'globalThis.JFACTORY_ENV_ESM = 1;';
+        }
+      }
     },
     ...commonOutput
   }
@@ -123,7 +128,7 @@ module.exports = {
   commonOutputCJS,
   commonOutputES,
   bannerProd
-}
+};
 
 function getComputedValues(devel = false) {
   return {
