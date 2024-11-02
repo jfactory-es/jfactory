@@ -1,4 +1,4 @@
-const { bannerProd } = require('./rollup.config.js');
+const { bannerProd } = require('./rollup.config.cjs');
 
 module.exports = [
   {

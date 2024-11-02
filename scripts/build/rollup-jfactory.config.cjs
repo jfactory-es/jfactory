@@ -9,7 +9,7 @@ const {
   commonOutputUMD,
   commonOutputCJS,
   commonOutputES
-} = require('./rollup.config.js');
+} = require('./rollup.config.cjs');
 
 module.exports = [
 
