@@ -1,22 +1,30 @@
-import { beforeAll, afterAll, afterEach } from 'vitest';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
+import { beforeAll, afterAll, afterEach } from 'vitest';
 
 export const restHandlers = [
-  rest.get('https://api.test.local/asset.txt', function(req, res, ctx) {
-    return res(ctx.status(200), ctx.text('Hello world!'))
+  http.get('https://api.test.local/asset.txt', function() {
+    return new HttpResponse('Hello world!', {
+      status: 200
+    })
   }),
-  rest.get('https://api.test.local/asset.json', function(req, res, ctx) {
-    return res(ctx.status(200), ctx.json({
+  http.get('https://api.test.local/asset.html', function() {
+    return new HttpResponse('<p class="jFactory-test">Hello world!</p>', {
+      status: 200
+    })
+  }),
+  http.get('https://api.test.local/asset.css', function() {
+    return new HttpResponse('#dom1 {visibility: hidden;}', {
+      status: 200
+    })
+  }),
+  http.get('https://api.test.local/asset.json', function() {
+    return HttpResponse.json({
       data1: 123,
       data2: 456
-    }))
-  }),
-  rest.get('https://api.test.local/asset.html', function(req, res, ctx) {
-    return res(ctx.status(200), ctx.text('<p class="jFactory-test">Hello world!</p>'))
-  }),
-  rest.get('https://api.test.local/asset.css', function(req, res, ctx) {
-    return res(ctx.status(200), ctx.text('#dom1 {visibility: hidden;}'))
+    }, {
+      status: 200
+    })
   })
 ];
 
