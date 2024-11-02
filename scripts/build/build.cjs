@@ -1,6 +1,6 @@
 const { loadConfigFile } = require('rollup/loadConfigFile');
-const { envCheck } = require('../lib/env');
-const { formatBytes } = require('../lib/utils');
+const { envCheck } = require('../lib/env.cjs');
+const { formatBytes } = require('../lib/utils.cjs');
 const path = require('node:path');
 const rollup = require('rollup').rollup;
 const colors = require('ansi-colors');

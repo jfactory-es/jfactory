@@ -66,4 +66,4 @@ function warnIfStr(test, val, msg) {
 
 module.exports = {
   envCheck
-}
+};
