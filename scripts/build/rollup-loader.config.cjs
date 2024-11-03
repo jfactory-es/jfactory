@@ -26,6 +26,7 @@ module.exports = [
         entryFileNames: 'index-loader.mjs',
         banner: bannerProd,
         footer: async () => {
+          global.JFACTORY_ENV_LOG = 0; // 0 => skip boot logs
           const lib = await import('jfactory/es-devel');
           const exportKeys = Object.keys(lib);
           return (
