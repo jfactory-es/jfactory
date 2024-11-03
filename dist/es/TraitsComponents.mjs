@@ -1,4 +1,6 @@
 import { jFactory } from './jFactory.mjs';
+import './lib/JFactoryError.mjs';
+import './lib/JFactoryExpect.mjs';
 import { TraitCore, TraitService } from './TraitsCore.mjs';
 import { JFactoryFetch } from './lib/JFactoryFetch.mjs';
 import { JFactoryPromise } from './lib/JFactoryPromise.mjs';

@@ -1,5 +1,6 @@
+import { helper_camelCase } from '../jFactory-helpers.mjs';
+import './JFactoryExpect.mjs';
 import { JFactoryObject } from './JFactoryObject.mjs';
-import helper_camelCase from 'lodash/camelCase.js';
 
 /**
  * -----------------------------------------------------------------------------------------------------------------

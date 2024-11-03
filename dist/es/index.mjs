@@ -1,14 +1,9 @@
 /*!
- * jFactory v1.8.0-alpha.2 2024-10-27
+ * jFactory v1.8.0-alpha.2 2024-11-03
  * https://github.com/jfactory-es/jfactory
  * (c) 2019-2024 Stephane Plazis <sp.jfactory@gmail.com>
- * License: https://raw.githubusercontent.com/jfactory-es/jfactory/master/LICENSE.txt
+ * License: https://raw.githubusercontent.com/jfactory-es/jfactory/master/LICENSE.md
  */
-export { JFACTORY_BOOT, JFACTORY_CLI, JFACTORY_DEV, JFACTORY_LOG, JFACTORY_NAME, JFACTORY_REPL, JFACTORY_TRACE, JFACTORY_VER } from './jFactory-env.mjs';
-export { jFactoryCfg } from './jFactory-config.mjs';
-export { NOOP, helper_deferred, helper_isNative, helper_setFunctionName, helper_url_abs, helper_useragent } from './jFactory-helpers.mjs';
-export { jFactory } from './jFactory.mjs';
-import { jFactoryBootstrap } from './jFactory-bootstrap.mjs';
 export { JFactoryAbout } from './lib/JFactoryAbout.mjs';
 export { JFactoryComponent, JFactoryCoreObject } from './lib/JFactoryComponents.mjs';
 export { JFACTORY_ERR_INVALID_CALL, JFACTORY_ERR_INVALID_VALUE, JFACTORY_ERR_KEY_DUPLICATED, JFACTORY_ERR_KEY_MISSING, JFACTORY_ERR_PROMISE_EXPIRED, JFACTORY_ERR_REQUEST_ERROR, JFactoryError } from './lib/JFactoryError.mjs';
@@ -22,10 +17,12 @@ export { JFactoryPromise, JFactoryPromiseChain, JFactoryPromisePath, JFactoryPro
 export { JFactoryTime, JFactoryTimeTrace } from './lib/JFactoryTime.mjs';
 export { JFactoryTrace, JFactoryTrace_LIB_STACKTRACE, jFactoryTrace } from './lib/JFactoryTrace.mjs';
 export { JFactoryTraits } from './lib/JFactoryTraits.mjs';
+export { JFACTORY_BOOT, JFACTORY_CLI, JFACTORY_DEV, JFACTORY_LOG, JFACTORY_MOD, JFACTORY_NAME, JFACTORY_REPL, JFACTORY_TRACE, JFACTORY_VER } from './jFactory-env.mjs';
+export { jFactoryCfg } from './jFactory-config.mjs';
+export { NOOP, helper_camelCase, helper_deferred, helper_get, helper_isNative, helper_lowerFirst, helper_setFunctionName, helper_url_abs, helper_useragent } from './jFactory-helpers.mjs';
+export { jFactory } from './jFactory.mjs';
+import { jFactoryBootstrap } from './jFactory-bootstrap.mjs';
 export { default as jQuery } from 'jquery';
-export { default as helper_camelCase } from 'lodash/camelCase.js';
-export { default as helper_get } from 'lodash/get.js';
-export { default as helper_lowerFirst } from 'lodash/lowerFirst.js';
 export { default as helper_template } from 'lodash/template.js';
 export { default as helper_isString } from 'lodash/isString.js';
 export { default as helper_isNumber } from 'lodash/isNumber.js';

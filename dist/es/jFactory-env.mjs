@@ -15,6 +15,7 @@
 const JFACTORY_NAME  = "jFactory";
 const JFACTORY_VER   = "1.8.0-alpha.2";
 const JFACTORY_DEV   = false; // Developer Mode
+const JFACTORY_MOD   = "es" ?? "raw";
 
 const JFACTORY_CLI   = /*#__PURE__*/ env("JFACTORY_ENV_CLI") ?? /*#__PURE__*/ isNode();
 const JFACTORY_REPL  = /*#__PURE__*/ env("JFACTORY_ENV_REPL") ?? /*#__PURE__*/ isPlayground();
@@ -50,4 +51,4 @@ function isPlayground() {
     } catch {}
 }
 
-export { JFACTORY_BOOT, JFACTORY_CLI, JFACTORY_DEV, JFACTORY_LOG, JFACTORY_NAME, JFACTORY_REPL, JFACTORY_TRACE, JFACTORY_VER };
+export { JFACTORY_BOOT, JFACTORY_CLI, JFACTORY_DEV, JFACTORY_LOG, JFACTORY_MOD, JFACTORY_NAME, JFACTORY_REPL, JFACTORY_TRACE, JFACTORY_VER };

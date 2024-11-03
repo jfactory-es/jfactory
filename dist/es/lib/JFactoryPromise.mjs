@@ -1,4 +1,6 @@
 import { JFACTORY_ERR_INVALID_CALL, JFACTORY_ERR_PROMISE_EXPIRED } from './JFactoryError.mjs';
+import './JFactoryExpect.mjs';
+import './JFactoryTrace.mjs';
 import { helper_isNative, helper_deferred } from '../jFactory-helpers.mjs';
 import { jFactoryCfg } from '../jFactory-config.mjs';
 

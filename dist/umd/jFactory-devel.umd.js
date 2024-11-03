@@ -1,14 +1,14 @@
 /*!
- * jFactory-devel v1.8.0-alpha.2 2024-10-27
+ * jFactory-devel v1.8.0-alpha.2 2024-11-03
  * https://github.com/jfactory-es/jfactory
  * (c) 2019-2024 Stephane Plazis <sp.jfactory@gmail.com>
- * License: https://raw.githubusercontent.com/jfactory-es/jfactory/master/LICENSE.txt
+ * License: https://raw.githubusercontent.com/jfactory-es/jfactory/master/LICENSE.md
  */
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('lodash/get.js'), require('lodash/lowerFirst.js'), require('lodash/template.js'), require('lodash/isString.js'), require('lodash/isNumber.js'), require('lodash/isPlainObject.js'), require('lodash/camelCase.js'), require('lodash/defaultsDeep.js'), require('jquery')) :
-    typeof define === 'function' && define.amd ? define(['exports', 'lodash/get.js', 'lodash/lowerFirst.js', 'lodash/template.js', 'lodash/isString.js', 'lodash/isNumber.js', 'lodash/isPlainObject.js', 'lodash/camelCase.js', 'lodash/defaultsDeep.js', 'jquery'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.jFactoryModule = {}, global._.get, global._.lowerFirst, global._.template, global._.isString, global._.isNumber, global._.isPlainObject, global._.camelCase, global._.defaultsDeep, global.$));
-})(this, (function (exports, helper_get, helper_lowerFirst, helper_template, helper_isString, helper_isNumber, helper_isPlainObject, helper_camelCase, helper_defaultsDeep, jQuery) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('jquery'), require('lodash/template.js'), require('lodash/isString.js'), require('lodash/isNumber.js'), require('lodash/isPlainObject.js'), require('lodash/defaultsDeep.js')) :
+    typeof define === 'function' && define.amd ? define(['exports', 'jquery', 'lodash/template.js', 'lodash/isString.js', 'lodash/isNumber.js', 'lodash/isPlainObject.js', 'lodash/defaultsDeep.js'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.jFactoryModule = {}, global.$, global._.template, global._.isString, global._.isNumber, global._.isPlainObject, global._.defaultsDeep));
+})(this, (function (exports, jQuery, helper_template, helper_isString, helper_isNumber, helper_isPlainObject, helper_defaultsDeep) { 'use strict';
 
     /**
      * -----------------------------------------------------------------------------------------------------------------
@@ -27,6 +27,7 @@
     const JFACTORY_NAME  = "jFactory-devel";
     const JFACTORY_VER   = "1.8.0-alpha.2";
     const JFACTORY_DEV   = true; // Developer Mode
+    const JFACTORY_MOD   = "umd" ?? "raw";
 
     const JFACTORY_CLI   = /*#__PURE__*/ env("JFACTORY_ENV_CLI") ?? /*#__PURE__*/ isNode();
     const JFACTORY_REPL  = /*#__PURE__*/ env("JFACTORY_ENV_REPL") ?? /*#__PURE__*/ isPlayground();
@@ -73,14 +74,56 @@
      */
 
 
+    const helper_lowerFirst = str => str ? str[0].toLowerCase() + str.slice(1) : "";
+
+    function helper_get(object, path) {
+        return path.split(".").reduce((acc, key) => acc?.[key], object);
+    }
+
+    function helper_camelCase(str) {
+        return str
+            .toLowerCase()                       // Met tout en minuscules
+            .replace(/[^a-zA-Z0-9]+(.)/g,
+                (match, chr) => chr.toUpperCase());
+    }
+
+    // import i_helper_camelCase from "lodash/camelCase.js";
+    // import i_helper_get from "lodash/get.js";
+    // import i_helper_lowerFirst from "lodash/lowerFirst.js";
+    // import i_helper_template from "lodash/template.js";
+    // import i_helper_isString from "lodash/isString.js";
+    // import i_helper_isNumber from "lodash/isNumber.js";
+    // import i_helper_isPlainObject from "lodash/isPlainObject.js";
+    // import i_helper_defaultsDeep from "lodash/defaultsDeep.js";
+    //
+    // const helper_camelCase = i_helper_camelCase
+    // const helper_get = i_helper_get
+    // const helper_lowerFirst = i_helper_lowerFirst
+    // const helper_template = i_helper_template
+    // const helper_isString = i_helper_isString
+    // const helper_isNumber = i_helper_isNumber
+    // const helper_isPlainObject = i_helper_isPlainObject
+    // const helper_defaultsDeep = i_helper_defaultsDeep
+    //
+    // export {
+    //     helper_camelCase,
+    //     helper_get,
+    //     helper_lowerFirst,
+    //     helper_template,
+    //     helper_isString,
+    //     helper_isNumber,
+    //     helper_isPlainObject,
+    //     helper_defaultsDeep
+    // }
+
     // --------------
     // Helpers
     // --------------
 
     const NOOP = () => {};
     const helper_setFunctionName = (name, f) => Object.defineProperty(f, "name", { value: name });
-    const helper_url_abs_a = /*#__PURE__*/document.createElement("a");
-    const helper_url_abs = url => { helper_url_abs_a.href = url; return helper_url_abs_a.href };
+    const helper_url_base = typeof window !== "undefined" && window.location ? window.location.href : "http://localhost";
+    const helper_url_abs = url => new URL(url, helper_url_base).href;
 
     const helper_isNative = function(f) {
         return typeof f === "function" && Function.prototype.toString.call(f).indexOf("[native code]") !== -1
@@ -221,9 +264,12 @@
                 // auto bootstrap is disabled by env
                 return
             }
-            {
-                console.log(`${JFACTORY_NAME} ${JFACTORY_VER} running in development mode; performances may be affected`);
-                !JFACTORY_LOG && console.log("jFactory: logs disabled");
+            if (JFACTORY_LOG !== 0) { // 0 => skip boot logs
+                console.log(`${JFACTORY_NAME} ${JFACTORY_VER} running in development mode. ` +
+                    "This incurs a performance overhead.");
+                JFACTORY_MOD !== "es" && console.log("jFactoryBootstrap Warning:" +
+                    " Consider using the ES module (jfactory/es or jfactory/es-devel) for tree-shaking.");
+                !JFACTORY_LOG && console.log("jFactoryBootstrap Warning: Logs disabled by JFACTORY_LOG.");
                 jFactoryCompat_run();
             }
             init();
@@ -572,14 +618,14 @@
     // -----------------------------------------------------------------------------------------------------------------
 
     const E = JFactoryError.factory;
-
-    /* eslint-disable max-len */
+    /* eslint-disable @stylistic/js/max-len */
     const JFACTORY_ERR_INVALID_VALUE = /*#__PURE__*/E("INVALID_VALUE", "invalid value for ${target}; Reason: ${reason}; Given: ${given}");
     const JFACTORY_ERR_INVALID_CALL = /*#__PURE__*/E("INVALID_CALL", "invalid call ${target}; Reason: ${reason}; Owner: ${owner}");
     const JFACTORY_ERR_PROMISE_EXPIRED = /*#__PURE__*/E("PROMISE_EXPIRED", "expired promise ${target}; Reason: ${reason}");
     const JFACTORY_ERR_REQUEST_ERROR = /*#__PURE__*/E("REQUEST_ERROR", "error requesting ${target}; Reason: ${reason}; Owner: ${owner}");
     const JFACTORY_ERR_KEY_DUPLICATED = /*#__PURE__*/E("KEY_DUPLICATED", "duplicated key for ${target}; Given: ${given}");
     const JFACTORY_ERR_KEY_MISSING = /*#__PURE__*/E("KEY_MISSING", "missing key for ${target}; Given: ${given}");
+    /* eslint-enable @stylistic/js/max-len */
 
     // -----------------------------------------------------------------------------------------------------------------
     // Config JFactoryError
@@ -1284,7 +1330,6 @@
             // => Implementer can define a "trait_constructor()" that is automatically bound to "callerInstance"
             // and called after the native trait constructor().
 
-            // eslint-disable-next-line new-cap
             let traitInstance = new trait(callerInstance, ...traitArgs);
             if (traitInstance.trait_constructor) {
                 traitInstance.trait_constructor.apply(callerInstance, traitArgs);
@@ -4719,15 +4764,12 @@
 
     jFactoryBootstrap();
 
-    exports.helper_get = helper_get;
-    exports.helper_lowerFirst = helper_lowerFirst;
+    exports.jQuery = jQuery;
     exports.helper_template = helper_template;
     exports.helper_isString = helper_isString;
     exports.helper_isNumber = helper_isNumber;
     exports.helper_isPlainObject = helper_isPlainObject;
-    exports.helper_camelCase = helper_camelCase;
     exports.helper_defaultsDeep = helper_defaultsDeep;
-    exports.jQuery = jQuery;
     exports.JFACTORY_BOOT = JFACTORY_BOOT;
     exports.JFACTORY_CLI = JFACTORY_CLI;
     exports.JFACTORY_DEV = JFACTORY_DEV;
@@ -4738,6 +4780,7 @@
     exports.JFACTORY_ERR_PROMISE_EXPIRED = JFACTORY_ERR_PROMISE_EXPIRED;
     exports.JFACTORY_ERR_REQUEST_ERROR = JFACTORY_ERR_REQUEST_ERROR;
     exports.JFACTORY_LOG = JFACTORY_LOG;
+    exports.JFACTORY_MOD = JFACTORY_MOD;
     exports.JFACTORY_NAME = JFACTORY_NAME;
     exports.JFACTORY_REPL = JFACTORY_REPL;
     exports.JFACTORY_TRACE = JFACTORY_TRACE;
@@ -4768,8 +4811,11 @@
     exports.JFactoryTrace_LIB_STACKTRACE = JFactoryTrace_LIB_STACKTRACE;
     exports.JFactoryTraits = JFactoryTraits;
     exports.NOOP = NOOP;
+    exports.helper_camelCase = helper_camelCase;
     exports.helper_deferred = helper_deferred;
+    exports.helper_get = helper_get;
     exports.helper_isNative = helper_isNative;
+    exports.helper_lowerFirst = helper_lowerFirst;
     exports.helper_setFunctionName = helper_setFunctionName;
     exports.helper_url_abs = helper_url_abs;
     exports.helper_useragent = helper_useragent;
@@ -4784,3 +4830,4 @@
     Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
 
 }));
+//# sourceMappingURL=jFactory-devel.umd.js.map

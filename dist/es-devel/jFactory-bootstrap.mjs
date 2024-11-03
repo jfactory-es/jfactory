@@ -1,4 +1,4 @@
-import { JFACTORY_BOOT, JFACTORY_NAME, JFACTORY_VER, JFACTORY_LOG } from './jFactory-env.mjs';
+import { JFACTORY_BOOT, JFACTORY_LOG, JFACTORY_NAME, JFACTORY_VER, JFACTORY_MOD } from './jFactory-env.mjs';
 import { jFactoryCompat_run } from './jFactory-compat.mjs';
 
 /**
@@ -18,9 +18,12 @@ function jFactoryBootstrap() {
             // auto bootstrap is disabled by env
             return
         }
-        {
-            console.log(`${JFACTORY_NAME} ${JFACTORY_VER} running in development mode; performances may be affected`);
-            !JFACTORY_LOG && console.log("jFactory: logs disabled");
+        if (JFACTORY_LOG !== 0) { // 0 => skip boot logs
+            console.log(`${JFACTORY_NAME} ${JFACTORY_VER} running in development mode. ` +
+                "This incurs a performance overhead.");
+            JFACTORY_MOD !== "es" && console.log("jFactoryBootstrap Warning:" +
+                " Consider using the ES module (jfactory/es or jfactory/es-devel) for tree-shaking.");
+            !JFACTORY_LOG && console.log("jFactoryBootstrap Warning: Logs disabled by JFACTORY_LOG.");
             jFactoryCompat_run();
         }
         init();

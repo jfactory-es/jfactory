@@ -1,5 +1,6 @@
 import { JFACTORY_LOG } from '../jFactory-env.mjs';
 import { JFACTORY_ERR_INVALID_CALL } from './JFactoryError.mjs';
+import './JFactoryExpect.mjs';
 import { helper_setFunctionName } from '../jFactory-helpers.mjs';
 
 /**

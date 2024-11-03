@@ -75,7 +75,6 @@ class JFactoryTraits {
         // => Implementer can define a "trait_constructor()" that is automatically bound to "callerInstance"
         // and called after the native trait constructor().
 
-        // eslint-disable-next-line new-cap
         let traitInstance = new trait(callerInstance, ...traitArgs);
         if (traitInstance.trait_constructor) {
             traitInstance.trait_constructor.apply(callerInstance, traitArgs);

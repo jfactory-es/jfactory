@@ -1,8 +1,11 @@
 import { JFACTORY_ERR_INVALID_VALUE } from './JFactoryError.mjs';
-import { jFactoryBootstrap_onBoot } from '../jFactory-bootstrap.mjs';
+import 'jquery';
+import 'lodash/template.js';
 import helper_isString from 'lodash/isString.js';
 import helper_isNumber from 'lodash/isNumber.js';
 import helper_isPlainObject from 'lodash/isPlainObject.js';
+import 'lodash/defaultsDeep.js';
+import { jFactoryBootstrap_onBoot } from '../jFactory-bootstrap.mjs';
 
 /**
  * -----------------------------------------------------------------------------------------------------------------

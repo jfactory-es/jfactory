@@ -1,6 +1,7 @@
 import { JFACTORY_LOG } from './jFactory-env.mjs';
 import { JFACTORY_ERR_PROMISE_EXPIRED, JFactoryError } from './lib/JFactoryError.mjs';
 import { jFactory } from './jFactory.mjs';
+import './lib/JFactoryExpect.mjs';
 import { JFactoryAbout } from './lib/JFactoryAbout.mjs';
 import { JFactoryLogger } from './lib/JFactoryLogger.mjs';
 import { JFactoryPromise, JFactoryPromiseSync } from './lib/JFactoryPromise.mjs';

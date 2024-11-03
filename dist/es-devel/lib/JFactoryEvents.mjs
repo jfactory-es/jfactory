@@ -3,7 +3,11 @@ import { JFactoryExpect } from './JFactoryExpect.mjs';
 import { JFactoryPromiseSync } from './JFactoryPromise.mjs';
 import { JFactoryFunctionComposer } from './JFactoryFunction.mjs';
 import jQuery from 'jquery';
+import 'lodash/template.js';
+import 'lodash/isString.js';
+import 'lodash/isNumber.js';
 import helper_isPlainObject from 'lodash/isPlainObject.js';
+import 'lodash/defaultsDeep.js';
 
 /**
  * -----------------------------------------------------------------------------------------------------------------

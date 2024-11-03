@@ -1,6 +1,7 @@
 import { JFACTORY_REPL, JFACTORY_CLI } from '../jFactory-env.mjs';
 import { jFactoryCfg } from '../jFactory-config.mjs';
-import { NOOP, helper_isNative } from '../jFactory-helpers.mjs';
+import './JFactoryExpect.mjs';
+import { helper_isNative, NOOP } from '../jFactory-helpers.mjs';
 import helper_defaultsDeep from 'lodash/defaultsDeep.js';
 
 /**
