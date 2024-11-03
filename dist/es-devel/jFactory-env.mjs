@@ -13,7 +13,7 @@
  */
 
 const JFACTORY_NAME  = "jFactory-devel";
-const JFACTORY_VER   = "1.8.0-alpha.2";
+const JFACTORY_VER   = "1.8.0-alpha.2+build.1730675680538";
 const JFACTORY_DEV   = true; // Developer Mode
 const JFACTORY_MOD   = "es" ?? "raw";
 

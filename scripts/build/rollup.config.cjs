@@ -15,7 +15,7 @@ const project = {
   homepage: packageJson.homepage,
   copyrightYear: packageJson['x-copyrightYear'],
   license: packageJson['x-licenseUrl'],
-  buildId: new Date().toISOString().slice(0, 10)
+  buildId: new Date().getTime()
 };
 
 function injectOutputFormat() {
@@ -150,7 +150,7 @@ function getComputedValues(devel = false) {
   return {
     ...stringify({
       'env("JFACTORY_ENV_NAME")': devel ? project.develName : project.prodName,
-      'env("JFACTORY_ENV_VER")': project.version,
+      'env("JFACTORY_ENV_VER")': project.version + '+build.' + project.buildId,
       'env("JFACTORY_ENV_DEV")': devel
     }),
     $JFACTORY_NAME: devel ? project.develName : project.prodName,

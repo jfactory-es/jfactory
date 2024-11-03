@@ -1,5 +1,5 @@
 /*!
- * jFactory v1.8.0-alpha.2 2024-11-03
+ * jFactory v1.8.0-alpha.2+build.1730675680538
  * https://github.com/jfactory-es/jfactory
  * (c) 2019-2024 Stephane Plazis <sp.jfactory@gmail.com>
  * License: https://raw.githubusercontent.com/jfactory-es/jfactory/master/LICENSE.md
