@@ -15,6 +15,7 @@
 export const JFACTORY_NAME  = env("JFACTORY_ENV_NAME") ?? "jFactory";
 export const JFACTORY_VER   = env("JFACTORY_ENV_VER") ?? "(custom build)";
 export const JFACTORY_DEV   = env("JFACTORY_ENV_DEV") ?? false; // Developer Mode
+export const JFACTORY_MOD   = env("JFACTORY_ENV_MOD") ?? "raw";
 
 export const JFACTORY_CLI   = /*#__PURE__*/ env("JFACTORY_ENV_CLI") ?? /*#__PURE__*/ isNode();
 export const JFACTORY_REPL  = /*#__PURE__*/ env("JFACTORY_ENV_REPL") ?? /*#__PURE__*/ isPlayground();
