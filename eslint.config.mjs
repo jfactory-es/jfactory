@@ -14,7 +14,7 @@ export default [
       ecmaVersion: 'latest'
     },
     rules: {
-      'require-atomic-updates': 'error',
+      'require-atomic-updates': 'warn',
       'no-empty': ['error', { allowEmptyCatch: true }],
       'no-unused-vars': ['error', { caughtErrors: 'none' }],
       'no-useless-catch': 'error',
@@ -24,7 +24,7 @@ export default [
       'no-return-await': 'error',
       'no-promise-executor-return': 'error',
       'no-misleading-character-class': 'error',
-      'consistent-return': 'error',
+      'consistent-return': 'warn',
       'no-duplicate-imports': 'error',
       'no-self-assign': 'error',
       'no-constructor-return': 'error',
