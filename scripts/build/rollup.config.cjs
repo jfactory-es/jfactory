@@ -2,6 +2,7 @@ const packageJson = require('../../package.json');
 const replace = require('../lib/utils.cjs').replace;
 const stringify = require('../lib/utils.cjs').stringify;
 const replacePlugin = require('@rollup/plugin-replace');
+const MagicString = require('magic-string');
 const path = require('path');
 const fs = require('fs');
 
@@ -16,6 +17,25 @@ const project = {
   license: packageJson['x-licenseUrl'],
   buildId: new Date().toISOString().slice(0, 10)
 };
+
+function injectOutputFormat() {
+  return {
+    name: 'inject-output-format',
+    renderChunk(code, chunk, outputOptions) {
+      const outputPath = `"${outputOptions.format}"`;
+      const regex = /env\("JFACTORY_ENV_MOD"\)/g; // Regex to find the specific string
+      const magicString = new MagicString(code);
+      let match;
+      while ((match = regex.exec(code)) !== null) {
+        magicString.overwrite(match.index, match.index + match[0].length, outputPath);
+      }
+      return {
+        code: magicString.toString(),
+        map: magicString.generateMap({ hires: true })
+      };
+    }
+  }
+}
 
 const commonOptions = function(devel = false) {
   return {
@@ -35,9 +55,11 @@ const commonOptions = function(devel = false) {
       'lodash/camelCase.js'
     ],
     plugins: [
+      injectOutputFormat(),
       replacePlugin({
         delimiters: ['', ''],
         preventAssignment: true,
+        // sourcemap: true, // may be required to preserve sourcemaps
         values: devel ? computedValuesDevel : computedValuesProd
       })
     ]
@@ -105,6 +127,7 @@ const commonOutputES = function(devel = false) {
         if (chunk.fileName === 'jFactory-env.mjs') {
           return 'globalThis.JFACTORY_ENV_ESM = 1;';
         }
+
       }
     },
     ...commonOutput
