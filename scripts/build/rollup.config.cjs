@@ -121,14 +121,7 @@ const commonOutputES = function(devel = false) {
     preserveModulesRoot: 'src',
     dir: devel ? 'dist/es-devel' : 'dist/es',
     banner: function(chunk) {
-      if (chunk.fileName === 'index.mjs') {
-        return devel ? bannerDevel : bannerProd;
-      } else {
-        if (chunk.fileName === 'jFactory-env.mjs') {
-          return 'globalThis.JFACTORY_ENV_ESM = 1;';
-        }
-
-      }
+      return chunk.fileName === 'index.mjs' ? devel ? bannerDevel : bannerProd : '';
     },
     ...commonOutput
   }
