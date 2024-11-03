@@ -1,12 +1,12 @@
-import { jQuery, jFactory, JFactoryPromise, JFACTORY_ESM } from "jfactory";
-import { describe, it, expect } from "vitest";
+import { jQuery, jFactory, JFactoryPromise, JFACTORY_MOD, JFACTORY_DEV } from 'jfactory';
+import { describe, it, expect } from 'vitest';
 
-describe("import /es", function() {
-    it("import", function() {
-    // TODO test flag es build
-        expect(jQuery).toBeTypeOf("function");
-        expect(jFactory).toBeTypeOf("function");
-        expect(JFactoryPromise).toBeTypeOf("function");
-        expect(JFACTORY_ESM).eq(1);
-    });
+describe('import /es', function() {
+  it('import', function() {
+    expect(jQuery).toBeTypeOf('function');
+    expect(jFactory).toBeTypeOf('function');
+    expect(JFactoryPromise).toBeTypeOf('function');
+    expect(JFACTORY_MOD).eq('es');
+    expect(JFACTORY_DEV).eq(false);
+  });
 });

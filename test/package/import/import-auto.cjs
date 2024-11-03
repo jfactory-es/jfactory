@@ -1,4 +1,4 @@
-require("./env-devel.js");
-const { jFactory } = require("jfactory/auto");
+require('./env-devel.js');
+const { jFactory } = require('jfactory/auto');
 
 console.log(jFactory);
