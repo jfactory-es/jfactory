@@ -46,7 +46,7 @@ const { setPromiseAdapter } = require('../../test/promises-aplus-fork/lib/progra
 setPromiseAdapter(jFactoryModule.JFactoryPromise);
 
 export { default as jQuery } from 'jquery';
-export { specify } from './polyfill-specify.js';
+export { specify } from './polyfill-specify.mjs';
 export { describe, it, expect, assert, afterEach, beforeEach } from 'vitest';
 
 require('process').on('unhandledRejection', err => { console.debug('unhandledRejection', err) });

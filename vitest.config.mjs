@@ -4,7 +4,7 @@ export default defineConfig({
   test: {
     name: 'Bulk',
     threads: true,
-    setupFiles: '/scripts/test/test-setup.js',
+    setupFiles: '/scripts/test/test-setup.mjs',
     include: ['./test/index.mjs'],
     environment: 'jsdom',
     environmentOptions: {

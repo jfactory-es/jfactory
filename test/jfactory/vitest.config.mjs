@@ -4,7 +4,7 @@ export default defineConfig({
     test: {
         name: "jfactory",
         threads: true,
-        setupFiles: "./../../scripts/test/test-setup.js",
+        setupFiles: "./../../scripts/test/test-setup.mjs",
         environment: "jsdom",
         environmentOptions: {
             jsdom: {
