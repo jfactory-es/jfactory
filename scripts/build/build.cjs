@@ -26,69 +26,74 @@ async function build(options, logs) {
   await bundle.close();
 }
 
-async function run(filename) {
-  if (!filename) {
-    throw new Error('invalid filename')
+async function run(filenames) {
+  if (!filenames) {
+    throw new Error('invalid filenames')
   }
+  if (typeof filenames === 'string') {
+    filenames = [filenames]
+  }
+
   try {
     const COL = process.stdout.isTTY ? process.stdout.columns : 80;
+    const messages = []
+    const startTime = Date.now();
+
     console.log(`--[${colors.bold('Env')}]--`.padEnd(COL, '-') + '\n');
     let envCheckResult = envCheck();
     console.log();
 
-    console.log(`--[${colors.bold('Build')}]--`.padEnd(COL, '-'));
-    const startTime = Date.now();
+    for (let filename of filenames) {
+      let logs = {};
+      let pending = [];
 
-    let _log = console.log;
-    let _log_buff = [];
-    console.log = a => _log_buff.push(a);
-
-    const { options, warnings } = await loadConfigFile(
-      path.resolve(__dirname, filename), {}
-    );
-
-    let pending = [];
-    let logs = {};
-    for (const optionsObj of options) {
-      pending.push(build(optionsObj, logs));
-    }
-
-    await Promise.all(pending);
-    const endTime = Date.now();
-    const compilationTime = (endTime - startTime) / 1000;
-
-    console.log = _log;
-    _log_buff.length && console.log('\n' + _log_buff.join('\n'));
-
-    for (const [key, logEntries] of Object.entries(logs)) {
-      console.log(`\n[${colors.bold(key)}]`);
-      let totalSize = 0;
-      for (let log of logEntries) {
-        totalSize += log.size;
-        console.log(`   ${log.fileName}${colors.gray(' ' + formatBytes(log.size))}`)
+      console.log(`--[${colors.bold('Build ' + filename)}]--`.padEnd(COL, '-'));
+      const { options, warnings } = await loadConfigFile(
+        path.resolve(__dirname, filename), {}
+      );
+      for (const optionsObj of options) {
+        optionsObj.onLog = function(level, log, handler) {
+          messages[level] || (messages[level] = []);
+          messages[level].push(log);
+          handler(level, log);
+        };
+        pending.push(build(optionsObj, logs));
       }
-      console.log(colors.bold(`   Total Size: ${formatBytes(totalSize)} in ${key}`))
+      await Promise.all(pending);
+
+      for (const [key, logEntries] of Object.entries(logs)) {
+        console.log(`\n[${colors.bold(key)}]`);
+        let totalSize = 0;
+        for (let log of logEntries) {
+          totalSize += log.size;
+          console.log(`   ${log.fileName}${colors.gray(' ' + formatBytes(log.size))}`)
+        }
+        console.log(colors.bold(`   Total Size: ${formatBytes(totalSize)} in ${key}`))
+      }
+      console.log();
     }
-    console.log();
 
-    console.log(`Compilation completed in ${compilationTime} seconds`);
-
+    console.log(`Compilation completed in ${(Date.now() - startTime) / 1000} seconds`);
     if (envCheckResult.warn.length) {
       for (const value of envCheckResult.warn) {
-        console.log(colors.red(`Env warning: ${value}`));
+        console.log(colors.red(`Env warn: ${value}`));
       }
     }
     if (envCheckResult.error.length) {
       for (const value of envCheckResult.error) {
-        console.error(colors.red(`Env errors: ${value}`));
+        console.error(colors.red(`Env error: ${value}`));
       }
       process.exit(1);
     }
-    if (warnings.count) {
-      console.log(colors.red(`Compilation warnings: ${warnings.count}\n`));
-      warnings.flush();
+
+    Object.entries(messages).forEach(([key, value]) => {
+      console.log(colors.red(`Rollup ${key}: ${value.length} ${key}${value.length > 1 ? 's' : ''}`));
+    });
+
+    if (messages.warn) {
       process.exit(1);
     }
+
   } catch (err) {
     console.error(err);
     process.exit(1);
@@ -96,9 +101,18 @@ async function run(filename) {
 }
 
 if (require.main === module) {
-  const args = process.argv.slice(2);
-  const param = args[0] || 'rollup-jfactory.config.cjs';
-  run(param);
+  (async function() {
+    const args = process.argv.slice(2);
+    const param = args[0];
+    if (!param) {
+      await run([
+        'rollup-jfactory.config.cjs',
+        'rollup-loader.config.cjs'
+      ]);
+    } else {
+      await run(param);
+    }
+  })();
 } else {
   module.exports = {
     run

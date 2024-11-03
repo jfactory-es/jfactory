@@ -41,7 +41,7 @@ module.exports = [
             dest: 'dist'
           }
         ],
-        verbose: true,
+        verbose: false,
         copyOnce: true
       })
     ].concat(commonOptions(PRODUCTION).plugins),
